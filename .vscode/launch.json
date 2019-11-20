@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - EmporioApplication",
+            "request": "launch",
+            "mainClass": "com.emporio.emporio.EmporioApplication",
+            "projectName": "emporio"
+        }
+    ]
+}

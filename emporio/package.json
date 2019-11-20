@@ -1,7 +1,7 @@
 {
-  "name": "E-mporio",
+  "name": "emporio",
   "nativescript": {
-    "id": "org.nativescript.Emporio"
+    "id": "org.nativescript.emporio"
   },
   "version": "0.0.0",
   "scripts": {

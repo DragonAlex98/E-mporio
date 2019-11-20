@@ -6,7 +6,7 @@
     "defaultCollection": "@nativescript/schematics"
   },
   "projects": {
-    "E-mporio": {
+    "emporio": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -16,7 +16,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/E-mporio",
+            "outputPath": "dist/emporio",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -53,18 +53,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "E-mporio:build"
+            "browserTarget": "emporio:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "E-mporio:build:production"
+              "browserTarget": "emporio:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "E-mporio:build"
+            "browserTarget": "emporio:build"
           }
         },
         "test": {
@@ -98,7 +98,7 @@
         }
       }
     },
-    "E-mporio-e2e": {
+    "emporio-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -106,11 +106,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "E-mporio:serve"
+            "devServerTarget": "emporio:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "E-mporio:serve:production"
+              "devServerTarget": "emporio:serve:production"
             }
           }
         },
@@ -126,5 +126,5 @@
       }
     }
   },
-  "defaultProject": "E-mporio"
+  "defaultProject": "emporio"
 }
