@@ -6,6 +6,16 @@
             "request": "launch",
             "mainClass": "com.emporio.emporio.EmporioApplication",
             "projectName": "emporio"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-EmporioApplication<emporio>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.emporio.EmporioApplication",
+            "projectName": "emporio",
+            "args": ""
         }
     ]
 }
