@@ -1,5 +1,7 @@
 package com.emporio.emporio.Controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import com.emporio.emporio.Models.Prodotto;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,5 +34,16 @@ public class ProdottoController {
         +"}";
         
         return new ResponseEntity<>(toReturnString, HttpStatus.CREATED);
+    }
+
+    @CrossOrigin(origins = {"*"})
+    @RequestMapping(value = "/products/search", method = RequestMethod.GET)
+    public ResponseEntity<List<Prodotto>> findProduct(@RequestParam(name = "id", required = false, defaultValue = "0") Integer id,
+                                        @RequestParam(name = "nome", required = true) String nome,
+                                        @RequestParam(name = "prezzo", required = false, defaultValue = "0") Double prezzo,
+                                        @RequestParam(name = "categoria", required = false, defaultValue = "0") Integer categoria) {
+        
+        List<Prodotto> toReturnProductsList = productRepository.findProduct(id, nome, prezzo, categoria);
+        return new ResponseEntity(toReturnProductsList, HttpStatus.OK);
     }
 }
