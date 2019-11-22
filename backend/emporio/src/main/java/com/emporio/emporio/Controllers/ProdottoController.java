@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.emporio.emporio.Config.AppConfig;
 import com.emporio.emporio.Models.Prodotto;
 import com.emporio.emporio.Repositories.ProdottoRepository;
 
@@ -29,7 +30,7 @@ public class ProdottoController {
         productRepository.save(product);
         String toReturnString = "{"
         +"'id':'"+product.getProductId()+"',"
-        +"'url':'http://localhost:8000/api/v1/products/"+ product.getProductId() + "',"
+        +"'url':'"+AppConfig.appURL + AppConfig.apiURI + "/products/"+ product.getProductId() + "',"
         +"'type':'product'"
         +"}";
         
@@ -44,6 +45,6 @@ public class ProdottoController {
                                         @RequestParam(name = "categoria", required = false, defaultValue = "0") Integer categoria) {
         
         List<Prodotto> toReturnProductsList = productRepository.findProduct(id, nome, prezzo, categoria);
-        return new ResponseEntity(toReturnProductsList, HttpStatus.OK);
+        return new ResponseEntity<List<Prodotto>>(toReturnProductsList, HttpStatus.OK);
     }
 }
