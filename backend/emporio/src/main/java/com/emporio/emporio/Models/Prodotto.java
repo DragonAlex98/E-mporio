@@ -7,9 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Data;
-
-@Data
 @Entity
 @Table(name = "prodotto")
 public class Prodotto {
@@ -31,4 +28,53 @@ public class Prodotto {
     @Column(name = "Qta")
     private int productQuantity;
 
+    public Prodotto(int productId, String productName, int productCategory, double productPrize, int productQuantity) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productCategory = productCategory;
+        this.productPrize = productPrize;
+        this.productQuantity = productQuantity;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public int getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(int productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    public double getProductPrize() {
+        return productPrize;
+    }
+
+    public void setProductPrize(double productPrize) {
+        this.productPrize = productPrize;
+    }
+
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    
 }
