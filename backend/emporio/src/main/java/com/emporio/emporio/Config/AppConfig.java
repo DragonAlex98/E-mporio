@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class AppConfig implements WebMvcConfigurer {
 
-    public static final String appURL = "http://localhost:8000/";
+    public static final String appURL = "http://localhost:8000";
     public static final String apiURI = "/api/v1";
 
     @Override

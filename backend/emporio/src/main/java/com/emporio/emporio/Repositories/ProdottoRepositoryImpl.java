@@ -4,7 +4,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
 import com.emporio.emporio.Models.Prodotto;
 
 import org.springframework.stereotype.Repository;
@@ -24,7 +25,7 @@ public class ProdottoRepositoryImpl implements ProdottoRepositoryCustom {
         Double correctPrezzo = (prezzo == 0) ? null : prezzo;
         Integer correctCategoria = (categoria == 0) ? null : categoria;
 
-        Query query = entityManager.createNativeQuery("SELECT * FROM emporio.prodotto WHERE nome LIKE ?" 
+        TypedQuery<Prodotto> query = entityManager.createQuery("SELECT * FROM emporio.prodotto WHERE nome LIKE ?" 
                                                         + ((correctId != null) ? ("AND id = " + correctId) : "")
                                                         + ((correctPrezzo != null) ? ("AND prezzo = " + correctPrezzo) : "")
                                                         + ((correctCategoria != null) ? ("AND categoria = " + correctCategoria) : "") 
