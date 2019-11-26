@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+@Data
 @Entity
 @Table(name = "attivita")
 public class Attivita {
@@ -24,7 +26,7 @@ public class Attivita {
 
     @Column(name = "Sede_Operativa")
     private String shopHeadquarter;
-
+/*
     public Attivita(String shopPIVA, String shopAddress, String shopBusinessName, int shopCategory,
             String shopHeadquarter) {
         this.shopPIVA = shopPIVA;
@@ -74,5 +76,5 @@ public class Attivita {
         this.shopHeadquarter = shopHeadquarter;
     }
     
-    
+*/    
 }

@@ -1,15 +1,18 @@
-package com.emporio.emporio.Repositories;
+package com.emporio.emporio.services;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.emporio.emporio.Models.Attivita;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 @Transactional(readOnly = true)
 public class AttivitaRepositoryImpl implements AttivitaRepositoryCustom {
 
@@ -23,7 +26,7 @@ public class AttivitaRepositoryImpl implements AttivitaRepositoryCustom {
         String correctSedeOperativa = (sedeOperativa == "") ? null : sedeOperativa;
         Integer correctCategoria = (categoria == 0) ? null : categoria;
 
-        TypedQuery<Attivita> query = entityManager.createQuery("SELECT * FROM emporio.attivita WHERE nome LIKE ?" 
+        Query query = entityManager.createNativeQuery("SELECT * FROM emporio.attivita WHERE nome LIKE ?" 
                                                         + ((correctPIva != null) ? ("AND id = " + correctPIva) : "")
                                                         + ((correctSedeOperativa != null) ? ("AND prezzo = " + correctSedeOperativa) : "")
                                                         + ((correctCategoria != null) ? ("AND categoria = " + correctCategoria) : "") 

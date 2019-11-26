@@ -1,4 +1,4 @@
-package com.emporio.emporio.Repositories;
+package com.emporio.emporio.services;
 
 import java.util.List;
 

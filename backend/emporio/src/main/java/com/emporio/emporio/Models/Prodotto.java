@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "prodotto")
 public class Prodotto {
@@ -27,7 +30,7 @@ public class Prodotto {
 
     @Column(name = "Qta")
     private int productQuantity;
-
+/*
     public Prodotto(int productId, String productName, int productCategory, double productPrize, int productQuantity) {
         this.productId = productId;
         this.productName = productName;
@@ -76,5 +79,5 @@ public class Prodotto {
         this.productQuantity = productQuantity;
     }
 
-    
+*/    
 }
