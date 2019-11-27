@@ -24,7 +24,7 @@ public class AttivitaRepositoryImpl implements AttivitaRepositoryCustom {
         String correctSedeOperativa = (sedeOperativa == "") ? null : sedeOperativa;
         Integer correctCategoria = (categoria == 0) ? null : categoria;
 
-        TypedQuery<Attivita> query = entityManager.createQuery("SELECT a FROM Attivita a WHERE ragione_sociale LIKE ?1 " 
+        TypedQuery<Attivita> query = entityManager.createQuery("SELECT a FROM Attivita a WHERE Ragione_Sociale LIKE ?1 " 
                                                         + ((correctSedeOperativa != null) ? "AND sede_operativa = ?2 " : "AND sede_operativa LIKE ?2")
                                                         + ((correctCategoria != null) ? "AND categoria = ?3 " : "AND categoria LIKE ?3 ") 
                                                         , Attivita.class);
