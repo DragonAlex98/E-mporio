@@ -1,4 +1,4 @@
-package com.emporio.emporio.Services;
+package com.emporio.emporio.services;
 
 import java.util.List;
 import javax.persistence.EntityManager;
