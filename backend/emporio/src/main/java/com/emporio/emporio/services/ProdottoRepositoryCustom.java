@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProdottoRepositoryCustom {
 
-    List<Prodotto> findProduct(Integer id, String nome, Double prezzo, Integer categoria);
+    List<Prodotto> findProduct(String nome, Double prezzo, Integer categoria);
 
 }

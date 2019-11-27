@@ -44,8 +44,7 @@ public class AttivitaController {
                                                         @RequestParam(name = "categoria", required = false, defaultValue = "0") Integer categoria,
                                                         @RequestParam(name = "sedeOperativa", required = false, defaultValue = "") String sedeOperativa) {
         
-        List<Attivita> toReturnShopsList = attivitaRepository.findAttivita(pIVA, ragSociale, categoria, sedeOperativa);
+        List<Attivita> toReturnShopsList = attivitaRepository.findAttivita(ragSociale, categoria, sedeOperativa);
         return new ResponseEntity<>(toReturnShopsList, HttpStatus.OK);
     }
-    
 }

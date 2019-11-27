@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AttivitaRepositoryCustom {
 
-    List<Attivita> findAttivita(String pIva, String ragSociale, Integer categoria, String sedeOperativa);
+    List<Attivita> findAttivita(String ragSociale, Integer categoria, String sedeOperativa);
 
 }

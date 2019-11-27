@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.emporio.emporio.Models.Attivita;
@@ -20,21 +19,17 @@ public class AttivitaRepositoryImpl implements AttivitaRepositoryCustom {
     EntityManager entityManager;
 
     @Override
-    public List<Attivita> findAttivita(String pIva, String ragSociale, Integer categoria, String sedeOperativa) {
-        String correctPIva = (pIva == "") ? null : pIva;
+    public List<Attivita> findAttivita(String ragSociale, Integer categoria, String sedeOperativa) {
         String correctRagSociale = ragSociale.toLowerCase();
         String correctSedeOperativa = (sedeOperativa == "") ? null : sedeOperativa;
         Integer correctCategoria = (categoria == 0) ? null : categoria;
 
-        Query query = entityManager.createNativeQuery("SELECT * FROM emporio.attivita WHERE nome LIKE ?" 
-                                                        + ((correctPIva != null) ? ("AND id = " + correctPIva) : "")
-                                                        + ((correctSedeOperativa != null) ? ("AND prezzo = " + correctSedeOperativa) : "")
-                                                        + ((correctCategoria != null) ? ("AND categoria = " + correctCategoria) : "") 
+        TypedQuery<Attivita> query = entityManager.createQuery("SELECT a FROM Attivita a WHERE ragione_sociale LIKE ?1 " 
+                                                        + ((correctSedeOperativa != null) ? "AND sede_operativa = ?2 " : "AND sede_operativa LIKE ?2")
+                                                        + ((correctCategoria != null) ? "AND categoria = ?3 " : "AND categoria LIKE ?3 ") 
                                                         , Attivita.class);
 
-        query.setParameter(1, "%" + correctRagSociale + "%");
-
-        return query.getResultList();
+        return query.setParameter(1, "%" + correctRagSociale + "%").setParameter(2, ((correctSedeOperativa != null) ? correctSedeOperativa : "%")).setParameter(3, ((correctCategoria != null) ? correctCategoria : "%")).getResultList();
     }
 
     

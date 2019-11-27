@@ -3,7 +3,6 @@ package com.emporio.emporio.Services;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import com.emporio.emporio.Models.Prodotto;
 import org.springframework.stereotype.Service;
@@ -17,21 +16,17 @@ public class ProdottoRepositoryImpl implements ProdottoRepositoryCustom {
     EntityManager entityManager;
 
     @Override
-    public List<Prodotto> findProduct(Integer id, String nome, Double prezzo, Integer categoria) {
-        Integer correctId = (id == 0) ? null : id;
+    public List<Prodotto> findProduct(String nome, Double prezzo, Integer categoria) {
         String correctNome = nome.toLowerCase();
         Double correctPrezzo = (prezzo == 0) ? null : prezzo;
         Integer correctCategoria = (categoria == 0) ? null : categoria;
 
-        Query query = entityManager.createNativeQuery("SELECT * FROM emporio.prodotto WHERE nome LIKE ?" 
-                                                        + ((correctId != null) ? ("AND id = " + correctId) : "")
-                                                        + ((correctPrezzo != null) ? ("AND prezzo = " + correctPrezzo) : "")
-                                                        + ((correctCategoria != null) ? ("AND categoria = " + correctCategoria) : "") 
+        TypedQuery<Prodotto> query = entityManager.createQuery("SELECT p FROM Prodotto p WHERE nome LIKE ?1 " 
+                                                        + ((correctPrezzo != null) ? "AND prezzo = ?2 " : "AND prezzo LIKE ?2")
+                                                        + ((correctCategoria != null) ? "AND categoria = ?3 " : "AND categoria LIKE ?3 ") 
                                                         , Prodotto.class);
 
-        query.setParameter(1, "%" + correctNome + "%");
-
-        return query.getResultList();
+        return query.setParameter(1, "%" + correctNome + "%").setParameter(2, ((correctPrezzo != null) ? correctPrezzo : "%")).setParameter(3, ((correctCategoria != null) ? correctCategoria : "%")).getResultList();
     }
 
     

@@ -44,7 +44,16 @@ public class ProdottoController {
                                         @RequestParam(name = "prezzo", required = false, defaultValue = "0") Double prezzo,
                                         @RequestParam(name = "categoria", required = false, defaultValue = "0") Integer categoria) {
         
-        List<Prodotto> toReturnProductsList = productRepository.findProduct(id, nome, prezzo, categoria);
+        List<Prodotto> toReturnProductsList = productRepository.findProduct(nome, prezzo, categoria);
         return new ResponseEntity<List<Prodotto>>(toReturnProductsList, HttpStatus.OK);
+    }
+
+    
+    @CrossOrigin(origins = {"*"})
+    @RequestMapping(value = "/products", method = RequestMethod.GET)
+    public ResponseEntity<List<Prodotto>> getAllProducts() {
+        List<Prodotto> toReturnProductList = productRepository.findAll();
+
+        return new ResponseEntity<List<Prodotto>>(toReturnProductList, HttpStatus.OK);
     }
 }
