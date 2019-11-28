@@ -39,8 +39,7 @@ public class ProdottoController {
 
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/products/search", method = RequestMethod.GET)
-    public ResponseEntity<List<Prodotto>> findProduct(@RequestParam(name = "id", required = false, defaultValue = "0") Integer id,
-                                        @RequestParam(name = "nome", required = true) String nome,
+    public ResponseEntity<List<Prodotto>> findProduct(@RequestParam(name = "nome", required = true) String nome,
                                         @RequestParam(name = "prezzo", required = false, defaultValue = "0") Double prezzo,
                                         @RequestParam(name = "categoria", required = false, defaultValue = "0") Integer categoria) {
         

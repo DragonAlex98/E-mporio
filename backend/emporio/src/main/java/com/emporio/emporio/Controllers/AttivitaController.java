@@ -39,12 +39,14 @@ public class AttivitaController {
 
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/shops/search", method = RequestMethod.GET)
-    public ResponseEntity<List<Attivita>> findAttivita(@RequestParam(name = "pIva", required = false, defaultValue = "") String pIVA,
-                                                        @RequestParam(name = "ragSociale", required = true) String ragSociale,
+    public ResponseEntity<List<Attivita>> findAttivita(@RequestParam(name = "ragSociale", required = true) String ragSociale,
                                                         @RequestParam(name = "categoria", required = false, defaultValue = "0") Integer categoria,
                                                         @RequestParam(name = "sedeOperativa", required = false, defaultValue = "") String sedeOperativa) {
         
+        if(ragSociale == "")
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
         List<Attivita> toReturnShopsList = attivitaRepository.findAttivita(ragSociale, categoria, sedeOperativa);
-        return new ResponseEntity<>(toReturnShopsList, HttpStatus.OK);
+        return new ResponseEntity<List<Attivita>>(toReturnShopsList, HttpStatus.OK);
     }
 }
