@@ -44,6 +44,9 @@ public class ProdottoController {
                                         @RequestParam(name = "prezzo", required = false, defaultValue = "0") Double prezzo,
                                         @RequestParam(name = "categoria", required = false, defaultValue = "0") Integer categoria) {
         
+        if(nome == "")
+            return new ResponseEntity<List<Prodotto>>(HttpStatus.BAD_REQUEST);
+
         List<Prodotto> toReturnProductsList = productRepository.findProduct(nome, prezzo, categoria);
         return new ResponseEntity<List<Prodotto>>(toReturnProductsList, HttpStatus.OK);
     }
