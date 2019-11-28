@@ -1,0 +1,16 @@
+<form [formGroup] = "searchBox"  (ngSubmit)="onSubmit(searchBox.value)">
+    <select formControlName = "searchSelectorState">
+        <option *ngFor = "let option of searchTypeStates">{{option}}</option>
+    </select>
+    <input type="text" formControlName="searchInput">
+    <button type="submit">Cerca</button>
+</form>
+<h3 *ngIf = "!(searchTerm === '')">Ultima ricerca: {{searchTerm}}</h3>
+<div *ngIf = "show">
+    <h2>Lista Prodotti</h2>
+<ul >
+  <li *ngFor="let product of productList">
+     {{product.productName}}
+  </li>
+</ul>
+</div>

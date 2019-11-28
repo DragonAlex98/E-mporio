@@ -1,0 +1,23 @@
+<form [formGroup]="productForm">
+  
+    <label>
+      Descrizione:
+      <input type="text" formControlName="Descrizione" required>
+    </label>
+  
+    <label>
+      Categoria:
+      <input type="text" formControlName="Categoria">
+    </label>
+
+    <label>
+      Prezzo:
+      <input type="text" formControlName="Prezzo">
+    </label>
+    <label>
+      Quantita':
+      <input type="text" formControlName="Quantita'">
+    </label>   
+  
+  </form>
+  <h1>{{productForm.status}}</h1>
