@@ -7,7 +7,8 @@ import { Product } from '../product/product/product';
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.css']
+  styleUrls: ['./search-bar.component.css'],
+  moduleId: module.id
 })
 export class SearchBarComponent implements OnInit {
 

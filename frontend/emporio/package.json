@@ -1,7 +1,10 @@
 {
   "name": "emporio",
   "nativescript": {
-    "id": "org.nativescript.emporio"
+    "id": "org.nativescript.emporio",
+    "tns-android": {
+      "version": "6.2.0"
+    }
   },
   "version": "0.0.0",
   "scripts": {
