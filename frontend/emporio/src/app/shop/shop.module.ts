@@ -4,6 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { ShopRoutingModule } from '@src/app/shop/shop-routing.module';
 import { ShopComponent } from '@src/app/shop/shop/shop.component';
+import { ShopListComponent } from '@src/app/shop/shop-list/shop-list.component';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 @NgModule({
@@ -12,8 +14,9 @@ import { ShopComponent } from '@src/app/shop/shop/shop.component';
   ],
   imports: [
     CommonModule,
+    BrowserModule,
+    ShopRoutingModule,
     HttpClientModule,
-    ShopRoutingModule
   ]
 })
 export class ShopModule { }

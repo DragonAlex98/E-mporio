@@ -13,7 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   declarations: [
     InsertProductComponent,
     InsertProductFormComponent,
-    ProductComponent],
+    ProductComponent
+  ],
   imports: [
     CommonModule,
     HttpClientModule,

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl} from '@angular/forms';
 import {ProductService} from '../product/product.service';
 import { Product } from '../product/product/product';
+import { ShopService } from '../shop/shop.service';
+import { Shop } from '../shop/shop/shop';
 
 
 @Component({
@@ -11,9 +13,11 @@ import { Product } from '../product/product/product';
 })
 export class SearchBarComponent implements OnInit {
 
-  show = false;
+  showProducts = false;
+  showShops = false;
+  shopList: Shop[];
   productList: Product[];
-  searchTypeStates = ['Prodotti', 'Attivita'];
+  searchTypeStates = ['', 'Prodotti', 'Attivita'];
   searchBox = new FormGroup({
     searchInput : new FormControl(''),
     searchSelectorState : new FormControl({value : this.searchTypeStates[0]})
@@ -24,11 +28,20 @@ export class SearchBarComponent implements OnInit {
   onSubmit(searchValue) {
     this.searchTerm = searchValue.searchInput;
     this.searchSelectorState = searchValue.searchSelectorState;
-    this.search(this.searchTerm);
-    this.show = true;
+    if(this.searchSelectorState === '') {
+    } else {
+      this.search(this.searchTerm);
+    }
+    if ( this.searchSelectorState === 'Prodotti') {
+      this.showProducts = true;
+      this.showShops = false;
+    } else if ( this.searchSelectorState === 'Attivita') {
+      this.showProducts = false;
+      this.showShops = true;
+    }
   }
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService, private shopService: ShopService) { }
 
   ngOnInit() {
   }
@@ -44,6 +57,18 @@ export class SearchBarComponent implements OnInit {
             item.productCategory,
             item.productPrice,
             item.productQuantity
+          );
+        }
+      ));
+    } else if (this.searchSelectorState === 'Attivita') {
+      this.shopService.searchShops(term).subscribe((shopListData) => this.shopList = shopListData.map(
+        item => {
+          return new Shop(
+            item.shopPIVA,
+            item.shopAddress,
+            item.shopBusinessName,
+            item.shopCategory,
+            item.shopHeadquarter
           );
         }
       ));

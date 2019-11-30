@@ -8,6 +8,8 @@ import { ProductModule } from '@src/app/product/product.module';
 import { PageNotFoundComponent } from '@src/app/page-not-found/page-not-found.component';
 import { SearchBarComponent } from '@src/app/search-bar/search-bar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ShopListComponent } from '@src/app/shop/shop-list/shop-list.component';
+import { ShopModule } from './shop/shop.module';
 
 
 @NgModule({
@@ -23,6 +25,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ProductModule,
     FormsModule,
     ReactiveFormsModule,
+    ShopModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

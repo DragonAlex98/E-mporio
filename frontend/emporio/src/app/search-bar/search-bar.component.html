@@ -6,11 +6,19 @@
     <button type="submit">Cerca</button>
 </form>
 <h3 *ngIf = "!(searchTerm === '')">Ultima ricerca: {{searchTerm}}</h3>
-<div *ngIf = "show">
+<div *ngIf="showProducts">
     <h2>Lista Prodotti</h2>
 <ul >
   <li *ngFor="let product of productList">
      {{product.productName}}
   </li>
 </ul>
+</div>
+<div *ngIf="shopList">
+        <h2>Lista Attività</h2>
+        <ul>
+          <li *ngFor="let item of shopList">
+            {{item.shopBusinessName}}
+          </li>
+        </ul>
 </div>

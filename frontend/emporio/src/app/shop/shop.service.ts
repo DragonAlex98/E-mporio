@@ -13,7 +13,7 @@ export class ShopService {
   private shopAPIUrlName = 'http://localhost:8000/api/v1/shops/search';
 
   searchShops (term: string): Observable<Shop[]> {
-    return this.httpClient.get<Shop[]>(this.shopAPIUrlName + '?ragSociale=' + term);
+    return this.httpClient.get<Shop[]>(`${this.shopAPIUrlName}?ragSociale=${term}`);
   }
 
   addShop(term: Shop) {

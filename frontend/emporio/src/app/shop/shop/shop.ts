@@ -1,14 +1,16 @@
 export class Shop {
 
-    shopPIva: string;
-    shopRagioneSociale: string;
+    shopPIVA: string;
+    shopAddress: string;
+    shopBusinessName: string;
     shopCategory: number;
-    shopSedeOperativa: string;
+    shopHeadquarter: string;
 
-    constructor(shopPIva: string, shopRagioneSociale: string, shopCategory: number, shopSedeOperativa: string) {
-        this.shopPIva = shopPIva;
-        this.shopRagioneSociale = shopRagioneSociale;
+    constructor(shopPIVA: string, shopAddress: string, shopBusinessName: string, shopCategory: number, shopHeadquarter: string) {
+        this.shopPIVA = shopPIVA;
+        this.shopAddress = shopAddress;
+        this.shopBusinessName = shopBusinessName;
         this.shopCategory = shopCategory;
-        this.shopSedeOperativa = shopSedeOperativa;
+        this.shopHeadquarter = shopHeadquarter;
     }
 }
