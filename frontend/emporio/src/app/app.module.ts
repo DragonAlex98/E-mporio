@@ -21,8 +21,8 @@ import { ShopModule } from './shop/shop.module';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     ProductModule,
+    AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     ShopModule,

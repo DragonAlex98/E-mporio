@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Product } from './product/product';
 
 @Injectable({
@@ -10,9 +10,19 @@ export class ProductService {
 
   constructor(private httpClient: HttpClient) { }
 
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
   private productListUrlName = 'http://localhost:8000/api/v1/products/search';
+  private productsUrl = 'http://localhost:8000/api/v1/products';
 
   searchProducts (term: string): Observable<Product[]> {
     return this.httpClient.get<Product[]>(`${this.productListUrlName}?nome=${term}`);
   }
+
+  addProduct (product: Product): Observable<Product> {
+    console.log(product);
+    return this.httpClient.post<Product>(this.productsUrl, product, this.httpOptions);
+  }
+
 }

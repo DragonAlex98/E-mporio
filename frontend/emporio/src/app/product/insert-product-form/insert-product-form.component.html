@@ -1,23 +1,24 @@
-<form [formGroup]="productForm">
+<form [formGroup]="productForm" (ngSubmit)="onSubmit(productForm.value)">
   
     <label>
       Descrizione:
-      <input type="text" formControlName="Descrizione" required>
+      <input type="text" formControlName="productName" required>
     </label>
   
     <label>
       Categoria:
-      <input type="text" formControlName="Categoria">
+      <input type="text" formControlName="productCategory">
     </label>
 
     <label>
       Prezzo:
-      <input type="text" formControlName="Prezzo">
+      <input type="text" formControlName="productPrice">
     </label>
     <label>
       Quantita':
-      <input type="text" formControlName="Quantita'">
+      <input type="text" formControlName="productQuantity">
     </label>   
-  
+    
+    <button type="submit" [disabled]="!productForm.valid">Aggiungi</button>
+
   </form>
-  <h1>{{productForm.status}}</h1>
