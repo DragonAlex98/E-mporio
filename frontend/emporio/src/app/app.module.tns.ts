@@ -8,7 +8,8 @@ import { AppComponent } from '@src/app/app.component';
 import { HomeComponent } from '@src/app/home/home.component';
 import { PageNotFoundComponent } from '@src/app/page-not-found/page-not-found.component';
 import { SearchBarComponent } from '@src/app/search-bar/search-bar.component';
-import { ProductModule } from './product/product.module.tns';
+import { ProductModule } from '@src/app/product/product.module.tns';
+import { NavBarComponent } from '@src/app/nav-bar/nav-bar.component';
 
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
@@ -23,6 +24,7 @@ import { ProductModule } from './product/product.module.tns';
     HomeComponent,
     PageNotFoundComponent,
     SearchBarComponent,
+    NavBarComponent,
   ],
   imports: [
     NativeScriptModule,

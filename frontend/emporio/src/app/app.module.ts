@@ -9,7 +9,8 @@ import { PageNotFoundComponent } from '@src/app/page-not-found/page-not-found.co
 import { SearchBarComponent } from '@src/app/search-bar/search-bar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShopListComponent } from '@src/app/shop/shop-list/shop-list.component';
-import { ShopModule } from './shop/shop.module';
+import { ShopModule } from '@src/app/shop/shop.module';
+import { NavBarComponent } from '@src/app/nav-bar/nav-bar.component';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { ShopModule } from './shop/shop.module';
     HomeComponent,
     PageNotFoundComponent,
     SearchBarComponent,
+    NavBarComponent,
   ],
   imports: [
     BrowserModule,
