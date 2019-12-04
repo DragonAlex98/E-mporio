@@ -13,6 +13,9 @@ import { ShopModule } from '@src/app/shop/shop.module';
 import { NavBarComponent } from '@src/app/nav-bar/nav-bar.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { FooterComponent } from '@src/app/footer/footer.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -22,6 +25,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     PageNotFoundComponent,
     SearchBarComponent,
     NavBarComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +36,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     ShopModule,
     MatButtonModule,
     MatToolbarModule,
+    BrowserAnimationsModule,
+    MatMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

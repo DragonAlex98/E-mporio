@@ -10,6 +10,7 @@ import { PageNotFoundComponent } from '@src/app/page-not-found/page-not-found.co
 import { SearchBarComponent } from '@src/app/search-bar/search-bar.component';
 import { ProductModule } from '@src/app/product/product.module.tns';
 import { NavBarComponent } from '@src/app/nav-bar/nav-bar.component';
+import { FooterComponent } from '@src/app/footer/footer.component';
 
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
@@ -25,6 +26,7 @@ import { NavBarComponent } from '@src/app/nav-bar/nav-bar.component';
     PageNotFoundComponent,
     SearchBarComponent,
     NavBarComponent,
+    FooterComponent,
   ],
   imports: [
     NativeScriptModule,
