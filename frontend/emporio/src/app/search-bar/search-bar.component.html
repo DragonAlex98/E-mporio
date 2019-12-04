@@ -1,11 +1,30 @@
 <form [formGroup] = "searchBox"  (ngSubmit)="onSubmit(searchBox.value)">
+  <mat-form-field>
+    <mat-label>Choose an option</mat-label>
+    <mat-select formControlName = "searchSelectorState">
+      <mat-option *ngFor = "let option of searchTypeStates" [value]="option">{{option}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-divider [vertical]="true"></mat-divider>
+  <mat-form-field class="example-form-field">
+    <input matInput type="search" placeholder="Clearable input" [(ngModel)]="searchTerm" formControlName="searchInput">
+    <button mat-button *ngIf="searchTerm" matSuffix mat-icon-button aria-label="Clear" (click)="searchTerm=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <mat-divider [vertical]="true"></mat-divider>
+  <button mat-flat-button type="submit" color="accent">Cerca</button>
+</form>
+<!-- <form [formGroup] = "searchBox"  (ngSubmit)="onSubmit(searchBox.value)">
     <select formControlName = "searchSelectorState">
         <option *ngFor = "let option of searchTypeStates">{{option}}</option>
     </select>
     <input type="text" formControlName="searchInput">
     <button mat-button type="submit">Click me!</button>
-    <!--<button type="submit">Cerca</button>-->
-</form>
+</form> -->
+<mat-grid-list cols="2" rowHeight="1:1">
+  <mat-grid-tile *ngFor="let product of productList">{{product.productName}}</mat-grid-tile>
+</mat-grid-list>
 <h3 *ngIf = "!(searchTerm === '')">Ultima ricerca: {{searchTerm}}</h3>
 <div *ngIf="showProducts">
     <h2>Lista Prodotti</h2>

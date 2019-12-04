@@ -17,7 +17,7 @@ export class SearchBarComponent implements OnInit {
   showShops = false;
   shopList: Shop[];
   productList: Product[];
-  searchTypeStates = ['', 'Prodotti', 'Attivita'];
+  searchTypeStates = ['Prodotti', 'Attivita'];
   searchBox = new FormGroup({
     searchInput : new FormControl(''),
     searchSelectorState : new FormControl({value : this.searchTypeStates[0]})

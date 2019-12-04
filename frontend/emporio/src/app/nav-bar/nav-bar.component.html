@@ -1,10 +1,10 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <a mat-button href="/home">Emporio</a>
+    <a mat-button href="/home"><mat-icon>home</mat-icon> Emporio</a>
     <button mat-button [matMenuTriggerFor]="productMenu">Prodotto</button>
     <mat-menu #productMenu="matMenu">
       <button mat-menu-item *ngIf="auth.loggedIn">Nuovo Prodotto</button>
-      <button mat-menu-item>Cerca Prodotto</button>
+      <a mat-menu-item href="/product/search">Cerca Prodotto</a>
     </mat-menu>
     <button mat-button [matMenuTriggerFor]="shopMenu">Attività</button>
     <mat-menu #shopMenu="matMenu">

@@ -7,10 +7,11 @@ import { InsertProductFormComponent } from '@src/app/product/insert-product-form
 import { ProductComponent } from '@src/app/product/product/product.component';
 import { NativeScriptFormsModule } from 'nativescript-angular/forms';
 import { NativeScriptHttpClientModule } from 'nativescript-angular/http-client';
+import { SearchProductPageComponent } from '@src/app/product/search-product-page/search-product-page.component';
 
 
 @NgModule({
-  declarations: [InsertProductComponent, InsertProductFormComponent, ProductComponent],
+  declarations: [InsertProductComponent, InsertProductFormComponent, ProductComponent, SearchProductPageComponent],
   imports: [
     ProductRoutingModule,
     NativeScriptCommonModule,
