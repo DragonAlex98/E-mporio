@@ -11,6 +11,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShopListComponent } from '@src/app/shop/shop-list/shop-list.component';
 import { ShopModule } from '@src/app/shop/shop.module';
 import { NavBarComponent } from '@src/app/nav-bar/nav-bar.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 
 @NgModule({
@@ -28,6 +30,8 @@ import { NavBarComponent } from '@src/app/nav-bar/nav-bar.component';
     FormsModule,
     ReactiveFormsModule,
     ShopModule,
+    MatButtonModule,
+    MatToolbarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

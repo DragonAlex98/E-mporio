@@ -28,7 +28,11 @@ public class AttivitaController {
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/shops", method = RequestMethod.POST)
     public ResponseEntity<String> insertNewAttivita(@Valid @RequestBody Attivita attivita) {
+        if(attivitaRepository.existsAttivitaByShopPIVA(attivita.getShopPIVA()))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
         attivitaRepository.save(attivita);
+
         String toReturnString = "{"
         +"'id':'"+attivita.getShopPIVA() +"',"
         +"'url':'"+ AppConfig.appURL + AppConfig.apiURI + "/shops/"+ attivita.getShopPIVA() + "',"
@@ -47,6 +51,10 @@ public class AttivitaController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         List<Attivita> toReturnShopsList = attivitaRepository.findAttivita(ragSociale, categoria, sedeOperativa);
+
+        if(toReturnShopsList.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
         return new ResponseEntity<List<Attivita>>(toReturnShopsList, HttpStatus.OK);
     }
 }

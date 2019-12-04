@@ -3,7 +3,8 @@
         <option *ngFor = "let option of searchTypeStates">{{option}}</option>
     </select>
     <input type="text" formControlName="searchInput">
-    <button type="submit">Cerca</button>
+    <button mat-button type="submit">Click me!</button>
+    <!--<button type="submit">Cerca</button>-->
 </form>
 <h3 *ngIf = "!(searchTerm === '')">Ultima ricerca: {{searchTerm}}</h3>
 <div *ngIf="showProducts">

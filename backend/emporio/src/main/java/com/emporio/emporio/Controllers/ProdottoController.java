@@ -27,6 +27,8 @@ public class ProdottoController {
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     public ResponseEntity<String> insertNewProduct(@Valid @RequestBody Prodotto product) {
+        if (productRepository.existsByProductName(product.getProductName()))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         productRepository.save(product);
         String toReturnString = "{"
         +"'id':'"+product.getProductId()+"',"
@@ -47,6 +49,10 @@ public class ProdottoController {
             return new ResponseEntity<List<Prodotto>>(HttpStatus.BAD_REQUEST);
 
         List<Prodotto> toReturnProductsList = productRepository.findProduct(nome, prezzo, categoria);
+
+        if(toReturnProductsList.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
         return new ResponseEntity<List<Prodotto>>(toReturnProductsList, HttpStatus.OK);
     }
 

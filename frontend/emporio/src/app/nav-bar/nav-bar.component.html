@@ -1,4 +1,8 @@
-<header>
+<mat-toolbar role="heading">
+  <mat-toolbar-row>
+    <span><h1>E-mporio</h1></span>
+    <span class="login-space"></span>
     <button (click)="auth.login()" *ngIf="!auth.loggedIn">Log In</button>
     <button (click)="auth.logout()" *ngIf="auth.loggedIn">Log Out</button>
-  </header>
+  </mat-toolbar-row>
+</mat-toolbar>

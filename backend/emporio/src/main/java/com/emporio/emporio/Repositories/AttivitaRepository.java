@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AttivitaRepository extends JpaRepository<Attivita, String>, AttivitaRepositoryCustom {
 
+    boolean existsAttivitaByShopPIVA(String shopPIVA);
     
 }

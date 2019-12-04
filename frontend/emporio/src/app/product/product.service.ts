@@ -22,7 +22,7 @@ export class ProductService {
 
   addProduct (product: Product): Observable<Product> {
     console.log(product);
-    return this.httpClient.post<Product>(this.productsUrl, product, this.httpOptions);
+    return this.httpClient.post<Product>(this.productsUrl, JSON.stringify(product), this.httpOptions);
   }
 
 }
