@@ -6,6 +6,8 @@ import { ShopService } from '../shop/shop.service';
 import { Shop } from '../shop/shop/shop';
 import { SearchBar } from 'tns-core-modules/ui/search-bar';
 
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
@@ -25,10 +27,20 @@ export class SearchBarComponent implements OnInit {
   searchTerm = '';
   searchSelectorState = '';
 
+  daje(searchValue) {
+    console.log(searchValue.searchSelectorState);
+    console.log(searchValue.searchSelectorState === 'Prodotti');
+    if ( searchValue.searchSelectorState === 'Prodotti') {
+      this.router.navigate(['/cerca-prodotto'], { queryParams: {text: searchValue.searchInput}});
+    } else if (searchValue.searchSelectorState === 'Attivita') {
+      this.router.navigate(['/cerca-attivita'], { queryParams: {text: searchValue.searchInput}});
+    }
+  }
+
   onSubmit(searchValue) {
     this.searchTerm = searchValue.searchInput;
     this.searchSelectorState = searchValue.searchSelectorState;
-    if(this.searchSelectorState === '') {
+    if (this.searchSelectorState === '') {
     } else {
       this.search(this.searchTerm);
     }
@@ -41,7 +53,8 @@ export class SearchBarComponent implements OnInit {
     }
   }
 
-  constructor(private productService: ProductService, private shopService: ShopService) { }
+  constructor(private productService: ProductService, private shopService: ShopService, private route: ActivatedRoute,
+     private router: Router) { }
 
   ngOnInit() {
   }

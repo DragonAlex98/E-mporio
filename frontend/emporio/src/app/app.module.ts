@@ -17,6 +17,11 @@ import { FooterComponent } from '@src/app/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
+import {MatGridListModule} from '@angular/material/grid-list';
+
 
 @NgModule({
   declarations: [
@@ -25,6 +30,7 @@ import { MatIconModule } from '@angular/material/icon';
     PageNotFoundComponent,
     NavBarComponent,
     FooterComponent,
+    SearchBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +44,12 @@ import { MatIconModule } from '@angular/material/icon';
     BrowserAnimationsModule,
     MatMenuModule,
     MatIconModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatInputModule,
+    MatDividerModule,
+    MatGridListModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

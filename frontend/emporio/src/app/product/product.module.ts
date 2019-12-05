@@ -8,7 +8,6 @@ import { InsertProductFormComponent } from '@src/app/product/insert-product-form
 import { ProductComponent } from '@src/app/product/product/product.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SearchProductPageComponent } from '@src/app/product/search-product-page/search-product-page.component';
-import { SearchBarComponent } from '@src/app/search-bar/search-bar.component';
 import { MatButtonModule } from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,7 +22,6 @@ import {MatGridListModule} from '@angular/material/grid-list';
     InsertProductFormComponent,
     ProductComponent,
     SearchProductPageComponent,
-    SearchBarComponent,
   ],
   imports: [
     CommonModule,

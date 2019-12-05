@@ -1,4 +1,4 @@
-<form [formGroup] = "searchBox"  (ngSubmit)="onSubmit(searchBox.value)">
+<!-- <form [formGroup] = "searchBox"  (ngSubmit)="onSubmit(searchBox.value)">
   <mat-form-field>
     <mat-label>Choose an option</mat-label>
     <mat-select formControlName = "searchSelectorState">
@@ -14,15 +14,24 @@
   </mat-form-field>
   <mat-divider [vertical]="true"></mat-divider>
   <button mat-flat-button type="submit" color="accent">Cerca</button>
-</form>
-<!-- <form [formGroup] = "searchBox"  (ngSubmit)="onSubmit(searchBox.value)">
-    <select formControlName = "searchSelectorState">
-        <option *ngFor = "let option of searchTypeStates">{{option}}</option>
-    </select>
-    <input type="text" formControlName="searchInput">
-    <button mat-button type="submit">Click me!</button>
 </form> -->
-<mat-grid-list cols="2" rowHeight="1:1">
+<div class="search-bar-form-container">
+  <form [formGroup] = "searchBox"  (ngSubmit)="daje(searchBox.value)">
+    <div class="search-selector-container">
+      <select formControlName = "searchSelectorState" required>
+        <option *ngFor = "let option of searchTypeStates">{{option}}</option>
+      </select>
+    </div>
+    <div class="search-input-text-container">
+      <input type="search" formControlName="searchInput">
+    </div>
+    <div class="search-button-container">
+      <button id="search-button">Cerca</button>
+    </div>
+  </form>
+</div>
+
+<!-- <mat-grid-list cols="2" rowHeight="1:1">
   <mat-grid-tile *ngFor="let product of productList">{{product.productName}}</mat-grid-tile>
 </mat-grid-list>
 <h3 *ngIf = "!(searchTerm === '')">Ultima ricerca: {{searchTerm}}</h3>
@@ -41,4 +50,4 @@
             {{item.shopBusinessName}}
           </li>
         </ul>
-</div>
+</div> -->

@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ProductService } from '../product.service';
+import { Product } from '../product/product';
 
 @Component({
   selector: 'app-search-product-page',
@@ -6,10 +9,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-product-page.component.css']
 })
 export class SearchProductPageComponent implements OnInit {
+  @Input() searchTerm = '';
+  productList: Product[];
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private router: Router, private service: ProductService) { }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.searchTerm = params.text;
+    });
+    this.service.searchProducts(this.searchTerm)
+    .subscribe((productListData) => this.productList = productListData.map(
+      item => {
+        return new Product(
+          item.productId,
+          item.productName,
+          item.productCategory,
+          item.productPrice,
+          item.productQuantity
+        );
+      }
+    ));
   }
 
 }

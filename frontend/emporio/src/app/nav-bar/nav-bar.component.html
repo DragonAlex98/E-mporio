@@ -12,6 +12,7 @@
       <button mat-menu-item>Cerca Attività</button>
     </mat-menu>
     <span class="login-space"></span>
+    <app-search-bar></app-search-bar>
     <a mat-button (click)="auth.login()" *ngIf="!auth.loggedIn">Log In</a>
     <button (click)="auth.logout()" *ngIf="auth.loggedIn">Log Out</button>
   </mat-toolbar-row>
