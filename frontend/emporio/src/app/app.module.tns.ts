@@ -11,6 +11,7 @@ import { SearchBarComponent } from '@src/app/search-bar/search-bar.component';
 import { ProductModule } from '@src/app/product/product.module.tns';
 import { NavBarComponent } from '@src/app/nav-bar/nav-bar.component';
 import { FooterComponent } from '@src/app/footer/footer.component';
+import { SearchShopComponent } from './shop/search-shop/search-shop.component';
 
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
@@ -25,6 +26,7 @@ import { FooterComponent } from '@src/app/footer/footer.component';
     HomeComponent,
     PageNotFoundComponent,
     SearchBarComponent,
+    SearchShopComponent,
     NavBarComponent,
     FooterComponent,
   ],
