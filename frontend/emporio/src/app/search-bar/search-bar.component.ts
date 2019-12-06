@@ -4,7 +4,6 @@ import {ProductService} from '../product/product.service';
 import { Product } from '../product/product/product';
 import { ShopService } from '../shop/shop.service';
 import { Shop } from '../shop/shop/shop';
-import { SearchBar } from 'tns-core-modules/ui/search-bar';
 
 @Component({
   selector: 'app-search-bar',
@@ -28,7 +27,7 @@ export class SearchBarComponent implements OnInit {
   onSubmit(searchValue) {
     this.searchTerm = searchValue.searchInput;
     this.searchSelectorState = searchValue.searchSelectorState;
-    if(this.searchSelectorState === '') {
+    if (this.searchSelectorState === '') {
     } else {
       this.search(this.searchTerm);
     }
@@ -72,20 +71,6 @@ export class SearchBarComponent implements OnInit {
           );
         }
       ));
-    }
-  }
-
-  onSubmitMobile(args) {
-    const searchBar = args.object as SearchBar;
-    console.log(`Searching for ${searchBar.text}`);
-    this.searchSelectorState = 'Prodotti';
-    this.search(searchBar.text);
-    if ( this.searchSelectorState === 'Prodotti') {
-      this.showProducts = true;
-      this.showShops = false;
-    } else if ( this.searchSelectorState === 'Attivita') {
-      this.showProducts = false;
-      this.showShops = true;
     }
   }
 }

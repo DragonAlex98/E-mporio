@@ -1,6 +1,12 @@
 <StackLayout class="p-20">
-    <Label text="Cerca Prodotto" textWrap="true"></Label>
-    <SearchBar hint="Cerca" (submit)="onSubmitMobile($event)"></SearchBar>
+    <StackLayout orientation="vertical" width="210" height="210" backgroundColor="lightgray">
+  <Label text="Country" width="70" height="50" backgroundColor="red"></Label>
+  <TextField [(ngModel)]="textFieldValue" hint="Choose countty..." editable="false" (tap)="showHideField('country')"></TextField>
+</StackLayout>
+<StackLayout orientation="vertical" width="100%" height="210" *ngIf="showCountryPicker" backgroundColor="lightgray">
+  <ListPicker [items]="listPickerCountries" (selectedIndexChange)="selectedCountyChanged($event)"></ListPicker>
+</StackLayout>
+    <SearchBar hint="Cerca" (submit)="onSubmit($event)"></SearchBar>
     <StackLayout *ngIf="showProducts">
         <Label text="Lista Prodotto" textWrap="true"></Label>
         <ListView [items]="productList" class="list-group">
