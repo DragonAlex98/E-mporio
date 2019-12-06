@@ -26,6 +26,7 @@ import { SearchShopComponent } from './shop/search-shop/search-shop.component';
     HomeComponent,
     PageNotFoundComponent,
     SearchBarComponent,
+    SearchShopComponent,
     NavBarComponent,
     FooterComponent,
     SearchShopComponent,
