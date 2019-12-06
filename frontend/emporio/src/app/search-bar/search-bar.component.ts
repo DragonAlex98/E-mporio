@@ -5,6 +5,8 @@ import { Product } from '../product/product/product';
 import { ShopService } from '../shop/shop.service';
 import { Shop } from '../shop/shop/shop';
 
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
@@ -16,13 +18,23 @@ export class SearchBarComponent implements OnInit {
   showShops = false;
   shopList: Shop[];
   productList: Product[];
-  searchTypeStates = ['', 'Prodotti', 'Attivita'];
+  searchTypeStates = ['Prodotti', 'Attivita'];
   searchBox = new FormGroup({
     searchInput : new FormControl(''),
     searchSelectorState : new FormControl({value : this.searchTypeStates[0]})
   });
   searchTerm = '';
   searchSelectorState = '';
+
+  daje(searchValue) {
+    console.log(searchValue.searchSelectorState);
+    console.log(searchValue.searchSelectorState === 'Prodotti');
+    if ( searchValue.searchSelectorState === 'Prodotti') {
+      this.router.navigate(['/cerca-prodotto'], { queryParams: {text: searchValue.searchInput}});
+    } else if (searchValue.searchSelectorState === 'Attivita') {
+      this.router.navigate(['/cerca-attivita'], { queryParams: {text: searchValue.searchInput}});
+    }
+  }
 
   onSubmit(searchValue) {
     this.searchTerm = searchValue.searchInput;
@@ -40,7 +52,8 @@ export class SearchBarComponent implements OnInit {
     }
   }
 
-  constructor(private productService: ProductService, private shopService: ShopService) { }
+  constructor(private productService: ProductService, private shopService: ShopService, private route: ActivatedRoute,
+     private router: Router) { }
 
   ngOnInit() {
   }

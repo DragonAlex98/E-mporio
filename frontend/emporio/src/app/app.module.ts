@@ -8,7 +8,6 @@ import { ProductModule } from '@src/app/product/product.module';
 import { PageNotFoundComponent } from '@src/app/page-not-found/page-not-found.component';
 import { SearchBarComponent } from '@src/app/search-bar/search-bar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ShopListComponent } from '@src/app/shop/shop-list/shop-list.component';
 import { ShopModule } from '@src/app/shop/shop.module';
 import { NavBarComponent } from '@src/app/nav-bar/nav-bar.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,6 +15,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { FooterComponent } from '@src/app/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatIconModule } from '@angular/material/icon';
+
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 
 @NgModule({
@@ -23,9 +28,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppComponent,
     HomeComponent,
     PageNotFoundComponent,
-    SearchBarComponent,
     NavBarComponent,
     FooterComponent,
+    SearchBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +43,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatToolbarModule,
     BrowserAnimationsModule,
     MatMenuModule,
+    MatIconModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatInputModule,
+    MatDividerModule,
+    MatGridListModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
