@@ -35,6 +35,9 @@ export class SearchBarComponent implements OnInit {
      private router: Router) { }
 
   ngOnInit() {
+    this.searchBox.patchValue({
+      searchSelectorState: 'Prodotti',
+    });
   }
 
 }
