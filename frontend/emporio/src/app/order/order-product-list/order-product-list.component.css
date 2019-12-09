@@ -1,0 +1,17 @@
+mat-grid-tile.central-tile {
+  display: flex;
+}
+
+.order-product-list-container button{
+  margin: 0px 3%;
+}
+
+.order-product-list-container mat-form-field {
+  margin: 0px 5%;
+  width: 30%;
+}
+
+.order-product-table-container {
+  margin: 0px 5%;
+  width: 90%;
+}

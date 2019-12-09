@@ -1,0 +1,26 @@
+<div class="main-container">
+    <div class="order-product-list-container">
+        <form formGroup="productListForm" (submit)="addProductToList($event, productListForm.value)">
+            <mat-form-field>
+                <input matInput type="number" placeholder="Id Prodotto" formControlName="prodId" required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput placeholder="Nome Prodotto" formControlName="prodName" required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput placeholder="Categoria Prodotto" formControlName="prodCat" required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput type="number" placeholder="Quantità Prodotto" formControlName="prodQta" required>
+            </mat-form-field>
+            
+            <button mat-raised-button type="submit" color="accent">Aggiungi</button>
+        </form>
+    </div>
+    <div class="order-product-table-container">
+        <app-order-product-table [dataSource]="dataSource"></app-order-product-table>
+    </div>
+</div>
