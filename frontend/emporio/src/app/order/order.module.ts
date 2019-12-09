@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { OrderFormComponent } from '@src/app/order/order-form/order-form.component';
 import { OrderRoutingModule } from './order-routing.module';
-import { MatGridListModule } from '@angular/material/grid-list';
-import {MatStepperModule} from '@angular/material/stepper';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MaterialModule } from '../material/material.module';
 
 
 
@@ -14,9 +11,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   imports: [
     CommonModule,
     OrderRoutingModule,
-    MatGridListModule,
-    MatStepperModule,
-    MatFormFieldModule,
+    MaterialModule,
   ]
 })
 export class OrderModule { }
