@@ -1,0 +1,24 @@
+<div class="order-form-container">
+    <span class="fill-remaining-space"></span>
+        <mat-grid-list [cols]=1 rowHeight="80vh" style="background-color: aqua;">
+            <div class="order-stepper-container">
+                <mat-horizontal-stepper #stepper>
+                    <mat-step [stepControl]="customerFormGroup">
+                        <!-- <form>
+                            <ng-template matStepLabel>Informazioni Acquirente</ng-template>
+                            <mat-form-field>
+                                <input matInput placeholder="Nome Acquirente" formControlName="customerName" required>
+                            </mat-form-field>
+                            <div>
+                              <button mat-raised-button color="accent" matStepperNext>Avanti</button>
+                            </div>
+                        </form> -->
+                    </mat-step>
+                    <mat-step>
+
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+        </mat-grid-list>
+    <span class="fill-remaining-space"></span>
+</div>

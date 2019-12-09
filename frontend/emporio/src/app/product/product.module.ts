@@ -14,6 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatCardModule} from '@angular/material/card';
 
 
 @NgModule({
@@ -35,6 +37,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatInputModule,
     MatDividerModule,
     MatGridListModule,
+    MatDialogModule,
+    MatCardModule,
   ]
 })
 export class ProductModule { }

@@ -1,0 +1,30 @@
+.insert-product-form-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .insert-product-form-right-align {
+    text-align: right;
+  }
+  
+  input.insert-product-form-right-align::-webkit-outer-spin-button,
+  input.insert-product-form-right-align::-webkit-inner-spin-button {
+    display: none;
+  }
+  
+  input.insert-product-form-right-align {
+    -moz-appearance: textfield;
+  }
+
+  #cancel-btn {
+    margin-top: 0.5em;
+  }
+
+.controles-container{
+  width: 100%;
+  padding: 25%;    
+}
+
+.controles-container > * {
+  width: 100%;
+  }
