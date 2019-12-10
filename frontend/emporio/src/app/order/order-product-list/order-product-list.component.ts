@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { OrderProductTableItem, OrderProductTableDataSource } from '../order-product-table-datasource';
+import { OrderProductTableComponent } from '../order-product-table/order-product-table.component';
 
 @Component({
   selector: 'app-order-product-list',
@@ -8,6 +9,7 @@ import { OrderProductTableItem, OrderProductTableDataSource } from '../order-pro
   styleUrls: ['./order-product-list.component.css']
 })
 export class OrderProductListComponent implements OnInit {
+  @ViewChild(OrderProductTableComponent, {static: false}) tableComponent: OrderProductTableComponent;
   productListForm: FormGroup = new FormGroup({
     prodId: new FormControl(0),
     prodName: new FormControl(''),
@@ -30,8 +32,9 @@ export class OrderProductListComponent implements OnInit {
     console.log(value.prodQta);
     e.stopPropagation();
     e.preventDefault();
-    this.dataSource.addElementToDatasource(this.productListForm.value.prodId, this.productListForm.value.prodName,
+    this.dataSource.addData(this.productListForm.value.prodId, this.productListForm.value.prodName,
     this.productListForm.value.prodCat, this.productListForm.value.prodQta);
+    this.tableComponent.updateTable();
   }
 
 }

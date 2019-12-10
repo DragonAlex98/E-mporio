@@ -2,7 +2,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
-import { Observable, of as observableOf, merge } from 'rxjs';
+import { Observable, of as observableOf, merge, BehaviorSubject } from 'rxjs';
 
 // TODO: Replace this with your own data model type
 export interface OrderProductTableItem {
@@ -42,12 +42,22 @@ const EXAMPLE_DATA: OrderProductTableItem[] = [
  * (including sorting, pagination, and filtering).
  */
 export class OrderProductTableDataSource extends DataSource<OrderProductTableItem> {
-  data: OrderProductTableItem[] = EXAMPLE_DATA;
   paginator: MatPaginator;
   sort: MatSort;
+  dataStream = new BehaviorSubject<OrderProductTableItem[]>(EXAMPLE_DATA);
+
+  set data(v: OrderProductTableItem[]) { this.dataStream.next(v); }
+  get data(): OrderProductTableItem[] { return this.dataStream.value; }
 
   constructor() {
     super();
+  }
+
+  addData(prodId: number, prodName: string, prodCat: string, prodQta: number) {
+    const copiedData = this.data.slice();
+    copiedData.push({id: prodId, name: prodName, category: prodCat, quantity: prodQta});
+    this.data = copiedData;
+    console.log(this.data);
   }
 
   /**
@@ -59,19 +69,17 @@ export class OrderProductTableDataSource extends DataSource<OrderProductTableIte
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
     const dataMutations = [
-      observableOf(this.data),
+      this.dataStream,
       this.paginator.page,
       this.sort.sortChange
     ];
 
+    // Set the paginators length
+    this.paginator.length = this.data.length;
+
     return merge(...dataMutations).pipe(map(() => {
       return this.getPagedData(this.getSortedData([...this.data]));
     }));
-  }
-
-  addElementToDatasource(prodId: number, prodName: string, prodCat: string, prodqta: number) {
-    const newOrder = {id: prodId, name: prodName, category: prodCat, quantity: prodqta};
-    this.data.push(newOrder);
   }
 
   /**

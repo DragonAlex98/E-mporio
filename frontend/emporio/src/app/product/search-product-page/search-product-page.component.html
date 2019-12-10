@@ -1,5 +1,29 @@
 
-<span><h3>Lista Prodotti</h3></span>
-<mat-grid-list cols="2" rowHeight="1:1">
-    <mat-grid-tile *ngFor="let product of productList">{{product.productName}}</mat-grid-tile>
-</mat-grid-list>
+<div class="product-list-page-container">
+    <span><h3>Lista Prodotti</h3></span>
+    <mat-grid-list cols="3" rowHeight="600px">
+        <mat-grid-tile *ngFor="let product of productList">
+            <mat-card>
+                <div class="product-list-content">
+                    <mat-card-header>
+                            <div mat-card-avatar class="example-header-image"></div>
+                            <mat-card-title><span>{{product.productName.toUpperCase()}}</span></mat-card-title>
+                            <mat-card-subtitle><span>Alimentari</span></mat-card-subtitle>
+                            <span class="fill-remaining-space"></span>
+                            <mat-chip-list><mat-chip >Stonks s.r.l</mat-chip></mat-chip-list>
+                    </mat-card-header>        
+                    <img mat-card-image src="assets/img/no-image-found.png" alt="NO IMAGE AVAILABLE">
+                    <mat-card-content>
+                        <p>
+                            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+                            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+                            bred for hunting.
+                        </p>
+                    </mat-card-content>
+                    <a mat-raised-button color="accent">Dettagli Prodotto</a>
+                    <a mat-raised-button color="accent" style="margin: 0px 5%;">Dettagli Attività</a>
+                </div>
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

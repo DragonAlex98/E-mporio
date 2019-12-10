@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild, Input } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, Input, ChangeDetectorRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -18,6 +18,8 @@ export class OrderProductTableComponent implements AfterViewInit, OnInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'name', 'category', 'quantity', 'actions'];
 
+  constructor(private changeDetectorRefs: ChangeDetectorRef) { }
+
   ngOnInit() {
   }
 
@@ -28,7 +30,12 @@ export class OrderProductTableComponent implements AfterViewInit, OnInit {
   }
 
   addProductToList(prodId: number, prodName: string, prodCat: string, prodqta: number){
-    this.dataSource.addElementToDatasource(prodId, prodName, prodCat, prodqta);
+    // this.dataSource.ad(prodId, prodName, prodCat, prodqta);
+  }
+
+  updateTable() {
+    console.log('stonkls');
+    this.changeDetectorRefs.detectChanges();
   }
 
   onEdit(row) {

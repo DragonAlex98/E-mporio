@@ -4,7 +4,7 @@
             <mat-horizontal-stepper #stepper>
                 <mat-step [stepControl]="customerFormGroup">
                     <div class="stepper-content">
-                        <form>
+                        <form [formGroup]="customerFormGroup">
                             <ng-template matStepLabel>Informazioni Acquirente</ng-template>
                             <mat-form-field>
                                 <input matInput placeholder="Email Acquirente" formControlName="customerName" required>

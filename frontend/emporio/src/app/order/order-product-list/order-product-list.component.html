@@ -1,6 +1,6 @@
 <div class="main-container">
     <div class="order-product-list-container">
-        <form formGroup="productListForm" (submit)="addProductToList($event, productListForm.value)">
+        <form [formGroup]="productListForm" (submit)="addProductToList($event, productListForm.value)">
             <mat-form-field>
                 <input matInput type="number" placeholder="Id Prodotto" formControlName="prodId" required>
             </mat-form-field>

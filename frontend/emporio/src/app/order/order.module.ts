@@ -10,6 +10,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { OrderProductTableComponent } from '@src/app/order/order-product-table/order-product-table.component';
 import { PhantomPageComponent } from '@src/app/order/phantom-page/phantom-page.component';
 import { MatIconModule } from '@angular/material';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 
 
@@ -18,6 +19,8 @@ import { MatIconModule } from '@angular/material';
   imports: [
     MaterialModule,
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     OrderRoutingModule,
     MatTableModule,
     MatPaginatorModule,
