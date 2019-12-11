@@ -6,7 +6,7 @@ import { SearchProductPageComponent } from './search-product-page/search-product
 
 const routes: Routes = [
   {
-    path : 'crea-prodotto',
+    path : 'new-product',
     component : InsertProductComponent,
   },
 ];

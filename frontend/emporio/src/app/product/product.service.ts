@@ -25,4 +25,8 @@ export class ProductService {
     return this.httpClient.post<Product>(this.productsUrl, JSON.stringify(product), this.httpOptions);
   }
 
+  getCategories(): Observable<Object> {
+    return this.httpClient.get<Object>('http://localhost:8000/api/v1/categoryProduct', this.httpOptions);
+  }
+
 }

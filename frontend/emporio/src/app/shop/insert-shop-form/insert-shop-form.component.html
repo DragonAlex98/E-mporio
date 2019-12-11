@@ -6,29 +6,27 @@
   <mat-grid-tile [rowspan]=1 [colspan]=2>
     <div class="controles-container">
       <mat-card>
-      <form [formGroup]="productForm" (ngSubmit)="onSubmit(productForm.value)">
+      <form [formGroup]="shopForm" (ngSubmit)="onSubmit(shopForm.value)">
         <div class="insert-product-form-container">
           <mat-form-field>
-            <input matInput placeholder="Nome Prodotto*" formControlName="productName">
+            <input matInput placeholder="Partita IVA*" formControlName="shopPIVA">
           </mat-form-field>
-  
+          
           <mat-form-field>
-            <mat-select placeholder="Categoria" formControlName="productCategory">
-              <mat-option *ngFor="let category of categories">{{category}}</mat-option>
+            <input matInput placeholder="Ragione Sociale" formControlName="shopRagioneSociale">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-select placeholder="Categoria">
+              <mat-option value="option">Option</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field>
-            <input matInput placeholder="Amount" type="number" class="example-right-align">
-            <span matPrefix>€&nbsp;</span>
-            <span matSuffix>.00</span>
+            <input matInput placeholder="Sede Operativa" formControlName="shopSedeOperativa">
           </mat-form-field>
 
-          <mat-form-field>
-            <input matInput placeholder="Quantità" type="number" class="example-right-align">
-          </mat-form-field>
-
-          <button mat-raised-button color="accent">Crea Prodotto</button>
+          <button mat-raised-button color="accent">Crea Attività</button>
           <button mat-raised-button color="warn" id="cancel-btn">Annulla</button>
         </div>
       </form>
@@ -41,3 +39,4 @@
 
 </mat-grid-list>
 <span class="fill-remaining-space"></span>
+
