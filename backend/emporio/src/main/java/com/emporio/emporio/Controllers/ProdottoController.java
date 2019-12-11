@@ -56,7 +56,7 @@ public class ProdottoController {
         return new ResponseEntity<List<Prodotto>>(toReturnProductsList, HttpStatus.OK);
     }
 
-    
+    //TODO Controllare anche questo perche' con la categoria non funzioa niente
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public ResponseEntity<List<Prodotto>> getAllProducts() {

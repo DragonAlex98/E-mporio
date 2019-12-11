@@ -4,13 +4,17 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.emporio.emporio.Utils.OrderDetails;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "prodotto")
@@ -24,8 +28,9 @@ public class Prodotto {
     @Column(name = "Nome")
     private String productName;
     
-    @Column(name = "Categoria")
-    private int productCategory;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoryId")
+    CategoriaProdotto productCategory;
 
     @Column(name = "Prezzo")
     private double productPrize;
@@ -40,7 +45,7 @@ public class Prodotto {
         
     }
 
-    public Prodotto(int productId, String productName, int productCategory, double productPrize, int productQuantity) {
+    public Prodotto(int productId, String productName, CategoriaProdotto productCategory, double productPrize, int productQuantity) {
         this.productId = productId;
         this.productName = productName;
         this.productCategory = productCategory;
@@ -64,11 +69,11 @@ public class Prodotto {
         this.productName = productName;
     }
 
-    public int getProductCategory() {
+    public CategoriaProdotto getProductCategory() {
         return productCategory;
     }
 
-    public void setProductCategory(int productCategory) {
+    public void setProductCategory(CategoriaProdotto productCategory) {
         this.productCategory = productCategory;
     }
 
