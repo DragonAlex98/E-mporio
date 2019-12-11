@@ -16,13 +16,11 @@ public class OrderDetails {
     private OrderDetailsKey id; // chiave composta
  
     @ManyToOne
-    @MapsId("product_id") // indica che il campo e' dato da una chiave esterna 
-    @JoinColumn(name = "productId") // campo del prodotto per la join
+    @MapsId("product_id") // indica che il campo e' dato da una chiave esterna
     private Prodotto prodotto;
  
     @ManyToOne
     @MapsId("order_id")
-    @JoinColumn(name = "orderId")
     private Ordine ordine;
  
     private int quantita; //Quantita'

@@ -23,7 +23,7 @@ public class Prodotto {
 
     @Column(name = "Nome")
     private String productName;
-
+    
     @Column(name = "Categoria")
     private int productCategory;
 
