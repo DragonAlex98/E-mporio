@@ -1,8 +1,5 @@
 package com.emporio.emporio.Controllers;
 
-import javax.validation.Valid;
-
-import com.emporio.emporio.Models.Prodotto;
 import com.emporio.emporio.Repositories.OrdineRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

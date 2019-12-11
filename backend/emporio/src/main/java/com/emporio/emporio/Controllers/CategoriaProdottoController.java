@@ -1,5 +1,7 @@
 package com.emporio.emporio.Controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 import com.emporio.emporio.Config.AppConfig;
 import com.emporio.emporio.Models.CategoriaProdotto;
@@ -34,5 +36,14 @@ public class CategoriaProdottoController {
         +"}";
         
         return new ResponseEntity<>(toReturnString, HttpStatus.CREATED);
+    }
+
+    //TODO Non funziona, ricontrollare 
+    @CrossOrigin(origins = {"*"})
+    @RequestMapping(value = "/categoryProduct", method = RequestMethod.GET)
+    public ResponseEntity<List<CategoriaProdotto>> getAllCategories() {
+        List<CategoriaProdotto> toReturnCategoryProductList = categoryProductRepository.findAll();
+
+        return new ResponseEntity<List<CategoriaProdotto>>(toReturnCategoryProductList, HttpStatus.OK);
     }
 }
