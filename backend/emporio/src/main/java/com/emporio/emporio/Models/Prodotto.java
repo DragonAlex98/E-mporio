@@ -1,11 +1,16 @@
 package com.emporio.emporio.Models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.emporio.emporio.Utils.OrderDetails;
 
 @Entity
 @Table(name = "prodotto")
@@ -27,6 +32,9 @@ public class Prodotto {
 
     @Column(name = "Qta")
     private int productQuantity;
+
+    @OneToMany(mappedBy = "prodotto")
+    List<OrderDetails> orderDetails;
 
     public Prodotto() {
         
