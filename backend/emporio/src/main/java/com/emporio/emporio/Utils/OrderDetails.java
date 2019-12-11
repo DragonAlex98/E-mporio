@@ -30,7 +30,7 @@ public class OrderDetails {
     public OrderDetails( Prodotto prodotto, Ordine ordine) {
         this.prodotto = prodotto;
         this.ordine = ordine;
-        this.id = new OrderDetailsKey(prodotto.getProductId(), ordine.getOrderId())
+        this.id = new OrderDetailsKey(prodotto.getProductId(), ordine.getOrderId());
     }
 
     public OrderDetailsKey getId() {
