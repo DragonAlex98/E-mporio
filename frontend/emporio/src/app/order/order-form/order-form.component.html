@@ -1,24 +1,31 @@
 <div class="order-form-container">
     <span class="fill-remaining-space"></span>
-        <mat-grid-list [cols]=1 rowHeight="80vh" style="background-color: aqua;">
-            <div class="order-stepper-container">
-                <mat-horizontal-stepper #stepper>
-                    <mat-step [stepControl]="customerFormGroup">
-                        <!-- <form>
+        <div class="order-stepper-container">
+            <mat-horizontal-stepper #stepper>
+                <mat-step [stepControl]="customerFormGroup">
+                    <div class="stepper-content">
+                        <form [formGroup]="customerFormGroup">
                             <ng-template matStepLabel>Informazioni Acquirente</ng-template>
                             <mat-form-field>
-                                <input matInput placeholder="Nome Acquirente" formControlName="customerName" required>
+                                <input matInput placeholder="Email Acquirente" formControlName="customerName" required>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input matInput placeholder="Posizione Macchina" formControlName="customerName" required>
                             </mat-form-field>
                             <div>
-                              <button mat-raised-button color="accent" matStepperNext>Avanti</button>
+                                <button mat-raised-button color="accent" matStepperNext>Avanti</button>
                             </div>
-                        </form> -->
-                    </mat-step>
-                    <mat-step>
-
-                    </mat-step>
-                </mat-horizontal-stepper>
-            </div>
-        </mat-grid-list>
+                        </form>
+                    </div>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel>Inserisci Prodotti</ng-template>
+                    <app-order-product-list></app-order-product-list>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel>Riepilogo Ordine</ng-template>
+                </mat-step>
+            </mat-horizontal-stepper>
+        </div>
     <span class="fill-remaining-space"></span>
 </div>

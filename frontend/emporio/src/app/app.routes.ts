@@ -5,12 +5,17 @@ import { SearchProductPageComponent } from '@src/app/product/search-product-page
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SearchShopComponent } from './shop/search-shop/search-shop.component';
 import { OrderFormComponent } from './order/order-form/order-form.component';
+import { PhantomPageComponent } from './order/phantom-page/phantom-page.component';
 
 export const routes: Routes = [
   {
       path: '',
       redirectTo: '/home',
       pathMatch: 'full',
+  },
+  {
+    path: 'order/phantom-page',
+    component: PhantomPageComponent,
   },
   {
       path: 'home',

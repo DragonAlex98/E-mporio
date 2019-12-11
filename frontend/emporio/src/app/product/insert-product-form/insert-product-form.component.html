@@ -1,28 +1,3 @@
-<!-- <form [formGroup]="productForm" (ngSubmit)="onSubmit(productForm.value)">
-  
-    <label>
-      Descrizione:
-      <input type="text" formControlName="productName" required>
-    </label>
-  
-    <label>
-      Categoria:
-      <input type="text" formControlName="productCategory">
-    </label>
-
-    <label>
-      Prezzo:
-      <input type="text" formControlName="productPrice">
-    </label>
-    <label>
-      Quantita':
-      <input type="text" formControlName="productQuantity">
-    </label>   
-    
-    <button type="submit" [disabled]="!productForm.valid">Aggiungi</button>
-
-  </form> -->
-
 <span class="fill-remaining-space"></span>
 <mat-grid-list [cols]=4 rowHeight="400px">
   <mat-grid-tile [rowspan]=1 [colspan]=1>
@@ -53,8 +28,8 @@
             <input matInput placeholder="Quantità" type="number" class="example-right-align">
           </mat-form-field>
 
-          <button mat-raised-button color="accent" [mat-dialog-close]="true" cdkFocusInitial>Crea Prodotto</button>
-          <button mat-raised-button color="warn" id="cancel-btn" mat-dialog-close>Annulla</button>
+          <button mat-raised-button color="accent">Crea Prodotto</button>
+          <button mat-raised-button color="warn" id="cancel-btn">Annulla</button>
         </div>
       </form>
     </mat-card>
@@ -66,9 +41,3 @@
 
 </mat-grid-list>
 <span class="fill-remaining-space"></span>
-
-
-<!--   <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
-  </mat-dialog-actions> -->

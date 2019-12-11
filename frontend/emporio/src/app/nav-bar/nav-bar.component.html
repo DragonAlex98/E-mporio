@@ -2,8 +2,8 @@
  <mat-sidenav #drawer class="sidenav" mode="over" [(opened)]="opened" (opened)="events.push('open!')" (closed)="events.push('close!')">  
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item (click)="openDialog()" *ngIf="auth.loggedIn"><mat-icon>add</mat-icon> Nuovo Prodotto</a>
-      <a mat-list-item href="/new-order" *ngIf="auth.loggedIn"><mat-icon>add_shopping_cart</mat-icon> Nuovo Ordine</a>
+      <a mat-list-item href="/crea-prodotto"><mat-icon>add</mat-icon> Nuovo Prodotto</a>
+      <a mat-list-item href="/new-order"><mat-icon>add_shopping_cart</mat-icon> Nuovo Ordine</a>
       <a mat-list-item href="#">Link 3</a>
     </mat-nav-list>
   </mat-sidenav>
@@ -15,39 +15,19 @@
       <a mat-button href="/home"><mat-icon>home</mat-icon> Emporio</a>
     <button mat-button [matMenuTriggerFor]="productMenu">Prodotto</button>
     <mat-menu #productMenu="matMenu">
-      <a mat-menu-item href="/crea-prodotto" *ngIf="auth.loggedIn">Nuovo Prodotto</a>
+      <a mat-menu-item href="/crea-prodotto">Nuovo Prodotto</a>
       <a mat-menu-item href="/product/search">Cerca Prodotto</a>
     </mat-menu>
     <button mat-button [matMenuTriggerFor]="shopMenu">Attività</button>
     <mat-menu #shopMenu="matMenu">
-      <button mat-menu-item *ngIf="auth.loggedIn">Nuova Attività</button>
+      <button mat-menu-item >Nuova Attività</button>
       <button mat-menu-item>Cerca Attività</button>
     </mat-menu>
     <span class="login-space"></span>
     <app-search-bar></app-search-bar>
-    <a mat-button (click)="auth.login()" *ngIf="!auth.loggedIn">Log In</a>
-    <a mat-button (click)="auth.logout()" *ngIf="auth.loggedIn">Log Out</a>
+    <a mat-button>Log In</a>
+    <a mat-button>Log Out</a>
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>
 </mat-sidenav-container>
-
-<!-- <mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <a mat-button href="/home"><mat-icon>home</mat-icon> Emporio</a>
-    <button mat-button [matMenuTriggerFor]="productMenu">Prodotto</button>
-    <mat-menu #productMenu="matMenu">
-      <button mat-menu-item *ngIf="auth.loggedIn">Nuovo Prodotto</button>
-      <a mat-menu-item href="/product/search">Cerca Prodotto</a>
-    </mat-menu>
-    <button mat-button [matMenuTriggerFor]="shopMenu">Attività</button>
-    <mat-menu #shopMenu="matMenu">
-      <button mat-menu-item *ngIf="auth.loggedIn">Nuova Attività</button>
-      <button mat-menu-item>Cerca Attività</button>
-    </mat-menu>
-    <span class="login-space"></span>
-    <app-search-bar></app-search-bar>
-    <a mat-button (click)="auth.login()" *ngIf="!auth.loggedIn">Log In</a>
-    <button (click)="auth.logout()" *ngIf="auth.loggedIn">Log Out</button>
-  </mat-toolbar-row>
-</mat-toolbar> -->

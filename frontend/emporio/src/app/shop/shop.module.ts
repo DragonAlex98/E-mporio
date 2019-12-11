@@ -6,7 +6,7 @@ import { ShopRoutingModule } from '@src/app/shop/shop-routing.module';
 import { ShopComponent } from '@src/app/shop/shop/shop.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { SearchShopComponent } from '@src/app/shop/search-shop/search-shop.component';
-import { MatGridListModule } from '@angular/material/grid-list';
+import { MaterialModule } from '../material/material.module';
 
 
 @NgModule({
@@ -16,10 +16,10 @@ import { MatGridListModule } from '@angular/material/grid-list';
   ],
   imports: [
     CommonModule,
+    MaterialModule,
     BrowserModule,
     ShopRoutingModule,
     HttpClientModule,
-    MatGridListModule,
   ]
 })
 export class ShopModule { }
