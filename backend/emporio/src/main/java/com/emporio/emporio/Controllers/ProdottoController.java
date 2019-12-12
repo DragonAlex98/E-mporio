@@ -1,6 +1,7 @@
 package com.emporio.emporio.Controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -23,6 +24,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProdottoController {
     @Autowired
     private ProdottoRepository productRepository;
+
+    private static final ProdottoController instance = new ProdottoController();
+
+    //private constructor to avoid client applications to use constructor
+    private ProdottoController() {
+        
+    }
+
+    public static ProdottoController getInstance(){
+        return instance;
+    }
 
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/products", method = RequestMethod.POST)
@@ -63,5 +75,11 @@ public class ProdottoController {
         List<Prodotto> toReturnProductList = productRepository.findAll();
 
         return new ResponseEntity<List<Prodotto>>(toReturnProductList, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = {"*"})
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Optional<Prodotto>> getProductById(Integer id) {
+        return new ResponseEntity<Optional<Prodotto>>(productRepository.findById(id), HttpStatus.OK);
     }
 }

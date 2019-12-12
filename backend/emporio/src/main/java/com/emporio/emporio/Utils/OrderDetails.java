@@ -25,6 +25,10 @@ public class OrderDetails {
  
     private int quantita; //Quantita'
      
+    public OrderDetails() {
+        
+    }
+
     public OrderDetails( Prodotto prodotto, Ordine ordine) {
         this.prodotto = prodotto;
         this.ordine = ordine;
