@@ -7,6 +7,8 @@ import { ProductService } from '../product.service';
   styleUrls: ['./insert-product-form.component.css'],
 })
 export class InsertProductFormComponent implements OnInit {
+  categories: string[] = ['bella', 'ciao'];
+
 
   productForm = new FormGroup({
     productName: new FormControl('', Validators.required),
@@ -18,6 +20,7 @@ export class InsertProductFormComponent implements OnInit {
   constructor(private productService: ProductService) { }
 
   ngOnInit() {
+    // this.productService.getCategories().forEach(category => this.categories.push(category.description.toString()));
   }
 
   onSubmit(productValue) {
