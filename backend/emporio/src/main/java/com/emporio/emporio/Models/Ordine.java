@@ -28,7 +28,7 @@ public class Ordine {
     private String parkingAddress;
 
 
-    //TODO E' corretto che l'ordine e' rappresentato con l'associazione prodotto-id e non come productList?
+    //TODO Implementare per il discorso repository
     public Ordine(int orderId, List<OrderDetails> orderDetails, String parkingAddress) {
 
         this.orderId = orderId;
