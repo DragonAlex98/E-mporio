@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.emporio.emporio.Utils.OrderDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,8 +29,9 @@ public class Prodotto {
     @Column(name = "Nome")
     private String productName;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoryId")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "categoryId", nullable = false)
+    @NotNull
     CategoriaProdotto productCategory;
 
     @Column(name = "Prezzo")
@@ -38,6 +40,7 @@ public class Prodotto {
     @Column(name = "Qta")
     private int productQuantity;
 
+    //TODO da implementare
     @OneToMany(mappedBy = "prodotto")
     List<OrderDetails> orderDetails;
 
@@ -69,9 +72,11 @@ public class Prodotto {
         this.productName = productName;
     }
 
+
     public CategoriaProdotto getProductCategory() {
         return productCategory;
     }
+
 
     public void setProductCategory(CategoriaProdotto productCategory) {
         this.productCategory = productCategory;

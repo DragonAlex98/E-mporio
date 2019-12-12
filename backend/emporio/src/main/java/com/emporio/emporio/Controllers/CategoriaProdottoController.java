@@ -30,15 +30,15 @@ public class CategoriaProdottoController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         categoryProductRepository.save(categoryProduct);
         String toReturnString = "{"
-        +"'id':'"+categoryProduct.getProductId()+"',"
-        +"'url':'"+AppConfig.appURL + AppConfig.apiURI + "/categoryProduct/"+ categoryProduct.getProductId() + "',"
+        +"'id':'"+categoryProduct.getCategoryId()+"',"
+        +"'url':'"+AppConfig.appURL + AppConfig.apiURI + "/categoryProduct/"+ categoryProduct.getCategoryId() + "',"
         +"'type':'categoryProduct'"
         +"}";
         
         return new ResponseEntity<>(toReturnString, HttpStatus.CREATED);
     }
 
-    //TODO Non funziona, ricontrollare 
+    
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/categoryProduct", method = RequestMethod.GET)
     public ResponseEntity<List<CategoriaProdotto>> getAllCategories() {

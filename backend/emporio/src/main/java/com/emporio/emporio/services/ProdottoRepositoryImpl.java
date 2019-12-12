@@ -16,17 +16,17 @@ public class ProdottoRepositoryImpl implements ProdottoRepositoryCustom {
     EntityManager entityManager;
 
     @Override
-    public List<Prodotto> findProduct(String nome, Double prezzo, Integer categoria) {
+    public List<Prodotto> findProduct(String nome, Double prezzo) {
         String correctNome = nome.toLowerCase();
         Double correctPrezzo = (prezzo == 0) ? null : prezzo;
-        Integer correctCategoria = (categoria == 0) ? null : categoria;
+        
 
-        TypedQuery<Prodotto> query = entityManager.createQuery("SELECT p FROM Prodotto p WHERE nome LIKE ?1 " 
-                                                        + ((correctPrezzo != null) ? "AND prezzo = ?2 " : "AND prezzo LIKE ?2")
-                                                        + ((correctCategoria != null) ? "AND categoria = ?3 " : "AND categoria LIKE ?3 ") 
+        TypedQuery<Prodotto> query = entityManager.createQuery("SELECT p, c FROM Prodotto p WHERE nome LIKE ?1 " 
+                                                        + ((correctPrezzo != null) ? "AND prezzo = ?2 " : "AND prezzo LIKE ?2") 
+                                                        + " INNER JOIN p.productCategory c"
                                                         , Prodotto.class);
 
-        return query.setParameter(1, "%" + correctNome + "%").setParameter(2, ((correctPrezzo != null) ? correctPrezzo : "%")).setParameter(3, ((correctCategoria != null) ? correctCategoria : "%")).getResultList();
+        return query.setParameter(1, "%" + correctNome + "%").setParameter(2, ((correctPrezzo != null) ? correctPrezzo : "%")).getResultList();
     }
 
     
