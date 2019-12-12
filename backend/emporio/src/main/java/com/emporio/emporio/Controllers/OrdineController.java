@@ -3,7 +3,6 @@ package com.emporio.emporio.Controllers;
 import javax.validation.Valid;
 
 import com.emporio.emporio.Models.Ordine;
-import com.emporio.emporio.Models.Prodotto;
 import com.emporio.emporio.Repositories.OrdineRepository;
 import com.emporio.emporio.Utils.OrderDetails;
 
@@ -29,12 +28,13 @@ public class OrdineController {
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
     public ResponseEntity<String> createNewOrder(@Valid @RequestBody Ordine newOrdine) {
+        /* TODO da implementare
         ProdottoController controllerProd = ProdottoController.getInstance();
 
         for(OrderDetails orderDetail : newOrdine.getOrderDetails()) {
             orderDetail.setProdotto(controllerProd.getProductById(orderDetail.getProdotto().getProductId()).getBody().get());
             orderDetail.setOrdine(newOrdine);
-        }
+        } */
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

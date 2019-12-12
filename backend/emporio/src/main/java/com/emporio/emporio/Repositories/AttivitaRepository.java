@@ -1,5 +1,7 @@
 package com.emporio.emporio.Repositories;
 
+import java.util.List;
+
 import com.emporio.emporio.Models.Attivita;
 import com.emporio.emporio.services.AttivitaRepositoryCustom;
 
@@ -10,5 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface AttivitaRepository extends JpaRepository<Attivita, String>, AttivitaRepositoryCustom {
 
     boolean existsAttivitaByShopPIVA(String shopPIVA);
+
+    List<Attivita> findByShopBusinessNameContaining(String ragioneSociale);
     
 }

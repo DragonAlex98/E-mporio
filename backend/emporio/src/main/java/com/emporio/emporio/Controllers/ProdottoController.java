@@ -51,16 +51,14 @@ public class ProdottoController {
         return new ResponseEntity<>(toReturnString, HttpStatus.CREATED);
     }
 
-    //TODO Da sistemare, non funziona piu' in seguito all'inserimento della categoria
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/products/search", method = RequestMethod.GET)
-    public ResponseEntity<List<Prodotto>> findProduct(@RequestParam(name = "nome", required = true) String nome,
-                                        @RequestParam(name = "prezzo", required = false, defaultValue = "0") Double prezzo) {
+    public ResponseEntity<List<Prodotto>> findProduct(@RequestParam(name = "nome", required = true) String nome) {
         
         if(nome == "")
             return new ResponseEntity<List<Prodotto>>(HttpStatus.BAD_REQUEST);
 
-        List<Prodotto> toReturnProductsList = productRepository.findProduct(nome, prezzo);
+        List<Prodotto> toReturnProductsList = productRepository.findByProductNameContaining(nome);
 
         if(toReturnProductsList.isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -43,14 +43,12 @@ public class AttivitaController {
 
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/shops/search", method = RequestMethod.GET)
-    public ResponseEntity<List<Attivita>> findAttivita(@RequestParam(name = "ragSociale", required = true) String ragSociale,
-                                                        @RequestParam(name = "categoria", required = false, defaultValue = "0") Integer categoria,
-                                                        @RequestParam(name = "sedeOperativa", required = false, defaultValue = "") String sedeOperativa) {
+    public ResponseEntity<List<Attivita>> findAttivita(@RequestParam(name = "ragSociale", required = true) String ragSociale) {
         
         if(ragSociale == "")
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        List<Attivita> toReturnShopsList = attivitaRepository.findAttivita(ragSociale, categoria, sedeOperativa);
+        List<Attivita> toReturnShopsList = attivitaRepository.findByShopBusinessNameContaining(ragSociale);
 
         if(toReturnShopsList.isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
