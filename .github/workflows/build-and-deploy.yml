@@ -1,0 +1,32 @@
+name: Build and deploy to Azure App Service
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Cache Maven archetypes
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Build with Maven
+        working-directory: backend/emporio
+        run: mvn clean package
+      - name: Deploy to Azure
+        uses: azure/webapps-deploy@v1
+        with:
+          app-name: spring-petclinic
+          publish-profile: ${{ secrets.azureWebAppPublishProfile }}
+          package: '${{ github.workspace }}/backend/emporio/target/*.jar'
