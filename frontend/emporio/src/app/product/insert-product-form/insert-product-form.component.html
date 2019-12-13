@@ -14,18 +14,18 @@
   
           <mat-form-field>
             <mat-select placeholder="Categoria" formControlName="productCategory">
-              <mat-option *ngFor="let category of categories">{{category}}</mat-option>
+              <mat-option *ngFor="let category of categories" [value]="category">{{category.description}}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field>
-            <input matInput placeholder="Amount" type="number" class="example-right-align">
+            <input matInput placeholder="Amount" type="number" class="example-right-align" formControlName="productPrice">
             <span matPrefix>€&nbsp;</span>
             <span matSuffix>.00</span>
           </mat-form-field>
 
           <mat-form-field>
-            <input matInput placeholder="Quantità" type="number" class="example-right-align">
+            <input matInput placeholder="Quantità" type="number" class="example-right-align" formControlName="productQuantity">
           </mat-form-field>
 
           <button mat-raised-button color="accent">Crea Prodotto</button>

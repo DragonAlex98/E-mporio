@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../product.service';
+import { ProductCategory } from '../product/product';
 @Component({
   selector: 'app-insert-product-form',
   templateUrl: './insert-product-form.component.html',
   styleUrls: ['./insert-product-form.component.css'],
 })
 export class InsertProductFormComponent implements OnInit {
-  categories: string[] = ['bella', 'ciao'];
+  categories: ProductCategory[];
 
 
   productForm = new FormGroup({
@@ -20,7 +21,15 @@ export class InsertProductFormComponent implements OnInit {
   constructor(private productService: ProductService) { }
 
   ngOnInit() {
-    // this.productService.getCategories().forEach(category => this.categories.push(category.description.toString()));
+    this.productService.getCategories()
+    .subscribe((ProductCategoryListData) => this.categories = ProductCategoryListData.map(
+      item => {
+        return new ProductCategory(
+          item.categoryId,
+          item.description
+        );
+      }
+    ));
   }
 
   onSubmit(productValue) {

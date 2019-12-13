@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductService } from '../product.service';
-import { Product } from '../product/product';
+import { Product, ProductCategory } from '../product/product';
 
 @Component({
   selector: 'app-search-product-page',
@@ -24,7 +24,7 @@ export class SearchProductPageComponent implements OnInit {
         return new Product(
           item.productId,
           item.productName,
-          item.productCategory,
+          new ProductCategory(item.productCategory.productCategoryId, item.productCategory.productCategoryDescription),
           item.productPrice,
           item.productQuantity
         );

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Product } from './product/product';
+import { Product, ProductCategory } from './product/product';
 
 @Injectable({
   providedIn: 'root',
@@ -25,8 +25,8 @@ export class ProductService {
     return this.httpClient.post<Product>(this.productsUrl, JSON.stringify(product), this.httpOptions);
   }
 
-  getCategories(): Observable<Object> {
-    return this.httpClient.get<Object>('http://localhost:8000/api/v1/categoryProduct', this.httpOptions);
+  getCategories(): Observable<ProductCategory[]> {
+    return this.httpClient.get<ProductCategory[]>('http://localhost:8000/api/v1/categoryProduct', this.httpOptions);
   }
 
 }

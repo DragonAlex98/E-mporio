@@ -34,7 +34,7 @@ public class Prodotto {
     CategoriaProdotto productCategory;
 
     @Column(name = "Prezzo")
-    private double productPrize;
+    private double productPrice;
 
     @Column(name = "Qta")
     private int productQuantity;
@@ -47,11 +47,11 @@ public class Prodotto {
         
     }
 
-    public Prodotto(int productId, String productName, CategoriaProdotto productCategory, double productPrize, int productQuantity) {
+    public Prodotto(int productId, String productName, CategoriaProdotto productCategory, double productPrice, int productQuantity) {
         this.productId = productId;
         this.productName = productName;
         this.productCategory = productCategory;
-        this.productPrize = productPrize;
+        this.productPrice = productPrice;
         this.productQuantity = productQuantity;
     }
 
@@ -81,12 +81,12 @@ public class Prodotto {
         this.productCategory = productCategory;
     }
 
-    public double getProductPrize() {
-        return productPrize;
+    public double getProductPrice() {
+        return productPrice;
     }
 
-    public void setProductPrize(double productPrize) {
-        this.productPrize = productPrize;
+    public void setProductPrize(double productPrice) {
+        this.productPrice = productPrice;
     }
 
     public int getProductQuantity() {
