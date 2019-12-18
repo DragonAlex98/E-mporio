@@ -24,7 +24,7 @@ export class SearchProductPageComponent implements OnInit {
         return new Product(
           item.productId,
           item.productName,
-          new ProductCategory(item.productCategory.productCategoryId, item.productCategory.productCategoryDescription),
+          new ProductCategory(item.productCategory.categoryId, item.productCategory.description),
           item.productPrice,
           item.productQuantity
         );
