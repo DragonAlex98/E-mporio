@@ -5,11 +5,13 @@ import java.util.stream.Collectors;
 
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.Catalogo;
+import com.emporio.emporio.model.CategoriaAttivita;
 import com.emporio.emporio.model.CategoriaProdotto;
 import com.emporio.emporio.model.Prodotto;
 import com.emporio.emporio.model.User;
 import com.emporio.emporio.repository.AttivitaRepository;
 import com.emporio.emporio.repository.CatalogoRepository;
+import com.emporio.emporio.repository.CategoriaAttivitaRepository;
 import com.emporio.emporio.repository.CategoriaProdottoRepository;
 import com.emporio.emporio.repository.ProdottoRepository;
 import com.emporio.emporio.repository.UserRepository;
@@ -40,6 +42,9 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    CategoriaAttivitaRepository shopCategory;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -67,7 +72,13 @@ public class DataInitializer implements CommandLineRunner {
         Prodotto pB = this.products.save(Prodotto.builder().productCategory(cat1).productName("latte").build());
         Prodotto pC = this.products.save(Prodotto.builder().productCategory(cat2).productName("mannaia").build());
 
-        Attivita s1 = Attivita.builder().shopPIVA("abc123").shopBusinessName("La Falegnameria").shopAddress("Via questa 1").shopHeadquarter("Milano").build();
+        CategoriaAttivita catA1 = CategoriaAttivita.builder().shopCategoryDescription("Falegnameria").build();
+        CategoriaAttivita catA2 = CategoriaAttivita.builder().shopCategoryDescription("Macelleria").build();
+        this.shopCategory.save(catA1);
+        this.shopCategory.save(catA2);
+        
+        Attivita s1 = Attivita.builder().shopPIVA("abc123").shopBusinessName("La Falegnameria").shopAddress("Via questa 1").shopHeadquarter("Milano").shopCategory(catA1).build();
+
         Catalogo c1 = Catalogo.builder().build();
 
         c1.setProducts(Arrays.asList(pA, pB, pC).stream().collect(Collectors.toSet()));
@@ -76,7 +87,8 @@ public class DataInitializer implements CommandLineRunner {
 
         this.shops.save(s1);
 
-        Attivita s2 = Attivita.builder().shopPIVA("def456").shopBusinessName("La Macelleria").shopAddress("Via quella 2").shopHeadquarter("Roma").build();
+        
+        Attivita s2 = Attivita.builder().shopPIVA("def456").shopBusinessName("La Macelleria").shopAddress("Via quella 2").shopHeadquarter("Roma").shopCategory(catA2).build();
         Catalogo c2 = Catalogo.builder().build();
 
         c2.setProducts(Arrays.asList(pC).stream().collect(Collectors.toSet()));
@@ -85,7 +97,7 @@ public class DataInitializer implements CommandLineRunner {
 
         this.shops.save(s2);
 
-        Prodotto pAM = this.products.findById(1).orElseThrow();
+        Prodotto pAM = this.products.findById(1).orElseThrow(null);
         pAM.setProductName("biscotti integrali");
         this.products.save(pAM);
     }

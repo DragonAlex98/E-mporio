@@ -3,9 +3,13 @@ package com.emporio.emporio.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,8 +34,10 @@ public class Attivita {
     @Column(name = "Ragione_Sociale")
     private String shopBusinessName;
 
-    @Column(name = "Categoria")
-    private int shopCategory;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "shopCategoryId", nullable = false)
+    @NotNull
+    CategoriaAttivita shopCategory;
 
     @Column(name = "Sede_Operativa")
     private String shopHeadquarter;

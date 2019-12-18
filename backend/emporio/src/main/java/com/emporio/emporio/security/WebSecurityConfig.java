@@ -64,7 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
         .antMatchers("/auth/signin").permitAll()
         .antMatchers("/auth/signup").permitAll()
-        .antMatchers("/public/**").permitAll()
+        .antMatchers("/api/v1/**").permitAll()
         .antMatchers(HttpMethod.GET, "/products/**").permitAll()
         .antMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
         .anyRequest().authenticated();

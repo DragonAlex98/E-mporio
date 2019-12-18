@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +21,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "categoriaProdotto")
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,4 +42,32 @@ public class CategoriaProdotto {
         this.categoryId = categoryId;
         this.description = description;
     }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @JsonIgnore
+    public List<Prodotto> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Prodotto> products) {
+        this.products = products;
+    }
+
+    
+
 }

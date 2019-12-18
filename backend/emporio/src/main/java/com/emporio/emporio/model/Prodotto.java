@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "prodotto")
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -42,6 +41,7 @@ public class Prodotto {
     @NotNull
     CategoriaProdotto productCategory;
 
+
     @Column(name = "Prezzo")
     private double productPrice;
 
@@ -59,4 +59,47 @@ public class Prodotto {
         this.productPrice = productPrice;
         this.productQuantity = productQuantity;
     }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public CategoriaProdotto getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(CategoriaProdotto productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    public double getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    
+
 }
