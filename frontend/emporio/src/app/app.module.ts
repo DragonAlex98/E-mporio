@@ -17,6 +17,7 @@ import { MaterialModule } from './material/material.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { MatSortModule } from '@angular/material/sort';
     BrowserModule,
     ProductModule,
     ShopModule,
+    AuthenticationModule,
     AppRoutingModule,
     FormsModule,
     MaterialModule,
