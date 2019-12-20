@@ -7,3 +7,12 @@ mat-footer-row mat-footer-cell{
   justify-content: center;
   font-style: italic;
 }
+
+.table-stepper-buttons{
+  display: flex;
+  margin-top: 2%;
+}
+
+.table-stepper-buttons button#next {
+  margin-left: 2%;
+}

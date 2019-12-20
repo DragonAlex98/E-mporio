@@ -18,7 +18,7 @@ export class OrderProductTableComponent implements AfterViewInit, OnInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'name', 'category', 'quantity', 'actions'];
 
-  constructor(private changeDetectorRefs: ChangeDetectorRef) { }
+  constructor() { }
 
   ngOnInit() {
   }
@@ -27,15 +27,6 @@ export class OrderProductTableComponent implements AfterViewInit, OnInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
-  }
-
-  addProductToList(prodId: number, prodName: string, prodCat: string, prodqta: number){
-    // this.dataSource.ad(prodId, prodName, prodCat, prodqta);
-  }
-
-  updateTable() {
-    console.log('stonkls');
-    this.changeDetectorRefs.detectChanges();
   }
 
   onEdit(row) {

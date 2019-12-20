@@ -5,3 +5,8 @@ div.order-form-container {
 div.stepper-content {
     margin: 0px 40%;
 }
+
+.summary-buttons {
+    display: flex;
+    margin-top: 2%;
+}

@@ -3,37 +3,21 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge, BehaviorSubject } from 'rxjs';
+import { Product, ProductCategory } from '../product/product/product';
 
 // TODO: Replace this with your own data model type
 export interface OrderProductTableItem {
-  quantity: number;
+  /* quantity: number;
   category: string;
   name: string;
-  id: number;
+  id: number; */
+  product: Product;
+  quantity: number;
 }
 
 // TODO: replace this with real data from your application
 const EXAMPLE_DATA: OrderProductTableItem[] = [
-  {id: 1, name: 'Hydrogen', category: 'salume', quantity: 9},
-  {id: 2, name: 'Helium', category: 'salume', quantity: 8},
-  {id: 3, name: 'Lithium', category: 'salume', quantity: 7},
-  {id: 4, name: 'Beryllium', category: 'salume', quantity: 5},
-  {id: 5, name: 'Boron', category: 'salume', quantity: 3},
-  {id: 6, name: 'Carbon', category: 'salume', quantity: 7},
-  {id: 7, name: 'Nitrogen', category: 'salume', quantity: 3},
-  {id: 8, name: 'Oxygen', category: 'salume', quantity: 7},
-  {id: 9, name: 'Fluorine', category: 'salume', quantity: 5},
-  {id: 10, name: 'Neon', category: 'salume', quantity: 5},
-  {id: 11, name: 'Sodium', category: 'salume', quantity: 4},
-  {id: 12, name: 'Magnesium', category: 'salume', quantity: 6},
-  {id: 13, name: 'Aluminum', category: 'salume', quantity: 7},
-  {id: 14, name: 'Silicon', category: 'salume', quantity: 2},
-  {id: 15, name: 'Phosphorus', category: 'salume', quantity: 4},
-  {id: 16, name: 'Sulfur', category: 'salume', quantity: 1},
-  {id: 17, name: 'Chlorine', category: 'salume', quantity: 6},
-  {id: 18, name: 'Argon', category: 'salume', quantity: 4},
-  {id: 19, name: 'Potassium', category: 'salume', quantity: 7},
-  {id: 20, name: 'Calcium', category: 'salume', quantity: 3},
+  {product: new Product(1, 'salame ammuffito', new ProductCategory(1, 'salamirko'), 18.90, 7), quantity: 9}
 ];
 
 /**
@@ -53,11 +37,10 @@ export class OrderProductTableDataSource extends DataSource<OrderProductTableIte
     super();
   }
 
-  addData(prodId: number, prodName: string, prodCat: string, prodQta: number) {
+  addData(product: Product, prodQta: number) {
     const copiedData = this.data.slice();
-    copiedData.push({id: prodId, name: prodName, category: prodCat, quantity: prodQta});
+    copiedData.push({product: product, quantity: prodQta});
     this.data = copiedData;
-    console.log(this.data);
   }
 
   /**
@@ -109,8 +92,8 @@ export class OrderProductTableDataSource extends DataSource<OrderProductTableIte
     return data.sort((a, b) => {
       const isAsc = this.sort.direction === 'asc';
       switch (this.sort.active) {
-        case 'name': return compare(a.name, b.name, isAsc);
-        case 'id': return compare(+a.id, +b.id, isAsc);
+        /* case 'name': return compare(a.name, b.name, isAsc);
+        case 'id': return compare(+a.id, +b.id, isAsc); */
         default: return 0;
       }
     });
