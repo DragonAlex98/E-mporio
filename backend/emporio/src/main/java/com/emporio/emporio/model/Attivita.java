@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -26,22 +27,27 @@ public class Attivita {
 
     @Id
     @Column(name = "Partita_IVA")
+    @NotBlank
     private String shopPIVA;
 
     @Column(name = "Indirizzo")
+    @NotBlank
     private String shopAddress;
 
     @Column(name = "Ragione_Sociale")
+    @NotBlank
     private String shopBusinessName;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "shopCategoryId", nullable = false)
+    @JoinColumn(name = "Categoria_Attivita", nullable = false)
     @NotNull
-    CategoriaAttivita shopCategory;
+    private CategoriaAttivita shopCategory;
 
     @Column(name = "Sede_Operativa")
+    @NotBlank
     private String shopHeadquarter;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Catalogo_Attivita", nullable = false)
     private Catalogo catalog;
 }

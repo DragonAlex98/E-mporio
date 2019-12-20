@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "categoriaAttivita")
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,40 +30,14 @@ public class CategoriaAttivita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
+    @JsonIgnore
     private int shopCategoryId;
 
-    @Column(name = "ShopCategoryDescription")
-    @NotEmpty(message = "La descrizione dell' attivita' non puo essere vuota")
+    @Column(name = "Descrizione_Categoria_Attivita")
+    @NotBlank(message = "La descrizione dell' attivita' non puo essere vuota")
     private String shopCategoryDescription;
 
-    @OneToMany(mappedBy = "shopCategory", fetch = FetchType.LAZY)
-    private List<Attivita> shops ;
-
-    public int getShopCategoryId() {
-        return shopCategoryId;
-    }
-
-    public void setShopCategoryId(int shopCategoryId) {
-        this.shopCategoryId = shopCategoryId;
-    }
-
-    public String getShopCategoryDescription() {
-        return shopCategoryDescription;
-    }
-
-    public void setShopCategoryDescription(String shopCategoryDescription) {
-        this.shopCategoryDescription = shopCategoryDescription;
-    }
-
     @JsonIgnore
-    public List<Attivita> getShops() {
-        return shops;
-    }
-
-    public void setShops(List<Attivita> shops) {
-        this.shops = shops;
-    }
-
-    
-
+    @OneToMany(mappedBy = "shopCategory", fetch = FetchType.LAZY)
+    private List<Attivita> shops;
 }

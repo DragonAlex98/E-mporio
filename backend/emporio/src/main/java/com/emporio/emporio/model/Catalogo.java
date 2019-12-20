@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,9 +30,10 @@ public class Catalogo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @Builder.Default
-    private Set<Prodotto> products = new HashSet<Prodotto>();
+    private Set<ProdottoDescrizione> products = new HashSet<ProdottoDescrizione>();
 }
