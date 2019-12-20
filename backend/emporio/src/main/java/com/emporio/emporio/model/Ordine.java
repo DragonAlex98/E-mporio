@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.emporio.emporio.util.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,20 +29,13 @@ public class Ordine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
+    @JsonIgnore
     private int orderId;
+
     @Column(name = "Status")
-    private OrderStatus status;
-    @OneToMany(mappedBy = "ordine")
-    List<OrderDetails> orderDetails;
+    @Builder.Default
+    private OrderStatus status = OrderStatus.DA_RITIRARE; 
+    
     @Column
     private String parkingAddress;
-
-    //TODO Implementare per il discorso repository
-    public Ordine(int orderId, List<OrderDetails> orderDetails, String parkingAddress) {
-
-        this.orderId = orderId;
-        this.orderDetails = orderDetails;
-        this.parkingAddress = parkingAddress;
-        this.status = OrderStatus.DA_RITIRARE;
-    }
 }

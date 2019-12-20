@@ -15,7 +15,7 @@ class OrderDetailsKey implements Serializable {
     @Column(name = "product_id")
     int productId;
 
-    @Column(name = "order_id")
+    /*@Column(name = "order_id")
     int orderId;
 
     public OrderDetailsKey (int productId, int orderId){
@@ -38,5 +38,5 @@ class OrderDetailsKey implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(productId, orderId);
-    }
+    }*/
 }
