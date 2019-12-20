@@ -6,8 +6,11 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import com.emporio.emporio.security.WebSecurityConfig;
-import com.emporio.emporio.model.Prodotto;
-import com.emporio.emporio.repository.ProdottoRepository;
+import com.emporio.emporio.config.ProductDescriptionForm;
+import com.emporio.emporio.model.CategoriaProdotto;
+import com.emporio.emporio.model.ProdottoDescrizione;
+import com.emporio.emporio.repository.CategoriaProdottoRepository;
+import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +26,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class ProdottoController {
     @Autowired
-    private ProdottoRepository productRepository;
+    private ProdottoDescrizioneRepository productRepository;
+
+    @Autowired
+    private CategoriaProdottoRepository productCategoryRepository;
 
     private static final ProdottoController instance = new ProdottoController();
 
@@ -38,13 +44,22 @@ public class ProdottoController {
 
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/products", method = RequestMethod.POST)
-    public ResponseEntity<String> insertNewProduct(@Valid @RequestBody Prodotto product) {
-        if (productRepository.existsByProductName(product.getProductName()))
+    public ResponseEntity<String> insertNewProduct(@Valid @RequestBody ProductDescriptionForm product) {
+        if (productRepository.existsByProductName(product.getProductName())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        productRepository.save(product);
+        }
+
+        Optional<CategoriaProdotto> cat = productCategoryRepository.findByDescription(product.getProductCategoryName());
+        if (!cat.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        ProdottoDescrizione newProduct = ProdottoDescrizione.builder().productName(product.getProductName()).productCategory(cat.get()).build();
+        productRepository.save(newProduct);
+
         String toReturnString = "{"
-        +"'id':'"+product.getProductId()+"',"
-        +"'url':'"+WebSecurityConfig.appURL + WebSecurityConfig.apiURI + "/products/"+ product.getProductId() + "',"
+        +"'id':'"+newProduct.getProductId()+"',"
+        +"'url':'"+WebSecurityConfig.appURL + WebSecurityConfig.apiURI + "/products/"+ newProduct.getProductId() + "',"
         +"'type':'product'"
         +"}";
         
@@ -53,31 +68,31 @@ public class ProdottoController {
 
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/products/search", method = RequestMethod.GET)
-    public ResponseEntity<List<Prodotto>> findProduct(@RequestParam(name = "nome", required = true) String nome) {
+    public ResponseEntity<List<ProdottoDescrizione>> findProduct(@RequestParam(name = "nome", required = true) String nome) {
         
         if(nome == "")
-            return new ResponseEntity<List<Prodotto>>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<List<ProdottoDescrizione>>(HttpStatus.BAD_REQUEST);
 
-        List<Prodotto> toReturnProductsList = productRepository.findByProductNameContaining(nome);
+        List<ProdottoDescrizione> toReturnProductsList = productRepository.findByProductNameContaining(nome);
 
         if(toReturnProductsList.isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        return new ResponseEntity<List<Prodotto>>(toReturnProductsList, HttpStatus.OK);
+        return new ResponseEntity<List<ProdottoDescrizione>>(toReturnProductsList, HttpStatus.OK);
     }
 
 
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/products", method = RequestMethod.GET)
-    public ResponseEntity<List<Prodotto>> getAllProducts() {
-        List<Prodotto> toReturnProductList = productRepository.findAll();
+    public ResponseEntity<List<ProdottoDescrizione>> getAllProducts() {
+        List<ProdottoDescrizione> toReturnProductList = productRepository.findAll();
 
-        return new ResponseEntity<List<Prodotto>>(toReturnProductList, HttpStatus.OK);
+        return new ResponseEntity<List<ProdottoDescrizione>>(toReturnProductList, HttpStatus.OK);
     }
 
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Optional<Prodotto>> getProductById(Integer id) {
-        return new ResponseEntity<Optional<Prodotto>>(productRepository.findById(id), HttpStatus.OK);
+    public ResponseEntity<Optional<ProdottoDescrizione>> getProductById(Integer id) {
+        return new ResponseEntity<Optional<ProdottoDescrizione>>(productRepository.findById(id), HttpStatus.OK);
     }
 }
