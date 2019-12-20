@@ -1,19 +1,25 @@
 package com.emporio.emporio;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.CategoriaAttivita;
 import com.emporio.emporio.model.CategoriaProdotto;
-import com.emporio.emporio.model.Prodotto;
+import com.emporio.emporio.model.Privilege;
+import com.emporio.emporio.model.ProdottoDescrizione;
+import com.emporio.emporio.model.Role;
 import com.emporio.emporio.model.User;
 import com.emporio.emporio.repository.AttivitaRepository;
 import com.emporio.emporio.repository.CatalogoRepository;
 import com.emporio.emporio.repository.CategoriaAttivitaRepository;
 import com.emporio.emporio.repository.CategoriaProdottoRepository;
-import com.emporio.emporio.repository.ProdottoRepository;
+import com.emporio.emporio.repository.PrivilegeRepository;
+import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
+import com.emporio.emporio.repository.RoleRepository;
 import com.emporio.emporio.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +34,16 @@ public class DataInitializer implements CommandLineRunner {
     UserRepository users;
 
     @Autowired
+    RoleRepository roles;
+
+    @Autowired
+    PrivilegeRepository privileges;
+
+    @Autowired
     AttivitaRepository shops;
 
     @Autowired
-    ProdottoRepository products;
+    ProdottoDescrizioneRepository products;
 
     @Autowired
     CatalogoRepository catalogs;
@@ -48,17 +60,48 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        this.users.save(User.builder()
+        Privilege priv1 = this.privileges.save(Privilege.builder().name("SEARCH_SHOP").build());
+        Privilege priv2 = this.privileges.save(Privilege.builder().name("SEARCH_PRODUCT").build());
+        Privilege priv3 = this.privileges.save(Privilege.builder().name("CREATE_SHOP").build());
+        Privilege priv4 = this.privileges.save(Privilege.builder().name("CREATE_PRODUCT").build());
+
+        Role userRole = this.roles.save(Role.builder().name("utente").build());
+        this.roles.save(Role.builder().name("acquirente").build());
+        this.roles.save(Role.builder().name("fattorino").build());
+        this.roles.save(Role.builder().name("dipendente").build());
+        Role owner = this.roles.save(Role.builder().name("titolare").build());
+        this.roles.save(Role.builder().name("gestoreMarketing").build());
+        this.roles.save(Role.builder().name("admin").build());
+        this.roles.save(Role.builder().name("operatoreSistema").build());
+
+        List<Privilege> privs = new ArrayList<>();
+        privs.add(priv1);
+        privs.add(priv2);
+
+        userRole.setPrivileges(privs);
+
+        this.roles.save(userRole);
+
+        List<Privilege> ownerPrivs = new ArrayList<>();
+        ownerPrivs.add(priv3);
+        ownerPrivs.add(priv4);
+
+        owner.setPrivileges(ownerPrivs);
+
+        this.roles.save(owner);
+
+        User utente = User.builder()
             .username("user")
             .password(this.passwordEncoder.encode("password"))
-            .roles(Arrays.asList( "ROLE_USER"))
-            .build()
-        );
+            .role(this.roles.findByName("Utente").get())
+            .build();
+
+        this.users.save(utente);
 
         this.users.save(User.builder()
             .username("admin")
             .password(this.passwordEncoder.encode("password"))
-            .roles(Arrays.asList("ROLE_USER", "ROLE_ADMIN"))
+            .role(this.roles.findByName("Admin").get())
             .build()
         );
 
@@ -68,9 +111,9 @@ public class DataInitializer implements CommandLineRunner {
         this.categories.save(cat1);
         this.categories.save(cat2);
 
-        Prodotto pA = this.products.save(Prodotto.builder().productCategory(cat1).productName("biscotti").build());
-        Prodotto pB = this.products.save(Prodotto.builder().productCategory(cat1).productName("latte").build());
-        Prodotto pC = this.products.save(Prodotto.builder().productCategory(cat2).productName("mannaia").build());
+        ProdottoDescrizione pA = this.products.save(ProdottoDescrizione.builder().productCategory(cat1).productName("biscotti").build());
+        ProdottoDescrizione pB = this.products.save(ProdottoDescrizione.builder().productCategory(cat1).productName("latte").build());
+        ProdottoDescrizione pC = this.products.save(ProdottoDescrizione.builder().productCategory(cat2).productName("mannaia").build());
 
         CategoriaAttivita catA1 = CategoriaAttivita.builder().shopCategoryDescription("Falegnameria").build();
         CategoriaAttivita catA2 = CategoriaAttivita.builder().shopCategoryDescription("Macelleria").build();
@@ -97,7 +140,7 @@ public class DataInitializer implements CommandLineRunner {
 
         this.shops.save(s2);
 
-        Prodotto pAM = this.products.findById(1).orElseThrow(null);
+        ProdottoDescrizione pAM = this.products.findById(1).orElseThrow(null);
         pAM.setProductName("biscotti integrali");
         this.products.save(pAM);
     }
