@@ -64,9 +64,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
         .antMatchers("/auth/signin").permitAll()
         .antMatchers("/auth/signup").permitAll()
-        .antMatchers("/api/v1/**").permitAll()
-        .antMatchers(HttpMethod.GET, "/products/**").permitAll()
-        .antMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
+        //.antMatchers("/api/v1/**").permitAll()
+        .antMatchers(HttpMethod.GET, "/api/v1/products*").permitAll()
+        //.antMatchers(HttpMethod.POST, "/api/v1/products*").hasRole("TITOLARE")
+        .antMatchers(HttpMethod.POST, "/api/v1/products*").hasAuthority("CREATE_PRODUCT")
         .anyRequest().authenticated();
 
         // Filtro Custom JWT
