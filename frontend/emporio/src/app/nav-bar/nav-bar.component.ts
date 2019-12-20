@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthenticationService} from '@src/app/authentication/services/authentication.service'
+import { User } from '../authentication/models/user';
 
 @Component({
   selector: 'app-navbar',
@@ -8,10 +10,19 @@ import { Component, OnInit } from '@angular/core';
 export class NavBarComponent implements OnInit {
   events: string[] = [];
   opened: boolean;
+  currentUser: User;
 
   shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
 
-  constructor() {  }
+  constructor(private authenticationService: AuthenticationService) {
+
+    this.authenticationService.currentUser.subscribe(user => this.currentUser = user);
+    console.log(this.currentUser);
+   }
+
+   logout() {
+    this.authenticationService.logout();
+   }
 
   ngOnInit() {
   }

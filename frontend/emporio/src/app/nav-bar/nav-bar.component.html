@@ -26,8 +26,8 @@
     </mat-menu>
     <span class="login-space"></span>
     <app-search-bar></app-search-bar>
-    <a mat-button href="/login">Log In</a>
-    <a mat-button>Log Out</a>
+    <a *ngIf="currentUser === null" mat-button href="/login">Log In</a>
+    <a *ngIf="currentUser != null" mat-button (click)="logout()">Log Out</a>
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>
