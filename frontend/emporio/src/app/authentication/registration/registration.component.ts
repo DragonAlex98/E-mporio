@@ -9,7 +9,6 @@ import {AuthenticationService} from '@src/app/authentication/services/authentica
 @Component({templateUrl: 'registration.component.html'})
 export class RegistrationComponent implements OnInit {
     registerForm: FormGroup;
-    loading = false;
     submitted = false;
 
     constructor(
@@ -26,15 +25,10 @@ export class RegistrationComponent implements OnInit {
 
     ngOnInit() {
         this.registerForm = this.formBuilder.group({
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            role: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+            username: ['', Validators.required],
+            password: ['', [Validators.required, Validators.minLength(10)]]
         });
     }
-
-    // funzione per accedere in maniera piu' veloce ai vari campi della form
-    get f() { return this.registerForm.controls; }
 
     onSubmit() {
         this.submitted = true;
@@ -44,18 +38,16 @@ export class RegistrationComponent implements OnInit {
             return;
         }
 
-        this.loading = true;
         this.userService.register(this.registerForm.value)
-            .pipe(first())
             .subscribe(
                 data => {
-                    console.log('Registrazione effettuata');
-                    this.loading = true;
-                    this.router.navigate(['/login']);
+                    alert('Registrazione effettuata');
+                    console.log(data);
+                    this.router.navigate(['/']);
                 },
                 error => {
-                  console.log('Registrazione  NON effettuata');
-                    this.loading = false;
+                    alert('Registrazione non effettuata');
+                    console.log(error);
                 });
     }
 }
