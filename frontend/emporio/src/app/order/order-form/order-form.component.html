@@ -3,29 +3,54 @@
         <div class="order-stepper-container">
             <mat-horizontal-stepper #stepper>
                 <mat-step [stepControl]="customerFormGroup">
-                    <div class="stepper-content">
-                        <form [formGroup]="customerFormGroup">
-                            <ng-template matStepLabel>Informazioni Acquirente</ng-template>
-                            <mat-form-field>
-                                <input matInput placeholder="Email Acquirente" formControlName="customerName" required>
-                            </mat-form-field>
-                            <mat-form-field>
-                                <input matInput placeholder="Posizione Macchina" formControlName="customerName" required>
-                            </mat-form-field>
-                            <div>
-                                <button mat-raised-button color="accent" matStepperNext>Avanti</button>
-                            </div>
-                        </form>
-                    </div>
+                    <mat-card>
+                        <div class="stepper-content">
+                            <form [formGroup]="customerFormGroup">
+                                <ng-template matStepLabel>Informazioni Acquirente</ng-template>
+                                <mat-form-field>
+                                    <input matInput placeholder="Email Acquirente" formControlName="customerName" required>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <input matInput placeholder="Posizione Macchina" formControlName="customerCarPosition" required>
+                                </mat-form-field>
+                                <div>
+                                    <button mat-raised-button color="accent" matStepperNext>Avanti<mat-icon>chevron_right</mat-icon></button>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-card>
                 </mat-step>
                 <mat-step>
                     <ng-template matStepLabel>Inserisci Prodotti</ng-template>
-                    <app-order-product-list></app-order-product-list>
+                    <div>
+                        <app-order-product-list [dataSource]="dataSource"></app-order-product-list>
+                    </div>
                 </mat-step>
                 <mat-step>
                     <ng-template matStepLabel>Riepilogo Ordine</ng-template>
+                    <mat-card>
+                        <mat-list>
+                            <mat-list-item>
+                                <h4 mat-line>Email Acquirente: {{customerFormGroup.value.customerName}}</h4>
+                            </mat-list-item>
+                            <mat-list-item>
+                                <h4 mat-line>Posizione Macchina: {{customerFormGroup.value.customerCarPosition}}</h4>
+                            </mat-list-item>
+                            <h3 mat-subheader>Prodotti</h3>
+                            <mat-list-item *ngFor="let orderline of dataSource.data; last as last">
+                               <mat-icon mat-list-icon>check</mat-icon>
+                               <h3 mat-line>Prodotto: {{orderline.product.productName}}</h3>
+                               <h5 mat-line>Quantità: {{orderline.quantity}} </h5>
+                               <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+                            </mat-list-item>
+                         </mat-list>
+                         <div class="summary-buttons">
+                            <button mat-raised-button color="accent" id="previous" matStepperPrevious>Indietro<mat-icon>chevron_left</mat-icon></button>
+                            <span class="fill-remaining-space"></span>
+                            <button mat-raised-button (click)="addOrder()" color="accent">Inserisci Ordine <mat-icon>done_all</mat-icon></button>
+                          </div>
+                    </mat-card>
                 </mat-step>
             </mat-horizontal-stepper>
         </div>
-    <span class="fill-remaining-space"></span>
 </div>

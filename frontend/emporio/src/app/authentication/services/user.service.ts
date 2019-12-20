@@ -16,5 +16,9 @@ export class UserService {
     getById(id: number) {
         return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
     }
+
+    register(user: User) {
+        return this.http.post(`http://localhost:8000/auth/signup`, user);
+    }
 }
 

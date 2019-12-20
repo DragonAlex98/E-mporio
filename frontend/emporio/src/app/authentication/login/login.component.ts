@@ -12,10 +12,8 @@ import { AuthenticationService } from '@src/app/authentication/services/authenti
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  loading = false;
   submitted = false;
-  returnUrl: string;
-  error = '';
+  returnUrl: string; // path dove ritorno dopo il login
 
   constructor(
       private formBuilder: FormBuilder,
@@ -23,7 +21,7 @@ export class LoginComponent implements OnInit {
       private router: Router,
       private authenticationService: AuthenticationService
   ) {
-      // redirect to home if already logged in
+      // se gia' loggato torno alla home
       if (this.authenticationService.currentUserValue) {
           this.router.navigate(['/']);
       }
@@ -35,31 +33,27 @@ export class LoginComponent implements OnInit {
           password: ['', Validators.required]
       });
 
-      // get return url from route parameters or default to '/'
+      // memorizzo il path dove sono attualmente per ritornarci dopo il login, se non c'e' vado in '/'
       this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  // convenience getter for easy access to form fields
-  get f() { return this.loginForm.controls; }
 
   onSubmit() {
       this.submitted = true;
 
-      // stop here if form is invalid
+      // la form non e' valida non effettuo la chiamata
       if (this.loginForm.invalid) {
           return;
       }
 
-      this.loading = true;
-      this.authenticationService.login(this.f.username.value, this.f.password.value)
-          .pipe(first())
+      this.authenticationService.login(this.loginForm.controls.username.value, this.loginForm.controls.password.value)
           .subscribe(
               data => {
+                  alert('Login effettuato con successo!');
                   this.router.navigate([this.returnUrl]);
               },
               error => {
-                  this.error = error;
-                  this.loading = false;
+                alert('Login non effettuato, riprova');
               });
   }
 

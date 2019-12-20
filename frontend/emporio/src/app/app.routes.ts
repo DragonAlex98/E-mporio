@@ -8,6 +8,7 @@ import { OrderFormComponent } from './order/order-form/order-form.component';
 import { PhantomPageComponent } from './order/phantom-page/phantom-page.component';
 import { LoginComponent } from './authentication/login/login.component';
 import { AuthGuard } from './authentication/helpers/auth.guard';
+import { RegistrationComponent } from './authentication/registration/registration.component';
 
 export const routes: Routes = [
   {
@@ -26,6 +27,10 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'registration',
+    component: RegistrationComponent
   },
   {
     path: 'cerca-prodotto',
