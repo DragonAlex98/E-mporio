@@ -2,10 +2,14 @@ package com.emporio.emporio.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,22 +20,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "prodotto")
+@Table(name = "prodotto_descrizione")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Prodotto {
+public class ProdottoDescrizione {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
     @JsonIgnore
-    private Long id;
+    private int productId;
 
-    @Column(name = "Prezzo")
+    @Column(name = "Nome")
+    @NotBlank
+    private String productName;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "Categoria_Prodotto", nullable = false)
     @NotNull
-    private double productPrice;
-
-    @Column(name = "Quantita")
-    @NotNull
-    private int productQuantity;
+    private CategoriaProdotto productCategory;
 }
