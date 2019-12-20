@@ -5,15 +5,21 @@
   </mat-grid-tile>
   <mat-grid-tile [rowspan]=1 [colspan]=2>
     <div class="controles-container">
-      <mat-card>
+        <mat-card>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <div class="insert-product-form-container">
+        <div class="registration-form-container">
           <mat-form-field>
-            <input matInput placeholder="Username*" formControlName="username">
+            <input matInput placeholder="Username" formControlName="username" required>
           </mat-form-field>
 
           <mat-form-field>
-            <input type="password" matInput placeholder="Password*" formControlName="password">
+            <mat-select  formControlName="role" placeholder="Seleziona il ruolo">
+              <mat-option value="role" *ngFor="let role of roles">{{role}}</mat-option >
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input required type="password" matInput placeholder="Password" formControlName="password">
           </mat-form-field>
 
           <button mat-raised-button color="accent">Registrati</button>
