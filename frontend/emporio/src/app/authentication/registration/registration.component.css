@@ -17,6 +17,12 @@
   }
 
 
+  #cancel-btn {
+    margin-top: 0.5em;
+  }
+
+
+
 .controles-container{
   width: 100%;
   padding: 25%;    
