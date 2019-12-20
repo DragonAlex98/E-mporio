@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.emporio.emporio.config.AuthenticationRequest;
+import com.emporio.emporio.model.Role;
 import com.emporio.emporio.model.User;
+import com.emporio.emporio.repository.RoleRepository;
 import com.emporio.emporio.repository.UserRepository;
 import com.emporio.emporio.security.JwtTokenProvider;
 
@@ -34,6 +35,9 @@ public class AuthenticationController {
     JwtTokenProvider jwtTokenProvider;
 
     @Autowired
+    RoleRepository roles;
+
+    @Autowired
     UserRepository users;
 
     @Autowired
@@ -46,7 +50,7 @@ public class AuthenticationController {
         try {
             String username = data.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-            String token = jwtTokenProvider.createToken(username, this.users.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found")).getRoles());
+            String token = jwtTokenProvider.createToken(username, this.users.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found")).getRole());
 
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
@@ -69,12 +73,18 @@ public class AuthenticationController {
             if (userExists) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
+
+            String roleString = data.getRole();
+
+            Role role = this.roles.findByName(roleString).orElseThrow();
             
-            users.save(User.builder()
+            User newUser = User.builder()
             .username(username)
             .password(passwordEncoder.encode(data.getPassword()))
-            .roles(Arrays.asList("ROLE_USER"))
-            .build());
+            .role(role)
+            .build();
+
+            users.save(newUser);
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (AuthenticationException e) {
