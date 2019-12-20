@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.emporio.emporio.model.Role;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,10 +33,11 @@ public class JwtTokenProvider {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    public String createToken(String username, List<String> roles) {
+    public String createToken(String username, Role role) {
 
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put("roles", roles);
+        
+        claims.put("role", role);
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + expiration);
@@ -70,7 +73,6 @@ public class JwtTokenProvider {
         return (!claims.getBody().getExpiration().before(new Date()));
     }
 
-    @SuppressWarnings("unchecked")
     public String refreshToken(String token) {
         String refreshedToken;
         try {
@@ -78,8 +80,8 @@ public class JwtTokenProvider {
             if(!canTokenBeRefreshed(token)) {
                 throw new IllegalArgumentException();
             }
-            List<String> roles = claims.getBody().get("roles", List.class);
-            refreshedToken = createToken(claims.getBody().getSubject(), roles);
+
+            refreshedToken = createToken(claims.getBody().getSubject(), claims.getBody().get("role", Role.class));
         } catch (Exception e) {
             refreshedToken = null;
         }

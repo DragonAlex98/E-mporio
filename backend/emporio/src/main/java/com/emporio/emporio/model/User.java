@@ -8,19 +8,21 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.ElementCollection;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Entity
@@ -34,21 +36,26 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
-    @NotEmpty
+    @Column(name = "Username")
+    @NotBlank
     private String username;
 
-    @NotEmpty
+    @Column(name = "Password")
+    @NotBlank
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "Ruolo", nullable = false)
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        List<SimpleGrantedAuthority> authorities = this.role.getPrivileges().stream().map(x -> new SimpleGrantedAuthority(x.getName())).collect(Collectors.toList());
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase()));
+        return authorities;
     }
 
     @Override
