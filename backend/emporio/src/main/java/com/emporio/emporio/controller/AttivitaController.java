@@ -1,12 +1,16 @@
 package com.emporio.emporio.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import com.emporio.emporio.security.WebSecurityConfig;
+import com.emporio.emporio.config.RegistrazioneAttivitaForm;
 import com.emporio.emporio.model.Attivita;
+import com.emporio.emporio.model.CategoriaAttivita;
 import com.emporio.emporio.repository.AttivitaRepository;
+import com.emporio.emporio.repository.CategoriaAttivitaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,13 +29,23 @@ public class AttivitaController {
     @Autowired
     private AttivitaRepository attivitaRepository;
 
+    @Autowired
+    private CategoriaAttivitaRepository categoriaAttivitaRepository;
+
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/shops", method = RequestMethod.POST)
-    public ResponseEntity<String> insertNewAttivita(@Valid @RequestBody Attivita attivita) {
-        if(attivitaRepository.existsAttivitaByShopPIVA(attivita.getShopPIVA()))
+    public ResponseEntity<String> insertNewAttivita(@Valid @RequestBody RegistrazioneAttivitaForm attivita) {
+        if(attivitaRepository.existsAttivitaByShopPIVA(attivita.getShopPIVA())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
-        attivitaRepository.save(attivita);
+        Optional<CategoriaAttivita> cat = categoriaAttivitaRepository.findByShopCategoryDescription(attivita.getShopCategory());
+        if (!cat.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Attivita newShop = Attivita.builder().shopPIVA(attivita.getShopPIVA()).shopAddress(attivita.getShopAddress()).shopBusinessName(attivita.getShopBusinessName()).shopHeadquarter(attivita.getShopHeadquarter()).shopCategory(cat.get()).build();
+        attivitaRepository.save(newShop);
 
         String toReturnString = "{"
         +"'id':'"+attivita.getShopPIVA() +"',"
