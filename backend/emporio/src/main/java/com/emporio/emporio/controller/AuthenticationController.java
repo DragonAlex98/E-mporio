@@ -76,7 +76,7 @@ public class AuthenticationController {
 
             String roleString = data.getRole();
 
-            Role role = this.roles.findByName(roleString).orElseThrow();
+            Role role = this.roles.findByName(roleString).orElseThrow(null);
             
             User newUser = User.builder()
             .username(username)
