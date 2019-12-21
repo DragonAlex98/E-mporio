@@ -24,21 +24,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
-public class ProdottoController {
+public class ProdottoDescrizioneController {
     @Autowired
     private ProdottoDescrizioneRepository productRepository;
 
     @Autowired
     private CategoriaProdottoRepository productCategoryRepository;
 
-    private static final ProdottoController instance = new ProdottoController();
+    private static final ProdottoDescrizioneController instance = new ProdottoDescrizioneController();
 
     //private constructor to avoid client applications to use constructor
-    private ProdottoController() {
+    private ProdottoDescrizioneController() {
         
     }
 
-    public static ProdottoController getInstance(){
+    public static ProdottoDescrizioneController getInstance(){
         return instance;
     }
 
@@ -71,7 +71,7 @@ public class ProdottoController {
     public ResponseEntity<List<ProdottoDescrizione>> findProduct(@RequestParam(name = "nome", required = true) String nome) {
         
         if(nome == "")
-            return new ResponseEntity<List<ProdottoDescrizione>>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         List<ProdottoDescrizione> toReturnProductsList = productRepository.findByProductNameContaining(nome);
 
