@@ -2,11 +2,6 @@ package com.emporio.emporio.util;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-
-import com.emporio.emporio.model.Ordine;
-import com.emporio.emporio.model.ProdottoDescrizione;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

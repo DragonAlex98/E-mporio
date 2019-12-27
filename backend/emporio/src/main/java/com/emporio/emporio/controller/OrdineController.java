@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import com.emporio.emporio.model.Ordine;
 import com.emporio.emporio.repository.OrdineRepository;
-import com.emporio.emporio.util.OrderDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

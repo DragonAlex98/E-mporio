@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,6 +52,16 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "Ruolo", nullable = false)
     private Role role;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_shop_owned_id", nullable = true)
+    @JsonIgnore
+    private Attivita shopOwned;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_shop_employed_id", nullable = true)
+    @JsonIgnore
+    private Attivita shopEmployed;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

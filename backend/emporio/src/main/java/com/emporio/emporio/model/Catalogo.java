@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.HashSet;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

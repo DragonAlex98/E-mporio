@@ -105,6 +105,13 @@ public class DataInitializer implements CommandLineRunner {
             .build()
         );
 
+        this.users.save(User.builder()
+            .username("alberto")
+            .password("albertino55")
+            .role(this.roles.findByName("Dipendente").get())
+            .build()
+        );
+
         CategoriaProdotto cat1 = CategoriaProdotto.builder().description("cibo").build();
         CategoriaProdotto cat2 = CategoriaProdotto.builder().description("utensili").build();
 
@@ -130,6 +137,15 @@ public class DataInitializer implements CommandLineRunner {
 
         this.shops.save(s1);
 
+        
+
+        this.users.save(User.builder()
+            .username("dino")
+            .password("dino88")
+            .role(this.roles.findByName("Titolare").get())
+            .shopOwned(s1)
+            .build()
+        );
         
         Attivita s2 = Attivita.builder().shopPIVA("def456").shopBusinessName("La Macelleria").shopAddress("Via quella 2").shopHeadquarter("Roma").shopCategory(catA2).build();
         Catalogo c2 = Catalogo.builder().build();

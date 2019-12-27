@@ -1,7 +1,6 @@
 package com.emporio.emporio.security;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 

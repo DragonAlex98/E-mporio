@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -65,9 +64,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/auth/signin").permitAll()
         .antMatchers("/auth/signup").permitAll()
         .antMatchers("/api/v1/**").permitAll()
-        .antMatchers(HttpMethod.GET, "/api/v1/products*").permitAll()
-        //.antMatchers(HttpMethod.POST, "/api/v1/products*").hasRole("TITOLARE")
-        .antMatchers(HttpMethod.POST, "/api/v1/products*").hasAuthority("CREATE_PRODUCT")
+        //.antMatchers(HttpMethod.GET, "/api/v1/products*").permitAll()
+        // commentato .antMatchers(HttpMethod.POST, "/api/v1/products*").hasRole("TITOLARE")
+        //.antMatchers(HttpMethod.POST, "/api/v1/products*").hasAuthority("CREATE_PRODUCT")
         .anyRequest().authenticated();
 
         // Filtro Custom JWT

@@ -9,8 +9,11 @@ import com.emporio.emporio.security.WebSecurityConfig;
 import com.emporio.emporio.config.RegistrazioneAttivitaForm;
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.CategoriaAttivita;
+import com.emporio.emporio.model.User;
 import com.emporio.emporio.repository.AttivitaRepository;
 import com.emporio.emporio.repository.CategoriaAttivitaRepository;
+import com.emporio.emporio.repository.UserRepository;
+import com.emporio.emporio.dto.ShopAddEmployeeDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +34,9 @@ public class AttivitaController {
 
     @Autowired
     private CategoriaAttivitaRepository categoriaAttivitaRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/shops", method = RequestMethod.POST)
@@ -68,5 +74,32 @@ public class AttivitaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<List<Attivita>>(toReturnShopsList, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = {"*"})
+    @RequestMapping(value = "/shops/employees", method = RequestMethod.PUT)
+    public ResponseEntity<String> addEmployeeToShop(@Valid @RequestBody ShopAddEmployeeDTO addEmployeeDTO) {
+        Optional<User> employeeOptional = userRepository.findByUsername(addEmployeeDTO.getEmployeeUsername());
+        User employee;
+
+        //Controllo se lo username dipendente passato esiste nel sistema
+        if(!employeeOptional.isPresent())
+            return ResponseEntity.badRequest().body("Dipendente non registrato nel sistema");
+
+        employee = employeeOptional.get();
+
+        //Controllo se lo username dipendente passato corrisponde effettivamente ad un dipendente
+        if(!employee.getRole().getName().toLowerCase().equals("dipendente"))
+            return ResponseEntity.badRequest().body("L'utente inserito non è registrato come dipendente nel sistema.");
+        
+        Attivita shop = userRepository.findByUsername(addEmployeeDTO.getOwnerUsername()).get().getShopOwned();
+
+        if(shop.getShopEmployeeList().contains(employee))
+            return ResponseEntity.badRequest().body("Dipendente già presente nell'attività");
+
+        employee.setShopEmployed(shop);
+        userRepository.save(employee);
+
+        return ResponseEntity.ok("modificato");
     }
 }
