@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.emporio.emporio.config.AuthenticationRequest;
+import javax.validation.Valid;
+
+import com.emporio.emporio.dto.AuthenticationRequest;
 import com.emporio.emporio.model.Role;
 import com.emporio.emporio.model.User;
 import com.emporio.emporio.repository.RoleRepository;
@@ -45,7 +47,7 @@ public class AuthenticationController {
 
     @SuppressWarnings("rawtypes")
     @PostMapping("/signin")
-    public ResponseEntity signin(@RequestBody AuthenticationRequest data) {
+    public ResponseEntity signin(@Valid @RequestBody AuthenticationRequest data) {
 
         try {
             String username = data.getUsername();
@@ -63,7 +65,7 @@ public class AuthenticationController {
 
     @SuppressWarnings("rawtypes")
     @PostMapping("/signup")
-    public ResponseEntity signup(@RequestBody AuthenticationRequest data) {
+    public ResponseEntity signup(@Valid @RequestBody AuthenticationRequest data) {
 
         try {
             String username = data.getUsername();

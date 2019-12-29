@@ -1,19 +1,20 @@
 package com.emporio.emporio.controller;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.validation.Valid;
-import com.emporio.emporio.security.WebSecurityConfig;
 import com.emporio.emporio.model.CategoriaProdotto;
 import com.emporio.emporio.repository.CategoriaProdottoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,27 +24,22 @@ public class CategoriaProdottoController {
     @Autowired
     private CategoriaProdottoRepository categoryProductRepository;
 
-    @CrossOrigin(origins = {"*"})
-    @RequestMapping(value = "/categoryProduct", method = RequestMethod.POST)
-    public ResponseEntity<String> insertNewCategoryProduct(@Valid @RequestBody CategoriaProdotto categoryProduct) {
-        if (categoryProductRepository.existsByDescription(categoryProduct.getDescription()))
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    @PostMapping("/categoryProduct")
+    public ResponseEntity<String> insertNewCategoryProduct(@Valid @RequestBody CategoriaProdotto categoryProduct)
+            throws URISyntaxException {
+        if (categoryProductRepository.existsByDescription(categoryProduct.getDescription())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
         categoryProductRepository.save(categoryProduct);
-        String toReturnString = "{"
-        +"'id':'"+categoryProduct.getCategoryId()+"',"
-        +"'url':'"+WebSecurityConfig.appURL + WebSecurityConfig.apiURI + "/categoryProduct/"+ categoryProduct.getCategoryId() + "',"
-        +"'type':'categoryProduct'"
-        +"}";
         
-        return new ResponseEntity<>(toReturnString, HttpStatus.CREATED);
+        return ResponseEntity.created(new URI("/categoryProduct/"+ categoryProduct.getCategoryId())).build();
     }
 
-    
-    @CrossOrigin(origins = {"*"})
-    @RequestMapping(value = "/categoryProduct", method = RequestMethod.GET)
+    @GetMapping("/categoryProduct")
     public ResponseEntity<List<CategoriaProdotto>> getAllCategories() {
         List<CategoriaProdotto> toReturnCategoryProductList = categoryProductRepository.findAll();
 
-        return new ResponseEntity<List<CategoriaProdotto>>(toReturnCategoryProductList, HttpStatus.OK);
+        return ResponseEntity.ok(toReturnCategoryProductList);
     }
 }

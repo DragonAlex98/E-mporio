@@ -1,4 +1,4 @@
-package com.emporio.emporio.config;
+package com.emporio.emporio.security;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

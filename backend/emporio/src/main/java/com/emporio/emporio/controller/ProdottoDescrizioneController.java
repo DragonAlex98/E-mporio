@@ -1,98 +1,81 @@
 package com.emporio.emporio.controller;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
-import com.emporio.emporio.security.WebSecurityConfig;
-import com.emporio.emporio.config.ProductDescriptionForm;
+import com.emporio.emporio.dto.ProductDescriptionDto;
 import com.emporio.emporio.model.CategoriaProdotto;
 import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.repository.CategoriaProdottoRepository;
 import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
 public class ProdottoDescrizioneController {
+    
     @Autowired
     private ProdottoDescrizioneRepository productRepository;
 
     @Autowired
     private CategoriaProdottoRepository productCategoryRepository;
 
-    private static final ProdottoDescrizioneController instance = new ProdottoDescrizioneController();
-
-    //private constructor to avoid client applications to use constructor
-    private ProdottoDescrizioneController() {
-        
-    }
-
-    public static ProdottoDescrizioneController getInstance(){
-        return instance;
-    }
-
-    @CrossOrigin(origins = {"*"})
-    @RequestMapping(value = "/products", method = RequestMethod.POST)
-    public ResponseEntity<String> insertNewProduct(@Valid @RequestBody ProductDescriptionForm product) {
+    @PostMapping("/products")
+    public ResponseEntity<String> insertNewProduct(@Valid @RequestBody ProductDescriptionDto product)
+            throws URISyntaxException {
         if (productRepository.existsByProductName(product.getProductName())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
 
         Optional<CategoriaProdotto> cat = productCategoryRepository.findByDescription(product.getProductCategoryName());
         if (!cat.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
 
         ProdottoDescrizione newProduct = ProdottoDescrizione.builder().productName(product.getProductName()).productCategory(cat.get()).build();
         productRepository.save(newProduct);
-
-        String toReturnString = "{"
-        +"'id':'"+newProduct.getProductId()+"',"
-        +"'url':'"+WebSecurityConfig.appURL + WebSecurityConfig.apiURI + "/products/"+ newProduct.getProductId() + "',"
-        +"'type':'product'"
-        +"}";
         
-        return new ResponseEntity<>(toReturnString, HttpStatus.CREATED);
+        return ResponseEntity.created(new URI("/products/" + newProduct.getProductId())).build();
     }
 
-    @CrossOrigin(origins = {"*"})
-    @RequestMapping(value = "/products/search", method = RequestMethod.GET)
-    public ResponseEntity<List<ProdottoDescrizione>> findProduct(@RequestParam(name = "nome", required = true) String nome) {
+    @GetMapping("/products/search")
+    public ResponseEntity<List<ProdottoDescrizione>> findProduct(@NotBlank @RequestParam(name = "nome", required = true) String nome) {
         
-        if(nome == "")
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
         List<ProdottoDescrizione> toReturnProductsList = productRepository.findByProductNameContaining(nome);
 
-        if(toReturnProductsList.isEmpty())
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(toReturnProductsList.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
 
-        return new ResponseEntity<List<ProdottoDescrizione>>(toReturnProductsList, HttpStatus.OK);
+        return ResponseEntity.ok(toReturnProductsList);
     }
 
-
-    @CrossOrigin(origins = {"*"})
-    @RequestMapping(value = "/products", method = RequestMethod.GET)
+    @GetMapping("/products")
     public ResponseEntity<List<ProdottoDescrizione>> getAllProducts() {
-        List<ProdottoDescrizione> toReturnProductList = productRepository.findAll();
+        List<ProdottoDescrizione> toReturnProductsList = productRepository.findAll();
 
-        return new ResponseEntity<List<ProdottoDescrizione>>(toReturnProductList, HttpStatus.OK);
+        return ResponseEntity.ok(toReturnProductsList);
     }
 
-    @CrossOrigin(origins = {"*"})
-    @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Optional<ProdottoDescrizione>> getProductById(Integer id) {
-        return new ResponseEntity<Optional<ProdottoDescrizione>>(productRepository.findById(id), HttpStatus.OK);
+    @GetMapping("/products/{id}")
+    public ResponseEntity<Optional<ProdottoDescrizione>> getProductById(@Valid @Type(value = Integer.class) @PathVariable(name = "id", required = true) Integer id) {
+        Optional<ProdottoDescrizione> product = productRepository.findById(id);
+
+        return (product.isPresent()) ? ResponseEntity.ok(product) : ResponseEntity.notFound().build();
     }
 }
