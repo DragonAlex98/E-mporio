@@ -49,14 +49,20 @@ public class OrdineController {
 
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
     public ResponseEntity<Ordine> createNewOrder(@Valid @RequestBody OrdineDto newOrdine) {
+
+        Attivita shop = userRepo.findByUsername(newOrdine.getEmployeeUsername()).get().getShopEmployed();
+        
+        if(shop == null)
+            return ResponseEntity.badRequest().body(null);
+
         //Check dei valori inseriti:
         //controllo che i prodotti inseriti esistano e se così fosse recupero le loro istanze dal db.
         for(RigaOrdineProdotto line : newOrdine.getProductsList()) {
-            if(!productDescriptionRepository.exists(Example.of(line.getProduct())))
+            if(!shop.getCatalog().getProducts().contains(line.getProduct()))
             {
                 return ResponseEntity.badRequest().body(null);
             }
-            line.setProduct(productDescriptionRepository.findOne(Example.of(line.getProduct())).get());
+            line.setProduct(shop.getCatalog().getProducts().stream().filter(name -> name.getProductName().equals(line.getProduct().getProductName())).findFirst().get());
         }
 
         Optional<User> customer = userRepo.findByUsername(newOrdine.getCustomerUsername());
@@ -64,17 +70,12 @@ public class OrdineController {
         if(!customer.isPresent())
             return ResponseEntity.badRequest().body(null);
 
-        Attivita shop = userRepo.findByUsername(newOrdine.getEmployeeUsername()).get().getShopEmployed();
-
-        if(shop == null)
-            return ResponseEntity.badRequest().body(null);
 
         Ordine order = orderRepository.save(Ordine.builder()
                             .orderCustomer(customer.get())
                             .orderShop(shop)
                             .parkingAddress(newOrdine.getCarPosition())
                             .orderProductsLineList(newOrdine.getProductsList())
-                            .status(OrderStatus.DA_RITIRARE)
                             .build());
 
         order.getOrderProductsLineList().stream().forEach(item -> {

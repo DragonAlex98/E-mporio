@@ -33,10 +33,6 @@ public class Ordine {
     @Column(name = "Id")
     @JsonIgnore
     private Long orderId;
-
-    @Column(name = "Status")
-    @Builder.Default
-    private OrderStatus status = OrderStatus.DA_RITIRARE; 
     
     @Column
     private String parkingAddress;
