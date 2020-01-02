@@ -49,6 +49,7 @@ public class Ordine {
     private List<RigaOrdineProdotto> orderProductsLineList;
 
     @OneToOne
+    @JoinColumn(name = "consegna_id", referencedColumnName = "idConsegna")
     @JsonIgnore
     private Consegna orderConsegna;
 }
