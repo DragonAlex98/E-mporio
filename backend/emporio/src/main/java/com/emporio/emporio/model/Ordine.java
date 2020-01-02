@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.emporio.emporio.util.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
@@ -33,7 +32,6 @@ public class Ordine {
     @Column(name = "Id")
     @JsonIgnore
     private Long orderId;
-    
     @Column
     private String parkingAddress;
     
