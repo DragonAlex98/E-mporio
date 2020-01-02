@@ -17,7 +17,6 @@ import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
 import com.emporio.emporio.repository.RigaOrdineProdottoRepository;
 import com.emporio.emporio.repository.UserRepository;
 import com.emporio.emporio.security.WebSecurityConfig;
-import com.emporio.emporio.util.OrderStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;

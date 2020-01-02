@@ -32,6 +32,7 @@ public class Ordine {
     @Column(name = "Id")
     @JsonIgnore
     private Long orderId;
+    
     @Column
     private String parkingAddress;
     
