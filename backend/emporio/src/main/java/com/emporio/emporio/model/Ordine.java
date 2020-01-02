@@ -7,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.emporio.emporio.util.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -29,10 +28,6 @@ public class Ordine {
     @JsonIgnore
     private int orderId;
 
-    @Column(name = "Status")
-    @Builder.Default
-    private OrderStatus status = OrderStatus.DA_RITIRARE; 
-    
     @Column
     private String parkingAddress;
 }
