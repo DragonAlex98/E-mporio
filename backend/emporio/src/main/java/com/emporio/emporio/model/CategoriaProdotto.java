@@ -31,7 +31,7 @@ public class CategoriaProdotto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     @JsonIgnore
-    private int categoryId;
+    private Integer categoryId;
 
     @Column(name = "Descrizione_Categoria_Prodotto")
     @NotBlank(message = "La descrizione non puo essere vuota")

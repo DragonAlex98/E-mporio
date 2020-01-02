@@ -1,6 +1,7 @@
 package com.emporio.emporio.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.emporio.emporio.model.ProdottoDescrizione;
 
@@ -14,5 +15,7 @@ public interface ProdottoDescrizioneRepository extends JpaRepository<ProdottoDes
     boolean existsByProductName(String nome);
 
     List<ProdottoDescrizione> findByProductNameContaining(String name);
+
+    Optional<ProdottoDescrizione> findByProductName(String name);
    
 }
