@@ -21,6 +21,9 @@ import com.emporio.emporio.dto.ShopAddEmployeeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -115,5 +118,26 @@ public class AttivitaController {
         userRepository.save(employee);
 
         return ResponseEntity.ok("Aggiunto dipendente");
+    }
+
+    @DeleteMapping("/shops")
+    public ResponseEntity<String> deleteAttivita(@AuthenticationPrincipal UserDetails userDetails) {
+        Optional<User> optionalUser = userRepository.findByUsername(userDetails.getUsername());
+        if (!optionalUser.isPresent()) {
+            return ResponseEntity.badRequest().body("Utente non trovato");
+        }
+
+        User user = optionalUser.get();
+
+        Attivita shop = user.getShopOwned();
+        if (shop == null) {
+            return ResponseEntity.badRequest().body("Il titolare non ha alcuna attività a lui associata");
+        }
+
+        user.setShopOwned(null);
+        userRepository.save(user);
+
+        attivitaRepository.deleteById(shop.getShopPIVA());
+        return ResponseEntity.ok().build();
     }
 }
