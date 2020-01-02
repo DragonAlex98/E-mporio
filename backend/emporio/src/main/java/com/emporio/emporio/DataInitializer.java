@@ -137,12 +137,26 @@ public class DataInitializer implements CommandLineRunner {
 
         this.shops.save(s1);
 
-        
+        this.users.save(User.builder()
+            .username("aldo")
+            .password("aldo66")
+            .role(this.roles.findByName("Acquirente").get())
+            .build()
+        );
+
+        this.users.save(User.builder()
+            .username("giovanni")
+            .password("giovanni22")
+            .role(this.roles.findByName("Dipendente").get())
+            .shopEmployed(s1)
+            .build()
+        );
 
         this.users.save(User.builder()
             .username("dino")
             .password("dino88")
             .role(this.roles.findByName("Titolare").get())
+            .shopEmployed(s1)
             .shopOwned(s1)
             .build()
         );

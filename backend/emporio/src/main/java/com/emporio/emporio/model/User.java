@@ -58,7 +58,7 @@ public class User implements UserDetails {
     @JsonIgnore
     private Attivita shopOwned;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_shop_employed_id", nullable = true)
     @JsonIgnore
     private Attivita shopEmployed;

@@ -106,6 +106,7 @@ public class AttivitaController {
             return ResponseEntity.badRequest().body("Il titolare non ha alcuna attività a lui associata");
         }
 
+        //TODO Modificare controllare se ha associato un generico shop!
         //Controllo se il dipendente passato è già stato inserito nell'attività
         if(shop.getShopEmployeeList().contains(employee)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Il dipendente è già inserito nell'attività");
