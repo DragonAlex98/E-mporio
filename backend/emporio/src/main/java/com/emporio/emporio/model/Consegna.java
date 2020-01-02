@@ -29,12 +29,9 @@ public class Consegna {
     @NotBlank
     private StatoConsegna statoConsegna;
 
-    @Column(name = "Ordine")
-    @NotBlank
-    @OneToOne
+    @OneToOne(mappedBy = "orderConsegna")
     private Ordine ordine;
 
-    @Column(name = "Fattorino")
     @OneToOne
     private User fattorino;
 

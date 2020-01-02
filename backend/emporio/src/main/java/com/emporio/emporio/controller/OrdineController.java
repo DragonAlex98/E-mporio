@@ -9,7 +9,6 @@ import com.emporio.emporio.dto.OrdineDto;
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.ChiaveRigaOrdineProdotto;
 import com.emporio.emporio.model.Ordine;
-import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.model.RigaOrdineProdotto;
 import com.emporio.emporio.model.User;
 import com.emporio.emporio.repository.OrdineRepository;
@@ -20,9 +19,7 @@ import com.emporio.emporio.security.WebSecurityConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,11 +54,12 @@ public class OrdineController {
         //Check dei valori inseriti:
         //controllo che i prodotti inseriti esistano e se così fosse recupero le loro istanze dal db.
         for(RigaOrdineProdotto line : newOrdine.getProductsList()) {
-            if(!shop.getCatalog().getProducts().contains(line.getProduct()))
+            if(!productDescriptionRepository.exists(Example.of(line.getProduct())))
             {
                 return ResponseEntity.badRequest().body(null);
             }
-            line.setProduct(shop.getCatalog().getProducts().stream().filter(name -> name.getProductName().equals(line.getProduct().getProductName())).findFirst().get());
+            line.setProduct(productDescriptionRepository.findOne(Example.of(line.getProduct())).get());
+            //line.setProduct(shop.getCatalog().getProducts().stream().filter(name -> name.getProductName().equals(line.getProduct().getProductName())).findFirst().get());
         }
 
         Optional<User> customer = userRepo.findByUsername(newOrdine.getCustomerUsername());
