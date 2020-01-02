@@ -107,7 +107,7 @@ public class DataInitializer implements CommandLineRunner {
 
         this.users.save(User.builder()
             .username("alberto")
-            .password("albertino55")
+            .password(this.passwordEncoder.encode("albertino55"))
             .role(this.roles.findByName("Dipendente").get())
             .build()
         );
@@ -154,7 +154,7 @@ public class DataInitializer implements CommandLineRunner {
 
         this.users.save(User.builder()
             .username("dino")
-            .password("dino88")
+            .password(this.passwordEncoder.encode("dino88"))
             .role(this.roles.findByName("Titolare").get())
             .shopEmployed(s1)
             .shopOwned(s1)
