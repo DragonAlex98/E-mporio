@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +34,7 @@ public class Locker {
     @Column(name = "Address")
     private String address;
 
-    @OneToMany(mappedBy = "locker")
+    @OneToMany(mappedBy = "locker", fetch = FetchType.LAZY)
     private List<Posto> posti;
 
 }

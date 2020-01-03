@@ -180,9 +180,14 @@ public class DataInitializer implements CommandLineRunner {
 
         this.shops.save(s2);
 
-        ProdottoDescrizione pAM = this.products.findById(1).orElseThrow(null);
+/*         ProdottoDescrizione pAM = this.products.findById(1).orElseThrow(null);
         pAM.setProductName("biscotti integrali");
-        this.products.save(pAM);
+        this.products.save(pAM); */
+
+        Locker locker1 = lockerRepository.save(Locker.builder().address("Via Alfreditica, 15").build());
+        Posto posto1 = postoRepository.save(Posto.builder().nomePosto("A1").locker(locker1).build());
+        Posto posto2 = postoRepository.save(Posto.builder().nomePosto("A2").locker(locker1).build());
+        Posto posto3 = postoRepository.save(Posto.builder().nomePosto("A3").locker(locker1).build());
 
     }
 

@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,15 +32,14 @@ public class Posto {
     private int postoId;
 
     @Column
-    private boolean isEmpty;
+    private String nomePosto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Locker", nullable = false)
-    @NotBlank
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "Locker", nullable = true)
     private Locker locker;
 
     @OneToOne
-    @JoinColumn(name = "consegna_id", referencedColumnName = "idConsegna")
+    @JoinColumn(name = "consegna_id", referencedColumnName = "idConsegna", nullable = true)
     private Consegna consegna;
 
 
