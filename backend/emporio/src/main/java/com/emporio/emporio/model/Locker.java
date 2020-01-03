@@ -1,8 +1,16 @@
 package com.emporio.emporio.model;
 
-import java.util.Map;
+import java.util.List;
 
-import com.emporio.emporio.model.Consegna;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,17 +21,19 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "locker")
 public class Locker {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "LockerId")
+    private int lockerId;
+
+    @Column(name = "Address")
     private String address;
-    private Map<Posto,Consegna> content;
-    private int postiLiberi;
 
-    public int getPostiLiberi(){
-
-        content.forEach((posto,consegna) -> { if (posto.isEmpty()) this.postiLiberi++; });
-        return postiLiberi;
-
-    }
+    @OneToMany(mappedBy = "locker")
+    private List<Posto> posti;
 
 }

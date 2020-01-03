@@ -9,6 +9,8 @@ import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.CategoriaAttivita;
 import com.emporio.emporio.model.CategoriaProdotto;
+import com.emporio.emporio.model.Locker;
+import com.emporio.emporio.model.Posto;
 import com.emporio.emporio.model.Privilege;
 import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.model.Role;
@@ -17,6 +19,8 @@ import com.emporio.emporio.repository.AttivitaRepository;
 import com.emporio.emporio.repository.CatalogoRepository;
 import com.emporio.emporio.repository.CategoriaAttivitaRepository;
 import com.emporio.emporio.repository.CategoriaProdottoRepository;
+import com.emporio.emporio.repository.LockerRepository;
+import com.emporio.emporio.repository.PostoRepository;
 import com.emporio.emporio.repository.PrivilegeRepository;
 import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
 import com.emporio.emporio.repository.RoleRepository;
@@ -56,6 +60,12 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     CategoriaAttivitaRepository shopCategory;
+
+    @Autowired
+    PostoRepository postoRepository;
+
+    @Autowired
+    LockerRepository lockerRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -173,5 +183,7 @@ public class DataInitializer implements CommandLineRunner {
         ProdottoDescrizione pAM = this.products.findById(1).orElseThrow(null);
         pAM.setProductName("biscotti integrali");
         this.products.save(pAM);
+
     }
+
 }
