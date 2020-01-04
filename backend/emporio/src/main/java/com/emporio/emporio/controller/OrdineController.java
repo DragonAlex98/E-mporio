@@ -81,6 +81,6 @@ public class OrdineController {
             orderProductLineRepo.save(item);
         });
 
-        return ResponseEntity.created(URI.create(WebSecurityConfig.apiURI + "/orders/" + order.getOrderId())).body(order);
+        return ResponseEntity.created(URI.create("/orders/" + order.getOrderId())).body(order);
     }
 }
