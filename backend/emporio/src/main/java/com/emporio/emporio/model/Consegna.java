@@ -24,7 +24,6 @@ public class Consegna {
     
     @Id
     @Column(name = "IdConsegna")
-    @NotBlank
     private int idConsegna;
 
     @Enumerated(EnumType.STRING)
