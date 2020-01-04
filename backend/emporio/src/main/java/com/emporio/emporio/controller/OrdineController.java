@@ -95,8 +95,9 @@ public class OrdineController {
 
     @GetMapping(value="/orders/state/not-assigned")
     public ResponseEntity<List<OrdineGetDto>> getAllNotAssignedOrders() {
-        List<OrdineGetDto> ordersList = orderRepository.findAll(Example.of(Ordine.builder().orderConsegna(null).build()))
+        List<OrdineGetDto> ordersList = orderRepository.findAll()
                                                  .stream()
+                                                 .filter(c -> c.getOrderConsegna()==null)
                                                  .map(OrdineGetDto::parseOrdineToOrdineGetDto)
                                                  .collect(Collectors.toList());
 
