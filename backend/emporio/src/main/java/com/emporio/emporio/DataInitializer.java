@@ -9,10 +9,13 @@ import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.CategoriaAttivita;
 import com.emporio.emporio.model.CategoriaProdotto;
+import com.emporio.emporio.model.ChiaveRigaOrdineProdotto;
 import com.emporio.emporio.model.Locker;
+import com.emporio.emporio.model.Ordine;
 import com.emporio.emporio.model.Posto;
 import com.emporio.emporio.model.Privilege;
 import com.emporio.emporio.model.ProdottoDescrizione;
+import com.emporio.emporio.model.RigaOrdineProdotto;
 import com.emporio.emporio.model.Role;
 import com.emporio.emporio.model.User;
 import com.emporio.emporio.repository.AttivitaRepository;
@@ -20,9 +23,11 @@ import com.emporio.emporio.repository.CatalogoRepository;
 import com.emporio.emporio.repository.CategoriaAttivitaRepository;
 import com.emporio.emporio.repository.CategoriaProdottoRepository;
 import com.emporio.emporio.repository.LockerRepository;
+import com.emporio.emporio.repository.OrdineRepository;
 import com.emporio.emporio.repository.PostoRepository;
 import com.emporio.emporio.repository.PrivilegeRepository;
 import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
+import com.emporio.emporio.repository.RigaOrdineProdottoRepository;
 import com.emporio.emporio.repository.RoleRepository;
 import com.emporio.emporio.repository.UserRepository;
 
@@ -66,6 +71,12 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     LockerRepository lockerRepository;
+
+    @Autowired
+    private OrdineRepository orderRepository;
+
+    @Autowired
+    private RigaOrdineProdottoRepository orderProdLineRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -180,15 +191,67 @@ public class DataInitializer implements CommandLineRunner {
 
         this.shops.save(s2);
 
-/*         ProdottoDescrizione pAM = this.products.findById(1).orElseThrow(null);
+        ProdottoDescrizione pAM = this.products.findById(1).orElseThrow(null);
         pAM.setProductName("biscotti integrali");
-        this.products.save(pAM); */
+        this.products.save(pAM);
 
         Locker locker1 = lockerRepository.save(Locker.builder().address("Via Alfreditica, 15").build());
         Posto posto1 = postoRepository.save(Posto.builder().nomePosto("A1").locker(locker1).build());
         Posto posto2 = postoRepository.save(Posto.builder().nomePosto("A2").locker(locker1).build());
         Posto posto3 = postoRepository.save(Posto.builder().nomePosto("A3").locker(locker1).build());
 
+        Ordine order1 = orderRepository.save(Ordine.builder()
+                            .orderCustomer(users.findByUsername("aldo").get())
+                            .orderShop(s1)
+                            .parkingAddress("Via Aldo Moro, 8")
+                            .build());
+
+        RigaOrdineProdotto orderLine1 = this.orderProdLineRepository.save(RigaOrdineProdotto.builder()
+                                                                                            .id(ChiaveRigaOrdineProdotto.builder()
+                                                                                                                        .orderId(order1.getOrderId())
+                                                                                                                        .productId(pA.getProductId())
+                                                                                                                        .build())
+                                                                                            .order(order1)
+                                                                                            .product(pA)
+                                                                                            .quantity(8)
+                                                                                            .build());
+
+        RigaOrdineProdotto orderLine2 = this.orderProdLineRepository.save(RigaOrdineProdotto.builder()
+                                                                                            .id(ChiaveRigaOrdineProdotto.builder()
+                                                                                                                        .orderId(order1.getOrderId())
+                                                                                                                        .productId(pB.getProductId())
+                                                                                                                        .build())
+                                                                                            .order(order1)
+                                                                                            .product(pB)
+                                                                                            .quantity(2)
+                                                                                            .build());
+
+        List<RigaOrdineProdotto> productsList = new ArrayList<>();
+        productsList.add(orderLine1);
+        productsList.add(orderLine2);
+
+        order1.setOrderProductsLineList(productsList);
+
+        Ordine order2 = orderRepository.save(Ordine.builder()
+                            .orderCustomer(users.findByUsername("aldo").get())
+                            .orderShop(s2)
+                            .parkingAddress("Via Aldo Moro, 8")
+                            .build());
+
+        RigaOrdineProdotto orderLine3 = this.orderProdLineRepository.save(RigaOrdineProdotto.builder()
+                                                                                            .id(ChiaveRigaOrdineProdotto.builder()
+                                                                                                                        .orderId(order2.getOrderId())
+                                                                                                                        .productId(pC.getProductId())
+                                                                                                                        .build())
+                                                                                            .order(order2)
+                                                                                            .product(pC)
+                                                                                            .quantity(11)
+                                                                                            .build());
+
+        productsList.clear();
+        productsList.add(orderLine3);
+
+        order1.setOrderProductsLineList(productsList);
     }
 
 }

@@ -33,7 +33,6 @@ public class ProdottoDescrizione {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
-    @JsonIgnore
     private Integer productId;
 
     @Column(name = "Nome")
