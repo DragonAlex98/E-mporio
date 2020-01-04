@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,6 +34,7 @@ public class Locker {
     @Column(name = "Address")
     private String address;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "locker", fetch = FetchType.LAZY)
     private List<Posto> posti;
 
