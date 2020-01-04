@@ -10,6 +10,7 @@ import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.CategoriaAttivita;
 import com.emporio.emporio.model.CategoriaProdotto;
 import com.emporio.emporio.model.ChiaveRigaOrdineProdotto;
+import com.emporio.emporio.model.Consegna;
 import com.emporio.emporio.model.Locker;
 import com.emporio.emporio.model.Ordine;
 import com.emporio.emporio.model.Posto;
@@ -17,11 +18,13 @@ import com.emporio.emporio.model.Privilege;
 import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.model.RigaOrdineProdotto;
 import com.emporio.emporio.model.Role;
+import com.emporio.emporio.model.StatoConsegna;
 import com.emporio.emporio.model.User;
 import com.emporio.emporio.repository.AttivitaRepository;
 import com.emporio.emporio.repository.CatalogoRepository;
 import com.emporio.emporio.repository.CategoriaAttivitaRepository;
 import com.emporio.emporio.repository.CategoriaProdottoRepository;
+import com.emporio.emporio.repository.ConsegnaRepository;
 import com.emporio.emporio.repository.LockerRepository;
 import com.emporio.emporio.repository.OrdineRepository;
 import com.emporio.emporio.repository.PostoRepository;
@@ -78,6 +81,9 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private RigaOrdineProdottoRepository orderProdLineRepository;
 
+    @Autowired
+    private ConsegnaRepository consegnaRepository;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -132,6 +138,14 @@ public class DataInitializer implements CommandLineRunner {
             .role(this.roles.findByName("Dipendente").get())
             .build()
         );
+
+       User fattorino1 = this.users.save(User.builder()
+            .username("diocleziano")
+            .password(this.passwordEncoder.encode("bof55"))
+            .role(this.roles.findByName("fattorino").get())
+            .build()
+        );
+
 
         CategoriaProdotto cat1 = CategoriaProdotto.builder().description("cibo").build();
         CategoriaProdotto cat2 = CategoriaProdotto.builder().description("utensili").build();
@@ -191,9 +205,9 @@ public class DataInitializer implements CommandLineRunner {
 
         this.shops.save(s2);
 
-        ProdottoDescrizione pAM = this.products.findById(1).orElseThrow(null);
+/*         ProdottoDescrizione pAM = this.products.findById(1).orElseThrow(null);
         pAM.setProductName("biscotti integrali");
-        this.products.save(pAM);
+        this.products.save(pAM); */
 
         Locker locker1 = lockerRepository.save(Locker.builder().address("Via Alfreditica, 15").build());
         Posto posto1 = postoRepository.save(Posto.builder().nomePosto("A1").locker(locker1).build());
@@ -251,7 +265,10 @@ public class DataInitializer implements CommandLineRunner {
         productsList.clear();
         productsList.add(orderLine3);
 
-        order1.setOrderProductsLineList(productsList);
+        order2.setOrderProductsLineList(productsList);
+
+        Consegna consegna1 = consegnaRepository.save(Consegna.builder().ordine(order1).fattorino(fattorino1)
+                                                .statoConsegna(StatoConsegna.RITIRATA).build());
     }
 
 }
