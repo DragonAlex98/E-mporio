@@ -6,6 +6,8 @@ import { User } from '@src/app/authentication/models/user';
 import { Role } from '@src/app/authentication/models/role';
 import { Order } from '../Order';
 import { Shop } from '@src/app/shop/shop/shop';
+import { OrderService } from '../order.service';
+import { AuthenticationService } from '@src/app/authentication/services/authentication.service';
 
 @Component({
   selector: 'app-order-form',
@@ -18,25 +20,22 @@ export class OrderFormComponent implements OnInit {
     customerName: new FormControl(''),
     customerCarPosition: new FormControl('')
   });
-  usersList: User[] = [];
   shop: Shop;
   dataSource: OrderProductTableDataSource;
 
   productList: Product[];
 
-  constructor() { }
+  constructor(private service: OrderService, private authService: AuthenticationService) { }
 
   ngOnInit() {
     this.dataSource = new OrderProductTableDataSource();
-    const u1 = new User(1, 'alfredino91', 'password', Role.Acquirente);
-    this.usersList.push(u1);
   }
 
   addOrder() {
-    const user = this.usersList.find(item => item.username === this.customerFormGroup.value.customerName);
-    this.shop = new Shop('p111', 'via alfredo alfredini', 'Stonks s.r.l', 81, 'Macerata');
-    this.order = new Order(user, this.customerFormGroup.value.customerCarPosition, this.shop, this.dataSource.data);
-    console.log(this.order);
+    this.service.addOrder(this.customerFormGroup.value.customerName,
+      this.authService.currentUserValue.username,
+      this.customerFormGroup.value.customerCarPosition,
+      this.dataSource.data).subscribe();
   }
 
 }

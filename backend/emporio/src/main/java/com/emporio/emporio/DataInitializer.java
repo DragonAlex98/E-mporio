@@ -269,6 +269,9 @@ public class DataInitializer implements CommandLineRunner {
 
         Consegna consegna1 = consegnaRepository.save(Consegna.builder().ordine(order1).fattorino(fattorino1)
                                                 .statoConsegna(StatoConsegna.RITIRATA).build());
+        
+       order1.setOrderConsegna(consegna1);
+       orderRepository.save(order1);
     }
 
 }

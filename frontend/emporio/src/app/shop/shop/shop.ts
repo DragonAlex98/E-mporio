@@ -1,3 +1,6 @@
+import { Adapter } from '../../adapter';
+import { Injectable } from '@angular/core';
+
 export class Shop {
 
     shopPIVA: string;
@@ -12,5 +15,14 @@ export class Shop {
         this.shopBusinessName = shopBusinessName;
         this.shopCategory = shopCategory;
         this.shopHeadquarter = shopHeadquarter;
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ShopAdapter implements Adapter<Shop> {
+    adapt(item: any): Shop {
+        return new Shop(item.pIva, item.add, item.bus, item.cat, item.ss);
     }
 }
