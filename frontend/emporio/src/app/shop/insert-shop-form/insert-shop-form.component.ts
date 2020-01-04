@@ -19,4 +19,8 @@ export class InsertShopFormComponent implements OnInit {
   ngOnInit() {
   }
 
+  onSubmit(formValue) {
+    return null;
+  }
+
 }

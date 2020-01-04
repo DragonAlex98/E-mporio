@@ -9,6 +9,7 @@ import { MaterialModule } from '../material/material.module';
 import { InsertShopComponent } from '@src/app/shop/insert-shop/insert-shop.component';
 import { InsertShopFormComponent } from '@src/app/shop/insert-shop-form/insert-shop-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AddEmployeeComponent } from '@src/app/shop/add-employee/add-employee.component';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SearchShopComponent,
     InsertShopComponent,
     InsertShopFormComponent,
+    AddEmployeeComponent,
   ],
   imports: [
     CommonModule,

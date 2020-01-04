@@ -1,0 +1,25 @@
+<span class="fill-remaining-space"></span>
+<mat-grid-list [cols]=4 rowHeight="400px">
+    <mat-grid-tile [rowspan]=1 [colspan]=1>
+
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]=1 [colspan]=2>
+        <div class="controles-container">
+            <mat-card>
+            <form [formGroup]="addEmployeeForm" (ngSubmit)="onSubmit(addEmployeeForm.value)">
+            <div class="registration-form-container">
+            <mat-form-field>
+                <input matInput placeholder="Username Dipendente" formControlName="employeeUsername" required>
+            </mat-form-field>
+
+            <button mat-raised-button color="accent">Aggiungi</button>
+            </div>
+        </form>
+        </mat-card>
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]=1 [colspan]=1>
+
+    </mat-grid-tile>
+</mat-grid-list>
+<span class="fill-remaining-space"></span>
