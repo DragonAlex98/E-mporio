@@ -2,10 +2,10 @@
  <mat-sidenav #drawer class="sidenav" mode="over" [(opened)]="opened" (opened)="events.push('open!')" (closed)="events.push('close!')">  
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="/new-product"><mat-icon>add</mat-icon> Nuovo Prodotto</a>
-      <a mat-list-item href="/new-shop"><mat-icon>add</mat-icon> Nuova Attività</a>
-      <a mat-list-item href="/new-order"><mat-icon>add_shopping_cart</mat-icon> Nuovo Ordine</a>
-      <a mat-list-item href="#">Link 3</a>
+      <a mat-list-item [routerLink]="['/new-product']"><mat-icon>add</mat-icon> Nuovo Prodotto</a>
+      <a mat-list-item [routerLink]="['/new-shop']"><mat-icon>add</mat-icon> Nuova Attività</a>
+      <a mat-list-item [routerLink]="['/new-order']"><mat-icon>add_shopping_cart</mat-icon> Nuovo Ordine</a>
+      <a mat-list-item [routerLink]="['#']">Link 3</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -13,11 +13,11 @@
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <a mat-button href="/home"><mat-icon>home</mat-icon> Emporio</a>
+      <a mat-button [routerLink]="['/home']"><mat-icon>home</mat-icon> Emporio</a>
     <button mat-button [matMenuTriggerFor]="productMenu">Prodotto</button>
     <mat-menu #productMenu="matMenu">
-      <a mat-menu-item href="/crea-prodotto">Nuovo Prodotto</a>
-      <a mat-menu-item href="/product/search">Cerca Prodotto</a>
+      <a mat-menu-item [routerLink]="['/crea-prodotto']">Nuovo Prodotto</a>
+      <a mat-menu-item [routerLink]="['/product/search']">Cerca Prodotto</a>
     </mat-menu>
     <button mat-button [matMenuTriggerFor]="shopMenu">Attività</button>
     <mat-menu #shopMenu="matMenu">
@@ -26,8 +26,8 @@
     </mat-menu>
     <span class="login-space"></span>
     <app-search-bar></app-search-bar>
-    <a *ngIf="currentUser === null" mat-button href="/login">Log In</a>
-    <a *ngIf="currentUser === null" mat-button href="/registration">Registrati</a>
+    <a *ngIf="currentUser === null" mat-button [routerLink]="['/login']">Log In</a>
+    <a *ngIf="currentUser === null" mat-button [routerLink]="['/registration']">Registrati</a>
     <a *ngIf="currentUser != null" mat-button (click)="logout()">Log Out</a>
     </mat-toolbar>
     <ng-content></ng-content>
