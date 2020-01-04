@@ -21,9 +21,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public static final String appURL = "http://localhost:8000";
-    public static final String apiURI = "/api/v1";
-
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
@@ -64,6 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/auth/signin").permitAll()
         .antMatchers("/auth/signup").permitAll()
         .antMatchers("/api/v1/**").permitAll()
+        .antMatchers("/app/**").permitAll()
         //.antMatchers(HttpMethod.GET, "/api/v1/products*").permitAll()
         // commentato .antMatchers(HttpMethod.POST, "/api/v1/products*").hasRole("TITOLARE")
         //.antMatchers(HttpMethod.POST, "/api/v1/products*").hasAuthority("CREATE_PRODUCT")
