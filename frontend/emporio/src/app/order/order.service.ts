@@ -16,7 +16,7 @@ export class OrderService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  apiOrderUrl = `${environment.apiUrl}${environment.apiUri}/orders`;
+  apiOrderUrl = `${environment.apiUrl}/orders`;
 
   addOrder(customerUsername: string,
     employeeUsername: string,
