@@ -27,7 +27,7 @@ import com.emporio.emporio.repository.UserRepository;
 import com.emporio.emporio.security.JwtTokenProvider;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1")
 public class AuthenticationController {
 
     @Autowired
@@ -46,7 +46,7 @@ public class AuthenticationController {
     PasswordEncoder passwordEncoder;
 
     @SuppressWarnings("rawtypes")
-    @PostMapping("/signin")
+    @PostMapping("/auth/signin")
     public ResponseEntity signin(@Valid @RequestBody AuthenticationRequest data) {
 
         try {
@@ -66,7 +66,7 @@ public class AuthenticationController {
     }
 
     @SuppressWarnings("rawtypes")
-    @PostMapping("/signup")
+    @PostMapping("/auth/signup")
     public ResponseEntity signup(@Valid @RequestBody AuthenticationRequest data) {
 
         try {

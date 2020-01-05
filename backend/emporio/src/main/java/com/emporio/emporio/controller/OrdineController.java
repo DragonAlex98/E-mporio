@@ -1,11 +1,17 @@
 package com.emporio.emporio.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.emporio.emporio.dto.AttivitaGetDto;
 import com.emporio.emporio.dto.OrdineDto;
+import com.emporio.emporio.dto.OrdineGetDto;
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.ChiaveRigaOrdineProdotto;
 import com.emporio.emporio.model.Ordine;
@@ -24,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 //TODO Da terminare, verificare prima come rappresentare la lista di podotti nell'ordine
@@ -81,6 +90,18 @@ public class OrdineController {
             orderProductLineRepo.save(item);
         });
 
-        return ResponseEntity.created(URI.create(WebSecurityConfig.apiURI + "/orders/" + order.getOrderId())).body(order);
+        return ResponseEntity.created(URI.create("/orders/" + order.getOrderId())).body(order);
     }
+
+    @GetMapping(value="/orders/state/not-assigned")
+    public ResponseEntity<List<OrdineGetDto>> getAllNotAssignedOrders() {
+        List<OrdineGetDto> ordersList = orderRepository.findAll()
+                                                 .stream()
+                                                 .filter(c -> c.getOrderConsegna()==null)
+                                                 .map(OrdineGetDto::parseOrdineToOrdineGetDto)
+                                                 .collect(Collectors.toList());
+
+        return ResponseEntity.ok(ordersList);
+    }
+    
 }
