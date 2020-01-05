@@ -11,5 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface OrdineRepository extends JpaRepository<Ordine, Integer> {
    
     Optional<Ordine> findByOrderId(Long id);
+    
+    boolean existsOrdineByOrderId(Long id);
 
 }
