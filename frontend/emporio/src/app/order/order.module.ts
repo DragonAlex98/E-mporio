@@ -11,11 +11,12 @@ import { OrderProductTableComponent } from '@src/app/order/order-product-table/o
 import { PhantomPageComponent } from '@src/app/order/phantom-page/phantom-page.component';
 import { MatIconModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { OrderToDeliveryComponent } from '@src/app/order/order-to-delivery/order-to-delivery.component';
 
 
 
 @NgModule({
-  declarations: [OrderFormComponent, OrderProductTableComponent, PhantomPageComponent, OrderProductListComponent],
+  declarations: [OrderFormComponent, OrderProductTableComponent, PhantomPageComponent, OrderProductListComponent, OrderToDeliveryComponent],
   imports: [
     MaterialModule,
     CommonModule,

@@ -31,4 +31,10 @@ export class OrderService {
     console.log(body);
     return this.httpClient.post<Order>(this.apiOrderUrl, JSON.stringify(body), this.httpOptions);
   }
+
+  getOrdersToDelivery(): Observable<Order[]> {
+
+    return this.httpClient.get<Order[]>(this.apiOrderUrl + '/state/not-assigned');
+
+  }
 }
