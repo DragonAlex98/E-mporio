@@ -174,14 +174,14 @@ public class DataInitializer implements CommandLineRunner {
 
         this.users.save(User.builder()
             .username("aldo")
-            .password("aldo66")
+            .password(this.passwordEncoder.encode("aldo66"))
             .role(this.roles.findByName("Acquirente").get())
             .build()
         );
 
         this.users.save(User.builder()
             .username("giovanni")
-            .password("giovanni22")
+            .password(this.passwordEncoder.encode("giovanni22"))
             .role(this.roles.findByName("Dipendente").get())
             .shopEmployed(s1)
             .build()
@@ -272,6 +272,25 @@ public class DataInitializer implements CommandLineRunner {
         
        order1.setOrderConsegna(consegna1);
        orderRepository.save(order1);
+
+        Attivita s3 = Attivita.builder().shopPIVA("ghi789").shopBusinessName("La Latteria").shopAddress("Via codesta 3").shopHeadquarter("Palermo").shopCategory(catA1).build();
+
+        Catalogo c3 = Catalogo.builder().build();
+
+        c3.setProducts(Arrays.asList(pB, pC).stream().collect(Collectors.toSet()));
+
+        s3.setCatalog(c3);
+
+        this.shops.save(s3);
+
+        this.users.save(User.builder()
+            .username("provatitolare")
+            .password(this.passwordEncoder.encode("provaprova"))
+            .role(this.roles.findByName("titolare").get())
+            .shopEmployed(s3)
+            .shopOwned(s3)
+            .build()
+        );
     }
 
 }
