@@ -206,7 +206,7 @@ public class AttivitaController {
     public ResponseEntity<Attivita> findAttivitaByPIVA(@NotBlank @PathVariable(name = "piva", required = true) String piva) {
         Optional<Attivita> toReturnShop = attivitaRepository.findById(piva);
 
-        if(toReturnShop.isEmpty()) {
+        if(!toReturnShop.isPresent()) {
             return ResponseEntity.notFound().build();
         }
 
