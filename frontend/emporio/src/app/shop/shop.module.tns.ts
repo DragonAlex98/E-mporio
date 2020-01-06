@@ -8,10 +8,11 @@ import { SearchShopComponent } from '@src/app/shop/search-shop/search-shop.compo
 import { InsertShopComponent } from '@src/app/shop/insert-shop/insert-shop.component';
 import { InsertShopFormComponent } from '@src/app/shop/insert-shop-form/insert-shop-form.component';
 import { AddEmployeeComponent } from '@src/app/shop/add-employee/add-employee.component';
+import { ShopDetailComponent } from '@src/app/shop/shop-detail/shop-detail.component';
 
 
 @NgModule({
-  declarations: [ShopComponent, ShopListComponent, SearchShopComponent, InsertShopComponent, InsertShopFormComponent, AddEmployeeComponent],
+  declarations: [ShopComponent, ShopListComponent, SearchShopComponent, InsertShopComponent, InsertShopFormComponent, AddEmployeeComponent, ShopDetailComponent],
   imports: [
     ShopRoutingModule,
     NativeScriptCommonModule
