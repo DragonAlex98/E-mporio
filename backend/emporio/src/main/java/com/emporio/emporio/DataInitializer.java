@@ -92,14 +92,14 @@ public class DataInitializer implements CommandLineRunner {
         Privilege priv3 = this.privileges.save(Privilege.builder().name("CREATE_SHOP").build());
         Privilege priv4 = this.privileges.save(Privilege.builder().name("CREATE_PRODUCT").build());
 
-        Role userRole = this.roles.save(Role.builder().name("utente").build());
-        this.roles.save(Role.builder().name("acquirente").build());
-        this.roles.save(Role.builder().name("fattorino").build());
-        this.roles.save(Role.builder().name("dipendente").build());
-        Role owner = this.roles.save(Role.builder().name("titolare").build());
-        this.roles.save(Role.builder().name("gestoreMarketing").build());
-        this.roles.save(Role.builder().name("admin").build());
-        this.roles.save(Role.builder().name("operatoreSistema").build());
+        Role userRole = this.roles.save(Role.builder().name("Utente").build());
+        this.roles.save(Role.builder().name("Acquirente").build());
+        this.roles.save(Role.builder().name("Fattorino").build());
+        this.roles.save(Role.builder().name("Dipendente").build());
+        Role owner = this.roles.save(Role.builder().name("Titolare").build());
+        this.roles.save(Role.builder().name("GestoreMarketing").build());
+        this.roles.save(Role.builder().name("Admin").build());
+        this.roles.save(Role.builder().name("OperatoreSistema").build());
 
         List<Privilege> privs = new ArrayList<>();
         privs.add(priv1);
@@ -142,7 +142,7 @@ public class DataInitializer implements CommandLineRunner {
        User fattorino1 = this.users.save(User.builder()
             .username("diocleziano")
             .password(this.passwordEncoder.encode("bof55"))
-            .role(this.roles.findByName("fattorino").get())
+            .role(this.roles.findByName("Fattorino").get())
             .build()
         );
 
@@ -286,7 +286,7 @@ public class DataInitializer implements CommandLineRunner {
         this.users.save(User.builder()
             .username("provatitolare")
             .password(this.passwordEncoder.encode("provaprova"))
-            .role(this.roles.findByName("titolare").get())
+            .role(this.roles.findByName("Titolare").get())
             .shopEmployed(s3)
             .shopOwned(s3)
             .build()

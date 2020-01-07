@@ -1,11 +1,11 @@
 export enum Role {
 
-    Acquirente = 'acquirente',
-    Fattorino = 'fattorino',
-    Dipendente = 'dipendente',
-    Titolare = 'titolare',
-    GestoreMarketing = 'gestoreMarketing',
-    Admin = 'admin',
-    OperatoreSistema = 'operatoreSistema'
+    Acquirente = 'Acquirente',
+    Fattorino = 'Fattorino',
+    Dipendente = 'Dipendente',
+    Titolare = 'Titolare',
+    GestoreMarketing = 'GestoreMarketing',
+    Admin = 'Admin',
+    OperatoreSistema = 'OperatoreSistema'
 
 }
