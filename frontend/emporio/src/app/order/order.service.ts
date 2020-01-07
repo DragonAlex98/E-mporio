@@ -5,13 +5,17 @@ import { map } from 'rxjs/operators';
 import { OrderAdapter, Order } from './Order';
 import { environment } from '@src/environments/environment';
 import { Observable } from 'rxjs';
+import { Shop, ShopAdapter } from '../shop/shop/shop';
+import { Product, ProductAdapter } from '../product/product/product';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
 
-  constructor(private httpClient: HttpClient, private adapter: OrderAdapter) { }
+  constructor(private httpClient: HttpClient,
+    private shopAdapter: ShopAdapter,
+    private productsAdapter: ProductAdapter) { }
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -21,7 +25,7 @@ export class OrderService {
   addOrder(customerUsername: string,
     employeeUsername: string,
     carPosition: string,
-    productsList: OrderProductTableItem[]): Observable<Order> {
+    productsList: OrderProductTableItem[]) {
     const body = { customerUsername: customerUsername,
       employeeUsername: employeeUsername,
       carPosition: carPosition,

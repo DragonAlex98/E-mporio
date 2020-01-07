@@ -2,7 +2,9 @@ package com.emporio.emporio.controller;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
@@ -53,19 +56,24 @@ public class OrdineController {
     private RigaOrdineProdottoRepository orderProductLineRepo;
 
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
-    public ResponseEntity<Ordine> createNewOrder(@Valid @RequestBody OrdineDto newOrdine) {
+    public ResponseEntity<Map<Object, Object>> createNewOrder(@Valid @RequestBody OrdineDto newOrdine) {
+        //TODO Modificare Dto (togliere stringa username titolare/dipendente) e invece prendere i dati dello user tramite token o tramite userdetails.
+        Map<Object, Object> responseMap = new HashMap<>();
 
         Attivita shop = userRepo.findByUsername(newOrdine.getEmployeeUsername()).get().getShopEmployed();
         
-        if(shop == null)
-            return ResponseEntity.badRequest().body(null);
+        if(shop == null) {
+            responseMap.put("errorString", "L'utente " + newOrdine.getEmployeeUsername() + " non ha un negozio associato!");
+            return ResponseEntity.badRequest().body(responseMap);
+        }
 
         //Check dei valori inseriti:
         //controllo che i prodotti inseriti esistano e se così fosse recupero le loro istanze dal db.
         for(RigaOrdineProdotto line : newOrdine.getProductsList()) {
             if(!productDescriptionRepository.exists(Example.of(line.getProduct())))
             {
-                return ResponseEntity.badRequest().body(null);
+                responseMap.put("errorString", "Il prodotto " + line.getProduct().getProductName() + " non è presente nel negozio " + shop.getShopBusinessName() + "!");
+                return ResponseEntity.badRequest().body(responseMap);
             }
             line.setProduct(productDescriptionRepository.findOne(Example.of(line.getProduct())).get());
             //line.setProduct(shop.getCatalog().getProducts().stream().filter(name -> name.getProductName().equals(line.getProduct().getProductName())).findFirst().get());
@@ -73,9 +81,10 @@ public class OrdineController {
 
         Optional<User> customer = userRepo.findByUsername(newOrdine.getCustomerUsername());
 
-        if(!customer.isPresent())
-            return ResponseEntity.badRequest().body(null);
-
+        if(!customer.isPresent()) {
+            responseMap.put("errorString", "L'acquirente " + newOrdine.getCustomerUsername() + " non è registrato nel sistema!");
+            return ResponseEntity.badRequest().body(responseMap);
+        }
 
         Ordine order = orderRepository.save(Ordine.builder()
                             .orderCustomer(customer.get())
@@ -90,7 +99,10 @@ public class OrdineController {
             orderProductLineRepo.save(item);
         });
 
-        return ResponseEntity.created(URI.create(WebSecurityConfig.apiURI + "/orders/" + order.getOrderId())).body(order);
+        responseMap.put("id", order.getOrderId());
+        responseMap.put("url", WebSecurityConfig.appURL + WebSecurityConfig.apiURI + "/orders/" + order.getOrderId());
+        responseMap.put("type", "Ordine");
+        return ResponseEntity.created(URI.create(WebSecurityConfig.apiURI + "/orders/" + order.getOrderId())).body(responseMap);
     }
 
     @GetMapping(value="/orders/state/not-assigned")
@@ -103,5 +115,4 @@ public class OrdineController {
 
         return ResponseEntity.ok(ordersList);
     }
-    
 }

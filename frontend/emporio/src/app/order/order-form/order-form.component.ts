@@ -20,7 +20,6 @@ export class OrderFormComponent implements OnInit {
     customerName: new FormControl(''),
     customerCarPosition: new FormControl('')
   });
-  shop: Shop;
   dataSource: OrderProductTableDataSource;
 
   productList: Product[];
@@ -35,7 +34,19 @@ export class OrderFormComponent implements OnInit {
     this.service.addOrder(this.customerFormGroup.value.customerName,
       this.authService.currentUserValue.username,
       this.customerFormGroup.value.customerCarPosition,
-      this.dataSource.data).subscribe();
+      this.dataSource.data).subscribe(
+        data => {
+          alert('Aggiunto');
+        },
+        error => {
+          console.log(error);
+          if ([400].indexOf(error.status) !== -1) {
+            alert(error.error.errorString);
+          } else {
+            alert('Rcamadonne che cosa non è jito a buon fine!');
+          }
+        }
+      );
   }
 
 }

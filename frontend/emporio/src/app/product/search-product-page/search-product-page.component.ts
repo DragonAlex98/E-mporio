@@ -25,8 +25,6 @@ export class SearchProductPageComponent implements OnInit {
           item.productId,
           item.productName,
           new ProductCategory(item.productCategory.categoryId, item.productCategory.description),
-          item.productPrice,
-          item.productQuantity
         );
       }
     ));

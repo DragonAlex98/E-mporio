@@ -1,17 +1,16 @@
+import { Injectable } from "@angular/core";
+import { Adapter } from "@src/app/adapter";
+
 export class Product {
 
     productId: number;
     productName: string;
     productCategory: ProductCategory;
-    productPrice: number;
-    productQuantity: number;
 
-    constructor(productId: number, productName: string, productCategory: ProductCategory, productPrice: number, productQuantity: number  ) {
+    constructor(productId: number, productName: string, productCategory: ProductCategory) {
       this.productId = productId;
       this.productName = productName;
       this.productCategory = productCategory;
-      this.productPrice = productPrice;
-      this.productQuantity = productQuantity;
     }
   }
 
@@ -24,3 +23,13 @@ export class Product {
       this.description = description;
     }
   }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProductAdapter implements Adapter<Product> {
+    adapt(item: any): Product {
+        return new Product(item.productId, item.productName,
+          new ProductCategory(item.productCategory.categoryId, item.productCategory.description));
+    }
+}

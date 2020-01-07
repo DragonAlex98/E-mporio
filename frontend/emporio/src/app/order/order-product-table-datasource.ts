@@ -16,9 +16,7 @@ export interface OrderProductTableItem {
 }
 
 // TODO: replace this with real data from your application
-const EXAMPLE_DATA: OrderProductTableItem[] = [
-  {product: new Product(1, 'salame ammuffito', new ProductCategory(1, 'salamirko'), 18.90, 7), quantity: 9}
-];
+const EXAMPLE_DATA: OrderProductTableItem[] = [];
 
 /**
  * Data source for the OrderProductTable view. This class should
