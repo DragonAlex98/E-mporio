@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../order.service';
+import { Order, OrderAdapter } from '../Order';
 
 @Component({
   selector: 'app-order-to-delivery',
@@ -8,9 +9,26 @@ import { OrderService } from '../order.service';
 })
 export class OrderToDeliveryComponent implements OnInit {
 
-  constructor(private orderService: OrderService) { }
+  orders: Order[];
+  selectedOrder: Order;
+
+  constructor(private adapter: OrderAdapter, private orderService: OrderService) { }
 
   ngOnInit() {
+
+    this.getOrders();
+
+  }
+
+  getOrders() {
+
+    this.orderService.getOrdersToDelivery().subscribe(orders => {this.orders = orders; });
+
+  }
+
+  onClick(order: Order) {
+
+    this.selectedOrder = order;
 
   }
 

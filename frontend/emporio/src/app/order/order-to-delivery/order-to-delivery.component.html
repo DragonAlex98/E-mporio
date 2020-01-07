@@ -1,1 +1,7 @@
-<p>order-to-delivery works!</p>
+<mat-list-item *ngFor="let order of orders">
+    <h3 mat-list>Parcheggio: {{order.parkingAddress}}</h3>
+    <h3 mat-list>Negozio: {{order.shop.shopBusinessName}} </h3>
+    <button mat-raised-button color="accent" (click)="onClick(order)">Visualizza dettaglio </button>
+    <mat-divider [inset]="true"></mat-divider>
+    <app-order-to-delivery-details>[order]="selectedOrder"</app-order-to-delivery-details>
+ </mat-list-item>

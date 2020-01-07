@@ -6,16 +6,16 @@ import { Adapter } from '../adapter';
 import { Injectable } from '@angular/core';
 
 export class Order {
-    user: User;
-    userCarPosition: string;
+    id: number;
+    parkingAddress: string;
     shop: Shop;
-    orderProductList: OrderProductTableItem[];
+    user: string;
 
-    constructor(user: User, userCarPosition: string, shop: Shop, orderProductList: OrderProductTableItem[]) {
-        this.user = user;
-        this.userCarPosition = userCarPosition;
+    constructor(id: number, parkingAddress: string, shop: Shop, user: string) {
+        this.id = id;
+        this.parkingAddress = parkingAddress;
         this.shop = shop;
-        this.orderProductList = orderProductList;
+        this.user = user;
     }
 }
 @Injectable({
@@ -23,6 +23,6 @@ export class Order {
 })
 export class OrderAdapter implements Adapter<Order> {
     adapt(item: any): Order {
-        return new Order(null, null, null, null);
+        return new Order(item.id, item.parkingAddress, item.shop, item.customerUsername);
     }
 }
