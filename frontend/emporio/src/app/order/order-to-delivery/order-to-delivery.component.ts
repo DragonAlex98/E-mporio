@@ -10,7 +10,6 @@ import { Order, OrderAdapter } from '../Order';
 export class OrderToDeliveryComponent implements OnInit {
 
   orders: Order[];
-  selectedOrder: Order;
 
   constructor(private adapter: OrderAdapter, private orderService: OrderService) { }
 
@@ -26,10 +25,5 @@ export class OrderToDeliveryComponent implements OnInit {
 
   }
 
-  onClick(order: Order) {
-
-    this.selectedOrder = order;
-
-  }
 
 }

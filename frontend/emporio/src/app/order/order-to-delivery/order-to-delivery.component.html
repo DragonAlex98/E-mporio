@@ -1,7 +1,11 @@
-<mat-list-item *ngFor="let order of orders">
-    <h3 mat-list>Parcheggio: {{order.parkingAddress}}</h3>
-    <h3 mat-list>Negozio: {{order.shop.shopBusinessName}} </h3>
-    <button mat-raised-button color="accent" (click)="onClick(order)">Visualizza dettaglio </button>
-    <mat-divider [inset]="true"></mat-divider>
-    <app-order-to-delivery-details>[order]="selectedOrder"</app-order-to-delivery-details>
- </mat-list-item>
+<mat-accordion>
+    <mat-expansion-panel *ngFor="let order of orders">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{order.shop.shopBusinessName}}
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-order-to-delivery-details [order]="order"></app-order-to-delivery-details>
+    </mat-expansion-panel>
+</mat-accordion>
+ 
