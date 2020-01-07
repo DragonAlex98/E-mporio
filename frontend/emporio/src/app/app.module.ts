@@ -18,6 +18,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { DeliveryModule } from './delivery/delivery.module';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
     BrowserAnimationsModule,
     FlexLayoutModule,
     OrderModule,
+    DeliveryModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,

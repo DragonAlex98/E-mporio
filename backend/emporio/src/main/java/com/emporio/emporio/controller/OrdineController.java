@@ -99,10 +99,7 @@ public class OrdineController {
             orderProductLineRepo.save(item);
         });
 
-        responseMap.put("id", order.getOrderId());
-        responseMap.put("url", WebSecurityConfig.appURL + WebSecurityConfig.apiURI + "/orders/" + order.getOrderId());
-        responseMap.put("type", "Ordine");
-        return ResponseEntity.created(URI.create(WebSecurityConfig.apiURI + "/orders/" + order.getOrderId())).body(responseMap);
+        return ResponseEntity.created(URI.create("/orders/" + order.getOrderId())).body(order);
     }
 
     @GetMapping(value="/orders/state/not-assigned")

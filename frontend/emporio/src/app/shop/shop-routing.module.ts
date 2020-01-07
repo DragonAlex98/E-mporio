@@ -4,6 +4,7 @@ import { InsertShopComponent } from './insert-shop/insert-shop.component';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { AuthGuard } from '../authentication/helpers/auth.guard';
 import { Role } from '../authentication/models/role';
+import { ShopDetailComponent } from './shop-detail/shop-detail.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: [Role.Titolare] }
   },
+  {
+    path: 'shops/:piva',
+    component: ShopDetailComponent,
+  }
 ];
 
 @NgModule({

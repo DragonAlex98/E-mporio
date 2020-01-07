@@ -9,6 +9,8 @@ import { PhantomPageComponent } from './order/phantom-page/phantom-page.componen
 import { LoginComponent } from './authentication/login/login.component';
 import { AuthGuard } from './authentication/helpers/auth.guard';
 import { RegistrationComponent } from './authentication/registration/registration.component';
+import { OrderToDeliveryComponent } from './order/order-to-delivery/order-to-delivery.component';
+
 
 export const routes: Routes = [
   {
@@ -43,6 +45,10 @@ export const routes: Routes = [
   {
     path: 'new-order',
     component: OrderFormComponent,
+  },
+  {
+    path: 'orders-to-delivery',
+    component: OrderToDeliveryComponent
   },
   {
     path: '**',

@@ -14,4 +14,6 @@ public interface AttivitaRepository extends JpaRepository<Attivita, String> {
 
     List<Attivita> findByShopBusinessNameContaining(String ragioneSociale);
     
+    void deleteByShopPIVA(String shopPIVA);
+    
 }

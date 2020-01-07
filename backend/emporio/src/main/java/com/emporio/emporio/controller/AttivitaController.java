@@ -143,8 +143,8 @@ public class AttivitaController {
         user.setShopOwned(null);
         userRepository.save(user);
 
-        attivitaRepository.deleteById(shop.getShopPIVA());
-        return ResponseEntity.ok().build();
+        attivitaRepository.deleteByShopPIVA(shop.getShopPIVA());
+        return ResponseEntity.ok("Attività cancellata");
     }
 
     @GetMapping("/shops/{piva}/products")
@@ -200,5 +200,18 @@ public class AttivitaController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/shops/{piva}")
+    public ResponseEntity<Attivita> findAttivitaByPIVA(@NotBlank @PathVariable(name = "piva", required = true) String piva) {
+        Optional<Attivita> toReturnShop = attivitaRepository.findById(piva);
+
+        if(!toReturnShop.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Attivita shopFound = toReturnShop.get();
+
+        return ResponseEntity.ok(shopFound);
     }
 }

@@ -20,7 +20,7 @@ export class OrderService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  apiOrderUrl = `${environment.apiUrl}${environment.apiUri}/orders`;
+  apiOrderUrl = `${environment.apiUrl}/orders`;
 
   addOrder(customerUsername: string,
     employeeUsername: string,
@@ -34,5 +34,11 @@ export class OrderService {
     console.log(this.apiOrderUrl);
     console.log(body);
     return this.httpClient.post<Order>(this.apiOrderUrl, JSON.stringify(body), this.httpOptions);
+  }
+
+  getOrdersToDelivery(): Observable<Order[]> {
+
+    return this.httpClient.get<Order[]>(this.apiOrderUrl + '/state/not-assigned');
+
   }
 }

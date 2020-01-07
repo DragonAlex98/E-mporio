@@ -18,7 +18,7 @@ export class UserService {
     }
 
     register(user: User) {
-        return this.http.post(`http://localhost:8000/auth/signup`, user);
+        return this.http.post(`${environment.apiUrl}/auth/signup`, user);
     }
 }
 

@@ -6,7 +6,7 @@
   <mat-grid-tile [rowspan]=1 [colspan]=2>
     <div class="controles-container">
       <mat-card>
-      <form [formGroup]="shopForm" (ngSubmit)="onSubmit(shopForm.value)">
+      <form [formGroup]="shopForm">
         <div class="insert-product-form-container">
           <mat-form-field>
             <input matInput placeholder="Partita IVA*" formControlName="shopPIVA">
