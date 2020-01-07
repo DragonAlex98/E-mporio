@@ -20,8 +20,8 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import com.emporio.emporio.dto.AuthenticationRequest;
+import com.emporio.emporio.factory.UserFactory;
 import com.emporio.emporio.model.Role;
-import com.emporio.emporio.model.User;
 import com.emporio.emporio.repository.RoleRepository;
 import com.emporio.emporio.repository.UserRepository;
 import com.emporio.emporio.security.JwtTokenProvider;
@@ -67,7 +67,7 @@ public class AuthenticationController {
 
     @SuppressWarnings("rawtypes")
     @PostMapping("/auth/signup")
-    public ResponseEntity signup(@Valid @RequestBody AuthenticationRequest data) {
+    public ResponseEntity signup(@Valid @RequestBody AuthenticationRequest data) throws Exception {
 
         try {
             String username = data.getUsername();
@@ -80,15 +80,9 @@ public class AuthenticationController {
 
             String roleString = data.getRole();
 
-            Role role = this.roles.findByName(roleString).orElseThrow(null);
-            
-            User newUser = User.builder()
-            .username(username)
-            .password(passwordEncoder.encode(data.getPassword()))
-            .role(role)
-            .build();
+            UserFactory factory = Class.forName("com.emporio.emporio.factory." + roleString + "UserFactory").asSubclass(UserFactory.class).getDeclaredConstructor().newInstance();
 
-            users.save(newUser);
+            this.users.save(factory.createUser(username, this.passwordEncoder.encode(data.getPassword()), roles));
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (AuthenticationException e) {
