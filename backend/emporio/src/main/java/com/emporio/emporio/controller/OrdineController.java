@@ -1,17 +1,14 @@
 package com.emporio.emporio.controller;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import com.emporio.emporio.dto.AttivitaGetDto;
 import com.emporio.emporio.dto.OrdineDto;
 import com.emporio.emporio.dto.OrdineGetDto;
 import com.emporio.emporio.model.Attivita;
@@ -23,7 +20,6 @@ import com.emporio.emporio.repository.OrdineRepository;
 import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
 import com.emporio.emporio.repository.RigaOrdineProdottoRepository;
 import com.emporio.emporio.repository.UserRepository;
-import com.emporio.emporio.security.WebSecurityConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -33,8 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
@@ -99,7 +93,7 @@ public class OrdineController {
             orderProductLineRepo.save(item);
         });
 
-        return ResponseEntity.created(URI.create("/orders/" + order.getOrderId())).body(order);
+        return ResponseEntity.created(URI.create("/orders/" + order.getOrderId())).body(responseMap);
     }
 
     @GetMapping(value="/orders/state/not-assigned")
