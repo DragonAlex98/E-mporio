@@ -19,6 +19,7 @@ import com.emporio.emporio.repository.AttivitaRepository;
 import com.emporio.emporio.repository.CategoriaAttivitaRepository;
 import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
 import com.emporio.emporio.repository.UserRepository;
+import com.emporio.emporio.services.UserService;
 import com.emporio.emporio.dto.ShopAddEmployeeDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,9 @@ public class AttivitaController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private ProdottoDescrizioneRepository productRepository;
@@ -86,14 +90,8 @@ public class AttivitaController {
 
     @PutMapping("/shops/employees")
     public ResponseEntity<String> addEmployeeToShop(@Valid @RequestBody ShopAddEmployeeDto addEmployeeDTO) {
-        Optional<User> employeeOptional = userRepository.findByUsername(addEmployeeDTO.getEmployeeUsername());
-
-        //Controllo se lo username dipendente passato esiste nel sistema
-        if(!employeeOptional.isPresent()) {
-            return ResponseEntity.badRequest().body("Dipendente non registrato nel sistema");
-        }
-
-        User employee = employeeOptional.get();
+        
+        User employee = userService.getUser(addEmployeeDTO.getEmployeeUsername());
 
         //Controllo se lo username dipendente passato corrisponde effettivamente ad un dipendente
         if(!employee.getRole().getName().toLowerCase().equals("dipendente")) {

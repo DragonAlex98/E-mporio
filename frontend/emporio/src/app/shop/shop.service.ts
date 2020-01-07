@@ -27,7 +27,7 @@ export class ShopService {
   }
 
   addEmployeeToShop(formData: any) {
-    return this.httpClient.put(`${environment.apiUrl}/shops/employees`, formData, {responseType: 'text'})
+    return this.httpClient.put(`${environment.apiUrl}/shops/employees`, formData)
                           .pipe();
   }
 

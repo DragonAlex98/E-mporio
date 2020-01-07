@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ShopService } from '../shop.service';
 import { AuthenticationService } from '@src/app/authentication/services/authentication.service';
+import { environment } from '@src/environments/environment';
 
 @Component({
   selector: 'app-add-employee',
@@ -17,6 +18,7 @@ export class AddEmployeeComponent implements OnInit {
   constructor(private service: ShopService, private authService: AuthenticationService) { }
 
   ngOnInit() {
+    console.log(environment.apiUrl);
   }
 
   onSubmit(formValue) {
@@ -25,8 +27,8 @@ export class AddEmployeeComponent implements OnInit {
         alert('Vrau coccu li si aggiuntu!');
       },
       error => {
-        if ([400].indexOf(error.status) !== -1) {
-          alert(error.error);
+        if ([400, 404].indexOf(error.status) !== -1) {
+          alert(error.error.message);
         } else {
           alert('Rcamadonne che cosa non è jito a buon fine!');
         }
