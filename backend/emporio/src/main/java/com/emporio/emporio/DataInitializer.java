@@ -120,7 +120,7 @@ public class DataInitializer implements CommandLineRunner {
         User utente = User.builder()
             .username("user")
             .password(this.passwordEncoder.encode("password"))
-            .role(this.roles.findByName("Utente").get())
+            .role(this.roles.findByNameIgnoreCase("Utente").get())
             .build();
 
         this.users.save(utente);
@@ -128,21 +128,21 @@ public class DataInitializer implements CommandLineRunner {
         this.users.save(User.builder()
             .username("admin")
             .password(this.passwordEncoder.encode("password"))
-            .role(this.roles.findByName("Admin").get())
+            .role(this.roles.findByNameIgnoreCase("Admin").get())
             .build()
         );
 
         this.users.save(User.builder()
             .username("alberto")
             .password(this.passwordEncoder.encode("albertino55"))
-            .role(this.roles.findByName("Dipendente").get())
+            .role(this.roles.findByNameIgnoreCase("Dipendente").get())
             .build()
         );
 
        User fattorino1 = this.users.save(User.builder()
             .username("diocleziano")
             .password(this.passwordEncoder.encode("bof55"))
-            .role(this.roles.findByName("Fattorino").get())
+            .role(this.roles.findByNameIgnoreCase("Fattorino").get())
             .build()
         );
 
@@ -175,14 +175,14 @@ public class DataInitializer implements CommandLineRunner {
         this.users.save(User.builder()
             .username("aldo")
             .password(this.passwordEncoder.encode("aldo66"))
-            .role(this.roles.findByName("Acquirente").get())
+            .role(this.roles.findByNameIgnoreCase("Acquirente").get())
             .build()
         );
 
         this.users.save(User.builder()
             .username("giovanni")
             .password(this.passwordEncoder.encode("giovanni22"))
-            .role(this.roles.findByName("Dipendente").get())
+            .role(this.roles.findByNameIgnoreCase("Dipendente").get())
             .shopEmployed(s1)
             .build()
         );
@@ -190,7 +190,7 @@ public class DataInitializer implements CommandLineRunner {
         this.users.save(User.builder()
             .username("dino")
             .password(this.passwordEncoder.encode("dino88"))
-            .role(this.roles.findByName("Titolare").get())
+            .role(this.roles.findByNameIgnoreCase("Titolare").get())
             .shopEmployed(s1)
             .shopOwned(s1)
             .build()
@@ -286,7 +286,7 @@ public class DataInitializer implements CommandLineRunner {
         this.users.save(User.builder()
             .username("provatitolare")
             .password(this.passwordEncoder.encode("provaprova"))
-            .role(this.roles.findByName("Titolare").get())
+            .role(this.roles.findByNameIgnoreCase("Titolare").get())
             .shopEmployed(s3)
             .shopOwned(s3)
             .build()

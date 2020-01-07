@@ -37,7 +37,7 @@ public class UserController {
 
         User user = userOpt.get();
 
-        if(!user.getRole().getName().equals("Titolare") && !user.getRole().getName().equals("Dipendente")) {
+        if(!user.getRole().getName().equalsIgnoreCase("Titolare") && !user.getRole().getName().equalsIgnoreCase("Dipendente")) {
             return ResponseEntity.badRequest().body(null);
         }
 

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import javax.validation.Valid;
 
@@ -78,9 +79,9 @@ public class AuthenticationController {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
 
-            String roleString = data.getRole();
+            Role role = this.roles.findByNameIgnoreCase(data.getRole()).orElseThrow(() -> new NoSuchElementException("Role " + data.getRole() + "not found"));
 
-            UserFactory factory = Class.forName("com.emporio.emporio.factory." + roleString + "UserFactory").asSubclass(UserFactory.class).getDeclaredConstructor().newInstance();
+            UserFactory factory = Class.forName("com.emporio.emporio.factory." + role.getName() + "UserFactory").asSubclass(UserFactory.class).getDeclaredConstructor().newInstance();
 
             this.users.save(factory.createUser(username, this.passwordEncoder.encode(data.getPassword()), roles));
 

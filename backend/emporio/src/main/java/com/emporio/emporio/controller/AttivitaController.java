@@ -94,7 +94,7 @@ public class AttivitaController {
         User employee = userService.getUser(addEmployeeDTO.getEmployeeUsername());
 
         //Controllo se lo username dipendente passato corrisponde effettivamente ad un dipendente
-        if(!employee.getRole().getName().toLowerCase().equals("dipendente")) {
+        if(!employee.getRole().getName().toLowerCase().equalsIgnoreCase("dipendente")) {
             return ResponseEntity.badRequest().body("L'utente inserito non è registrato come dipendente nel sistema.");
         }
 
@@ -165,12 +165,12 @@ public class AttivitaController {
 
         User user = optionalUser.get();
         Attivita shop;
-        if (user.getRole().getName().equals("dipendente")) {
+        if (user.getRole().getName().equalsIgnoreCase("dipendente")) {
             shop = user.getShopEmployed();
             if (shop == null) {
                 return ResponseEntity.badRequest().body("Il titolare non lavora per alcuna attività");
             }
-        } else if (user.getRole().getName().equals("titolare")) {
+        } else if (user.getRole().getName().equalsIgnoreCase("titolare")) {
             shop = user.getShopOwned();
             if (shop == null) {
                 return ResponseEntity.badRequest().body("Il titolare non ha alcuna attività a lui associata");
@@ -179,7 +179,7 @@ public class AttivitaController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("L'utente non ha i permessi neccessari per eseguire la richiesta");
         }
 
-        if (!shop.getShopPIVA().equals(piva)) {
+        if (!shop.getShopPIVA().equalsIgnoreCase(piva)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("L'utente non ha i permessi neccessari per eseguire la richiesta");
         }
 

@@ -6,6 +6,6 @@ import com.emporio.emporio.repository.RoleRepository;
 
 public class DipendenteUserFactory implements UserFactory {
     public User createUser(String username, String password, RoleRepository roleRepository) {
-        return new Dipendente(username, password, roleRepository.findByName("Dipendente").get());
+        return new Dipendente(username, password, roleRepository.findByNameIgnoreCase("Dipendente").get());
     }
 }
