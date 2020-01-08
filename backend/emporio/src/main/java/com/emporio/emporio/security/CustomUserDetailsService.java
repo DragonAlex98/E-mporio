@@ -1,5 +1,6 @@
 package com.emporio.emporio.security;
 
+import com.emporio.emporio.model.User;
 import com.emporio.emporio.repository.UserRepository;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.users.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username: " + username + " not found"));
+        User user = this.users.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username: " + username + " not found"));
+        return CustomUser.builder().username(user.getUsername()).password(user.getPassword()).role(user.getRole()).build(); 
     }
 }
