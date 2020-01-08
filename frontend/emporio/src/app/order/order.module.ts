@@ -14,11 +14,22 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { OrderToDeliveryComponent } from '@src/app/order/order-to-delivery/order-to-delivery.component';
 import { OrderToDeliveryDetailsComponent } from '@src/app/order/order-to-delivery-details/order-to-delivery-details.component';
 import { OrderComponent } from '@src/app/order/order/order.component';
+import { LockerModule } from '../locker/locker.module';
+import { LockerSelectorComponent } from '../locker/locker-selector/locker-selector.component';
 
 
 
 @NgModule({
-  declarations: [OrderFormComponent, OrderProductTableComponent, PhantomPageComponent, OrderProductListComponent, OrderToDeliveryComponent, OrderToDeliveryDetailsComponent, OrderComponent],
+  declarations: [
+    OrderFormComponent,
+    OrderProductTableComponent,
+    PhantomPageComponent,
+    OrderProductListComponent,
+    OrderToDeliveryComponent,
+    OrderToDeliveryDetailsComponent,
+    OrderComponent,
+    LockerSelectorComponent
+  ],
   imports: [
     MaterialModule,
     CommonModule,
@@ -28,7 +39,7 @@ import { OrderComponent } from '@src/app/order/order/order.component';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatIconModule,
+    MatIconModule
   ]
 })
 export class OrderModule { }

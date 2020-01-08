@@ -1,0 +1,9 @@
+<div>
+    <mat-form-field>
+        <mat-label>Seleziona un locker</mat-label>
+        <mat-select  (selectionChange)="onLockerChange($event)">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let locker of lockers" [value]="locker">{{locker.address}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
