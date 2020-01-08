@@ -101,4 +101,9 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public String getRoleName() {
+        String roleName = this.role.getName();
+        return (roleName != null) ? roleName : "";
+    }
 }
