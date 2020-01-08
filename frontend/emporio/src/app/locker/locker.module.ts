@@ -15,6 +15,9 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     ReactiveFormsModule,
     FormsModule,
     MaterialModule
-  ]
+  ],
+  exports: [
+    LockerSelectorComponent
+  ],
 })
 export class LockerModule { }

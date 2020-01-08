@@ -27,8 +27,7 @@ import { LockerSelectorComponent } from '../locker/locker-selector/locker-select
     OrderProductListComponent,
     OrderToDeliveryComponent,
     OrderToDeliveryDetailsComponent,
-    OrderComponent,
-    LockerSelectorComponent
+    OrderComponent
   ],
   imports: [
     MaterialModule,
@@ -39,7 +38,8 @@ import { LockerSelectorComponent } from '../locker/locker-selector/locker-select
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatIconModule
+    MatIconModule,
+    LockerModule
   ]
 })
 export class OrderModule { }
