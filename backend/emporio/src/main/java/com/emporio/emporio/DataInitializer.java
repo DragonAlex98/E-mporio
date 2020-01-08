@@ -5,12 +5,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.emporio.emporio.factory.AcquirenteUserFactory;
+import com.emporio.emporio.factory.AdminUserFactory;
+import com.emporio.emporio.factory.DipendenteUserFactory;
+import com.emporio.emporio.factory.FattorinoUserFactory;
+import com.emporio.emporio.factory.TitolareUserFactory;
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.CategoriaAttivita;
 import com.emporio.emporio.model.CategoriaProdotto;
 import com.emporio.emporio.model.ChiaveRigaOrdineProdotto;
 import com.emporio.emporio.model.Consegna;
+import com.emporio.emporio.model.Dipendente;
 import com.emporio.emporio.model.Locker;
 import com.emporio.emporio.model.Ordine;
 import com.emporio.emporio.model.Posto;
@@ -19,12 +25,14 @@ import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.model.RigaOrdineProdotto;
 import com.emporio.emporio.model.Role;
 import com.emporio.emporio.model.StatoConsegna;
+import com.emporio.emporio.model.Titolare;
 import com.emporio.emporio.model.User;
 import com.emporio.emporio.repository.AttivitaRepository;
 import com.emporio.emporio.repository.CatalogoRepository;
 import com.emporio.emporio.repository.CategoriaAttivitaRepository;
 import com.emporio.emporio.repository.CategoriaProdottoRepository;
 import com.emporio.emporio.repository.ConsegnaRepository;
+import com.emporio.emporio.repository.DipendenteRepository;
 import com.emporio.emporio.repository.LockerRepository;
 import com.emporio.emporio.repository.OrdineRepository;
 import com.emporio.emporio.repository.PostoRepository;
@@ -32,6 +40,7 @@ import com.emporio.emporio.repository.PrivilegeRepository;
 import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
 import com.emporio.emporio.repository.RigaOrdineProdottoRepository;
 import com.emporio.emporio.repository.RoleRepository;
+import com.emporio.emporio.repository.TitolareRepository;
 import com.emporio.emporio.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +93,12 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private ConsegnaRepository consegnaRepository;
 
+    @Autowired
+    private DipendenteRepository dipendenteRepository;
+
+    @Autowired
+    private TitolareRepository titolareRepository;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -117,35 +132,11 @@ public class DataInitializer implements CommandLineRunner {
 
         this.roles.save(owner);
 
-        User utente = User.builder()
-            .username("user")
-            .password(this.passwordEncoder.encode("password"))
-            .role(this.roles.findByNameIgnoreCase("Utente").get())
-            .build();
+        this.users.save(new AdminUserFactory().createUser("admin", this.passwordEncoder.encode("password"), this.roles));
 
-        this.users.save(utente);
+        this.users.save(new DipendenteUserFactory().createUser("alberto", this.passwordEncoder.encode("albertino55"), this.roles));
 
-        this.users.save(User.builder()
-            .username("admin")
-            .password(this.passwordEncoder.encode("password"))
-            .role(this.roles.findByNameIgnoreCase("Admin").get())
-            .build()
-        );
-
-        this.users.save(User.builder()
-            .username("alberto")
-            .password(this.passwordEncoder.encode("albertino55"))
-            .role(this.roles.findByNameIgnoreCase("Dipendente").get())
-            .build()
-        );
-
-       User fattorino1 = this.users.save(User.builder()
-            .username("diocleziano")
-            .password(this.passwordEncoder.encode("bof55"))
-            .role(this.roles.findByNameIgnoreCase("Fattorino").get())
-            .build()
-        );
-
+        User fattorino1 = this.users.save(new FattorinoUserFactory().createUser("diocleziano", this.passwordEncoder.encode("bof55"), this.roles));
 
         CategoriaProdotto cat1 = CategoriaProdotto.builder().description("cibo").build();
         CategoriaProdotto cat2 = CategoriaProdotto.builder().description("utensili").build();
@@ -172,29 +163,18 @@ public class DataInitializer implements CommandLineRunner {
 
         this.shops.save(s1);
 
-        this.users.save(User.builder()
-            .username("aldo")
-            .password(this.passwordEncoder.encode("aldo66"))
-            .role(this.roles.findByNameIgnoreCase("Acquirente").get())
-            .build()
-        );
+        this.users.save(new AcquirenteUserFactory().createUser("aldo", this.passwordEncoder.encode("aldo66"), this.roles));
 
-        this.users.save(User.builder()
-            .username("giovanni")
-            .password(this.passwordEncoder.encode("giovanni22"))
-            .role(this.roles.findByNameIgnoreCase("Dipendente").get())
-            .shopEmployed(s1)
-            .build()
-        );
+        this.users.save(new DipendenteUserFactory().createUser("giovanni", this.passwordEncoder.encode("giovanni22"), this.roles));
+        Dipendente d1 = this.dipendenteRepository.findByUsername("giovanni").get();
+        d1.setShopEmployed(s1);
+        this.dipendenteRepository.save(d1);
 
-        this.users.save(User.builder()
-            .username("dino")
-            .password(this.passwordEncoder.encode("dino88"))
-            .role(this.roles.findByNameIgnoreCase("Titolare").get())
-            .shopEmployed(s1)
-            .shopOwned(s1)
-            .build()
-        );
+        this.users.save(new TitolareUserFactory().createUser("dino", this.passwordEncoder.encode("dino88"), this.roles));
+        Titolare t1 = this.titolareRepository.findByUsername("dino").get();
+        t1.setShopEmployed(s1);
+        t1.setShopOwned(s1);
+        this.titolareRepository.save(t1);
         
         Attivita s2 = Attivita.builder().shopPIVA("def456").shopBusinessName("La Macelleria").shopAddress("Via quella 2").shopHeadquarter("Roma").shopCategory(catA2).build();
         Catalogo c2 = Catalogo.builder().build();
@@ -204,10 +184,6 @@ public class DataInitializer implements CommandLineRunner {
         s2.setCatalog(c2);
 
         this.shops.save(s2);
-
-/*         ProdottoDescrizione pAM = this.products.findById(1).orElseThrow(null);
-        pAM.setProductName("biscotti integrali");
-        this.products.save(pAM); */
 
         Locker locker1 = lockerRepository.save(Locker.builder().address("Via Alfreditica, 15").build());
         Posto posto1 = postoRepository.save(Posto.builder().nomePosto("A1").locker(locker1).build());
@@ -283,14 +259,10 @@ public class DataInitializer implements CommandLineRunner {
 
         this.shops.save(s3);
 
-        this.users.save(User.builder()
-            .username("provatitolare")
-            .password(this.passwordEncoder.encode("provaprova"))
-            .role(this.roles.findByNameIgnoreCase("Titolare").get())
-            .shopEmployed(s3)
-            .shopOwned(s3)
-            .build()
-        );
+        this.users.save(new TitolareUserFactory().createUser("provatitolare", this.passwordEncoder.encode("provaprova"), this.roles));
+        Titolare t2 = this.titolareRepository.findByUsername("provatitolare").get();
+        t2.setShopEmployed(s3);
+        t2.setShopOwned(s3);
+        this.titolareRepository.save(t2);
     }
-
 }
