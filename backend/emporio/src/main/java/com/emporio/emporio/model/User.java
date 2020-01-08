@@ -1,13 +1,9 @@
 package com.emporio.emporio.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -27,20 +23,15 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.List;
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 @Entity
 @Table(name="user", uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "DISC", discriminatorType = DiscriminatorType.STRING)
-public class User implements UserDetails {
-    private static final long serialVersionUID = -4956399641665702394L;
+public abstract class User {
 
     public User(String username, String password, Role role) {
         this.username = username;
@@ -74,31 +65,4 @@ public class User implements UserDetails {
     @JoinColumn(name = "user_shop_employed_id", nullable = true)
     @JsonIgnore
     private Attivita shopEmployed;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = this.role.getPrivileges().stream().map(x -> new SimpleGrantedAuthority(x.getName())).collect(Collectors.toList());
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase()));
-        return authorities;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }
