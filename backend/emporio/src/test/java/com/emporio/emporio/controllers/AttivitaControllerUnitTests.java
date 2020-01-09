@@ -1,15 +1,11 @@
 package com.emporio.emporio.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import com.emporio.emporio.controller.AttivitaController;
 import com.emporio.emporio.dto.AttivitaGetDto;
 import com.emporio.emporio.dto.RegistrazioneAttivitaDto;
 import com.emporio.emporio.model.Attivita;
-
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * AttivitaControllerUnitTests
@@ -17,9 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AttivitaControllerUnitTests {
 
     private ModelMapper modelMapper = new ModelMapper();
-
-    @Autowired
-    private AttivitaController shopController;
 
     @Test
     public void whenConvertAttivitaEntityToAttivitaGetDto_thenCorrect() {

@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,15 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import javax.validation.Valid;
 
 import com.emporio.emporio.dto.AuthenticationRequest;
 import com.emporio.emporio.factory.UserFactory;
 import com.emporio.emporio.model.Role;
-import com.emporio.emporio.repository.RoleRepository;
-import com.emporio.emporio.repository.UserRepository;
 import com.emporio.emporio.security.JwtTokenProvider;
 import com.emporio.emporio.services.RoleService;
 import com.emporio.emporio.services.UserService;

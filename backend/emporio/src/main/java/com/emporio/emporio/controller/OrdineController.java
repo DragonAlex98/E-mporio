@@ -1,29 +1,27 @@
 package com.emporio.emporio.controller;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import com.emporio.emporio.dto.OrdineDto;
 import com.emporio.emporio.dto.OrdineGetDto;
+import com.emporio.emporio.model.Acquirente;
 import com.emporio.emporio.model.Attivita;
-import com.emporio.emporio.model.ChiaveRigaOrdineProdotto;
 import com.emporio.emporio.model.Ordine;
-import com.emporio.emporio.model.RigaOrdineProdotto;
-import com.emporio.emporio.model.User;
-import com.emporio.emporio.repository.OrdineRepository;
-import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
-import com.emporio.emporio.repository.RigaOrdineProdottoRepository;
-import com.emporio.emporio.repository.UserRepository;
+import com.emporio.emporio.services.AcquirenteService;
+import com.emporio.emporio.services.DipendenteService;
+import com.emporio.emporio.services.OrdineService;
+import com.emporio.emporio.services.RigaOrdineProdottoService;
+import com.emporio.emporio.services.TitolareService;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,78 +30,76 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 
-//TODO Da terminare, verificare prima come rappresentare la lista di podotti nell'ordine
+
 @RestController
 @RequestMapping("/api/v1")
 public class OrdineController {
 
     @Autowired
-    private OrdineRepository orderRepository;
+    private OrdineService orderService;
 
     @Autowired
-    private ProdottoDescrizioneRepository productDescriptionRepository;
+    private TitolareService ownerService;
+    
+    @Autowired
+    private DipendenteService employeeService;
 
     @Autowired
-    private UserRepository userRepo;
+    private RigaOrdineProdottoService orderProductLineService;
 
     @Autowired
-    private RigaOrdineProdottoRepository orderProductLineRepo;
+    private AcquirenteService customerService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
-    public ResponseEntity<Map<Object, Object>> createNewOrder(@Valid @RequestBody OrdineDto newOrdine) {
-        //TODO Modificare Dto (togliere stringa username titolare/dipendente) e invece prendere i dati dello user tramite token o tramite userdetails.
-        Map<Object, Object> responseMap = new HashMap<>();
-
-        Attivita shop = userRepo.findByUsername(newOrdine.getEmployeeUsername()).get().getShopEmployed();
+    public ResponseEntity<String> createNewOrder(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody OrdineDto newOrdine) {
         
-        if(shop == null) {
-            responseMap.put("errorString", "L'utente " + newOrdine.getEmployeeUsername() + " non ha un negozio associato!");
-            return ResponseEntity.badRequest().body(responseMap);
+        boolean isDipendente = employeeService.existsDipendente(userDetails.getUsername());
+        boolean isTitolare = ownerService.existsTitolare(userDetails.getUsername());
+
+        if (!isDipendente && !isTitolare) {
+            return ResponseEntity.badRequest().body("Utente non trovato o permessi non adeguati");
         }
 
-        //Check dei valori inseriti:
-        //controllo che i prodotti inseriti esistano e se così fosse recupero le loro istanze dal db.
-        for(RigaOrdineProdotto line : newOrdine.getProductsList()) {
-            if(!productDescriptionRepository.exists(Example.of(line.getProduct())))
-            {
-                responseMap.put("errorString", "Il prodotto " + line.getProduct().getProductName() + " non è presente nel negozio " + shop.getShopBusinessName() + "!");
-                return ResponseEntity.badRequest().body(responseMap);
-            }
-            line.setProduct(productDescriptionRepository.findOne(Example.of(line.getProduct())).get());
-            //line.setProduct(shop.getCatalog().getProducts().stream().filter(name -> name.getProductName().equals(line.getProduct().getProductName())).findFirst().get());
+        Attivita shop;
+        if (isTitolare) {
+            shop = ownerService.getShopOwnedBy(userDetails.getUsername());
+        } else {
+            shop = employeeService.getShopEmployedIn(userDetails.getUsername());
         }
 
-        Optional<User> customer = userRepo.findByUsername(newOrdine.getCustomerUsername());
+        newOrdine.setProductsList(orderProductLineService.checkLines(shop, newOrdine.getProductsList()));
 
-        if(!customer.isPresent()) {
-            responseMap.put("errorString", "L'acquirente " + newOrdine.getCustomerUsername() + " non è registrato nel sistema!");
-            return ResponseEntity.badRequest().body(responseMap);
-        }
+        Acquirente customer = customerService.getAcquirente(newOrdine.getCustomerUsername());
 
-        Ordine order = orderRepository.save(Ordine.builder()
-                            .orderCustomer(customer.get())
+        Ordine order = Ordine.builder()
+                            .orderCustomer(customer)
                             .orderShop(shop)
                             .parkingAddress(newOrdine.getCarPosition())
                             .orderProductsLineList(newOrdine.getProductsList())
-                            .build());
+                            .build();
 
-        order.getOrderProductsLineList().stream().forEach(item -> {
-            item.setOrder(order);
-            item.setId(ChiaveRigaOrdineProdotto.builder().orderId(order.getOrderId()).productId(item.getProduct().getProductId()).build());
-            orderProductLineRepo.save(item);
-        });
+        order = orderService.saveOrdine(order);
 
-        return ResponseEntity.created(URI.create("/orders/" + order.getOrderId())).body(responseMap);
+        order.setOrderProductsLineList(orderProductLineService.saveAllLines(order, newOrdine.getProductsList()));
+
+        return ResponseEntity.created(URI.create("/orders/" + order.getOrderId())).build();
     }
 
     @GetMapping(value="/orders/state/not-assigned")
     public ResponseEntity<List<OrdineGetDto>> getAllNotAssignedOrders() {
-        List<OrdineGetDto> ordersList = orderRepository.findAll()
-                                                 .stream()
-                                                 .filter(c -> c.getOrderConsegna()==null)
-                                                 .map(OrdineGetDto::parseOrdineToOrdineGetDto)
-                                                 .collect(Collectors.toList());
+        List<OrdineGetDto> ordersList = orderService.getAllNotAssignedOrders()
+                                                    .stream()
+                                                    .map(this::convertToDto)
+                                                    .collect(Collectors.toList());
 
         return ResponseEntity.ok(ordersList);
+    }
+
+    private OrdineGetDto convertToDto(Ordine order) {
+        OrdineGetDto orderDto = this.modelMapper.map(order, OrdineGetDto.class);
+        return orderDto;
     }
 }

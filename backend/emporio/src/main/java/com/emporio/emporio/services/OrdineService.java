@@ -32,5 +32,8 @@ public class OrdineService {
         return orders;
     }
 
+    public Ordine saveOrdine(Ordine order) {
+        return orderRepository.save(order);
+    }
     
 }

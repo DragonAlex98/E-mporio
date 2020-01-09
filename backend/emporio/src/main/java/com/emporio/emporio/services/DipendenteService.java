@@ -7,7 +7,6 @@ import javax.persistence.EntityNotFoundException;
 
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.Dipendente;
-import com.emporio.emporio.model.User;
 import com.emporio.emporio.repository.DipendenteRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,7 +3,6 @@ package com.emporio.emporio.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,16 +16,11 @@ import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.CategoriaAttivita;
 import com.emporio.emporio.model.Dipendente;
 import com.emporio.emporio.model.ProdottoDescrizione;
-import com.emporio.emporio.model.User;
-import com.emporio.emporio.repository.AttivitaRepository;
-import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
-import com.emporio.emporio.repository.UserRepository;
 import com.emporio.emporio.services.AttivitaService;
 import com.emporio.emporio.services.CategoriaAttivitaService;
 import com.emporio.emporio.services.DipendenteService;
 import com.emporio.emporio.services.ProdottoDescrizioneService;
 import com.emporio.emporio.services.TitolareService;
-import com.emporio.emporio.services.UserService;
 import com.emporio.emporio.dto.ShopAddEmployeeDto;
 
 import org.modelmapper.ModelMapper;
@@ -57,25 +51,13 @@ public class AttivitaController {
     private DipendenteService employeeService;
 
     @Autowired
-    private AttivitaRepository attivitaRepository;
-
-    @Autowired
     private CategoriaAttivitaService shopCategoryService;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private AttivitaService shopService;
 
     @Autowired
     private ProdottoDescrizioneService productDescriptionService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ProdottoDescrizioneRepository productRepository;
 
     @Autowired
     private TitolareService titolareService;
