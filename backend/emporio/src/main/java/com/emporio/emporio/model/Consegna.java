@@ -38,5 +38,8 @@ public class Consegna {
     @OneToOne
     private User fattorino;
 
+    @OneToOne(mappedBy = "consegna")
+    private Posto posto;
+
 
 }

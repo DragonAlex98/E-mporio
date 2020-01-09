@@ -36,7 +36,7 @@ public class LockerController {
     }
 
     @GetMapping("/locker/{id}/postiliberi")
-    public ResponseEntity<Integer> getPostiLiberi(@NotBlank @PathVariable(name = "id", required = true) int idLocker) {
+    public ResponseEntity<List<Posto>> getPostiLiberi(@NotBlank @PathVariable(name = "id", required = true) int idLocker) {
 
         Optional<Locker> optionalLocker = lockerRepository.findById(idLocker);
 
@@ -44,13 +44,11 @@ public class LockerController {
 
         Locker locker = optionalLocker.get();
 
-        List<Posto> posti = locker.getPosti();
+        List<Posto> postiLiberi = locker.getPosti();
 
-        AtomicInteger postiLiberi = new AtomicInteger();
+        postiLiberi.removeIf((posto) -> {if (posto.getConsegna() != null) return true; return false;});
 
-        posti.forEach((posto) -> { if (posto.getConsegna() == null) postiLiberi.incrementAndGet();});
-
-        return ResponseEntity.ok(postiLiberi.intValue());
+        return ResponseEntity.ok(postiLiberi);
 
     }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Locker } from '../Locker';
 import { LockerService } from '../locker.service';
+import { Posto } from '../Posto';
 
 
 @Component({
@@ -12,6 +13,7 @@ export class LockerSelectorComponent implements OnInit {
 
   lockers: Locker[];
   selectedLocker: Locker;
+  lockerEmptyPlaces: Posto[];
 
   constructor(private lockerService: LockerService) { }
 
@@ -30,7 +32,24 @@ export class LockerSelectorComponent implements OnInit {
 
   onLockerChange(event) {
 
+    // TODO Sistemare problema della prima selezione
     this.selectedLocker = event.value;
+
+    if (typeof this.selectedLocker === 'undefined') {
+       // Check per evitare che quando si seleziona none venga rifatta la chiamata
+
+    } else {
+
+     this.lockerService.getEmtpyPlaces(this.selectedLocker.lockerId).subscribe(
+        (emptyPlaces) => { this.lockerEmptyPlaces =
+          emptyPlaces.map((posto) => {
+            return new Posto(posto.postoId, posto.nomePosto);
+          });
+        },
+        (error) => {alert('Impossibile recuperare i posti del locker selezionato'); }
+      );
+    }
+
 
   }
 

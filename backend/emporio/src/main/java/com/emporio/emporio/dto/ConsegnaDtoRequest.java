@@ -2,6 +2,8 @@ package com.emporio.emporio.dto;
 
 import javax.validation.constraints.NotNull;
 
+import com.emporio.emporio.model.Posto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +20,8 @@ public class ConsegnaDtoRequest {
 
     @NotNull
     String fattorinoName;
+
+    @NotNull
+    int idPosto;
 
 }

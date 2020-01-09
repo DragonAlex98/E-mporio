@@ -1,11 +1,11 @@
 export class Locker {
 
-    id: number;
+    lockerId: number;
     address: string;
 
-    constructor(id: number, address: string) {
+    constructor(lockerId: number, address: string) {
 
-        this.id = id;
+        this.lockerId = lockerId;
         this.address = address;
 
     }

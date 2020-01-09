@@ -1,0 +1,6 @@
+<mat-form-field *ngIf="lockerEmptyPlaces">
+    <mat-label>Seleziona un posto</mat-label>
+    <mat-select  (selectionChange)="onEmptyplaceChange($event)">
+      <mat-option *ngFor="let emptyPlace of lockerEmptyPlaces" [value]="emptyPlace">{{emptyPlace.nomePosto}}</mat-option>
+    </mat-select>
+</mat-form-field>
