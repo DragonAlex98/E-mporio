@@ -35,7 +35,8 @@ export class LockerSelectorComponent implements OnInit {
     // TODO Sistemare problema della prima selezione
     this.selectedLocker = event.value;
 
-    if (typeof this.selectedLocker === 'undefined') { // Check per evitare che quando si seleziona none venga rifatta la chiamata
+    if (typeof this.selectedLocker === 'undefined') {
+       // Check per evitare che quando si seleziona none venga rifatta la chiamata
 
     } else {
 

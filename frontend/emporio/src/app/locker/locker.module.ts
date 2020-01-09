@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { LockerRoutingModule } from '@src/app/locker/locker-routing.module';
 import { LockerSelectorComponent } from '@src/app/locker/locker-selector/locker-selector.component';
-import { MaterialModule } from '../material/material.module';
+import { MaterialModule } from '@src/app/material/material.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { LockerDetailComponent } from '@src/app/locker/locker-detail/locker-detail.component';
 
 
 @NgModule({
-  declarations: [LockerSelectorComponent],
+  declarations: [LockerSelectorComponent, LockerDetailComponent],
   imports: [
     CommonModule,
     LockerRoutingModule,
