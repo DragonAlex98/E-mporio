@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import com.emporio.emporio.security.InvalidJwtAuthenticationException;
@@ -27,12 +28,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
        return new ResponseEntity<>(apiError, apiError.getStatus());
    }
 
+   private ResponseEntity<Object> buildResponseEntity(Exception ex, HttpStatus status) {
+        ApiError apiError = new ApiError(status);
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+}
+
+   @ExceptionHandler(EntityExistsException.class)
+   protected ResponseEntity<Object> handleEntityExistsException(EntityExistsException ex) {
+        return buildResponseEntity(ex, HttpStatus.BAD_REQUEST);
+   }
+
    @ExceptionHandler(EntityNotFoundException.class)
    protected ResponseEntity<Object> handleEntityNotFound(
            EntityNotFoundException ex) {
-       ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
-       apiError.setMessage(ex.getMessage());
-       return buildResponseEntity(apiError);
+       return buildResponseEntity(ex, HttpStatus.NOT_FOUND);
    }
 
     @SuppressWarnings("rawtypes")

@@ -4,12 +4,13 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
+@SuperBuilder
 @NoArgsConstructor
 @DiscriminatorValue("OPERATOR")
 public class OperatoreSistema extends User {
-    private static final long serialVersionUID = -1692839639000020959L;
 
     public OperatoreSistema(String username, String password, Role role) {
         super(username, password, role);

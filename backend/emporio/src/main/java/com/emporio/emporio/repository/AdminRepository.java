@@ -1,10 +1,10 @@
 package com.emporio.emporio.repository;
 
-import com.emporio.emporio.model.User;
+import com.emporio.emporio.model.Admin;
 
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends UserBaseRepository<User> {
+public interface AdminRepository extends UserBaseRepository<Admin> {
     
 }
