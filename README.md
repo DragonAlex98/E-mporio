@@ -1,5 +1,7 @@
 <a href="http://52.156.254.234:8085/viewType.html?buildTypeId=Emporio_Build&guest=1">
 <img src="http://52.156.254.234:8085/app/rest/builds/buildType:(id:Emporio_Build)/statusIcon"/>
+
+<img src="https://travis-ci.com/DragonAlex98/DotsAndBoxes.svg?token=83y8gCdpGzTxXEobzLJm&branch=master"/>
 </a>
 
 # E-mporio
