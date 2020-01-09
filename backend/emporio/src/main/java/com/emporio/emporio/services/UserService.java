@@ -5,8 +5,10 @@ import java.util.Optional;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
+import com.emporio.emporio.model.Dipendente;
 import com.emporio.emporio.model.Role;
 import com.emporio.emporio.model.User;
+import com.emporio.emporio.repository.DipendenteRepository;
 import com.emporio.emporio.repository.RoleRepository;
 import com.emporio.emporio.repository.UserRepository;
 
@@ -21,6 +23,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private DipendenteRepository employeeRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -45,12 +50,15 @@ public class UserService {
     }
 
     public boolean isDipendente(String username) {
-        User user = this.getUser(username);
-        return isRole(user, "Dipendente");
+        return employeeRepository.existsByUsername(username);
     }
 
     public boolean isDipendente(User user) {
         return isRole(user, "Dipendente");
+    }
+
+    public Dipendente addEmployee(Dipendente employee) {
+        return employeeRepository.save(employee);
     }
 
     /* public boolean isTitolare(String username) {
