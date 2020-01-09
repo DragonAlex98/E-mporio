@@ -22,6 +22,10 @@ public class DipendenteService {
     @Autowired
     private DipendenteRepository employeeRepository;
 
+    public boolean existsDipendente(String username) {
+        return employeeRepository.existsByUsername(username);
+    }
+
     public Dipendente getDipendente(String username) {
         Optional<Dipendente> employee = employeeRepository.findByUsername(username);
 
@@ -39,6 +43,15 @@ public class DipendenteService {
         return employeeRepository.save(employee);
     }
 
+    public Attivita getShopEmployedIn(String username) {
+        Dipendente employee = this.getDipendente(username);
+
+        if(employee.getShopEmployed() == null)
+            throw new EntityNotFoundException("Il dipendente " + username + " non ha attività associate!");
+
+        return employee.getShopEmployed();
+    }
+
     public Dipendente addShopEmployed(Attivita shop, Dipendente employee) {
         if(this.employeeAlreadyWorks(employee))
             throw new EntityExistsException("L'utente è già dipendente in una azienda!");
@@ -46,12 +59,4 @@ public class DipendenteService {
         employee.setShopEmployed(shop);
         return employeeRepository.save(employee);
     }
-
-    public boolean isDipendente(User user) {
-        if(!(user instanceof Dipendente))
-            throw new EntityNotFoundException("Lo user " + user.getUsername() + " non è un dipendente!");
-
-        return true;
-    }
-    
 }

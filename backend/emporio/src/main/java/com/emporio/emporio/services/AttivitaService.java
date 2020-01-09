@@ -8,11 +8,8 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import com.emporio.emporio.model.Attivita;
-import com.emporio.emporio.model.Dipendente;
 import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.repository.AttivitaRepository;
-import com.emporio.emporio.repository.DipendenteRepository;
-import com.emporio.emporio.factory.DipendenteUserFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,9 +22,6 @@ public class AttivitaService {
 
     @Autowired
     private AttivitaRepository shopRepository;
-
-    @Autowired
-    private DipendenteRepository employeeRepository;
 
     public boolean existsAttivita(String pIva) {
         return shopRepository.existsAttivitaByShopPIVA(pIva);
@@ -71,4 +65,14 @@ public class AttivitaService {
         return shop.getCatalog().getProducts();
     }
 
+    public boolean deleteCatalogProduct(Attivita shop, ProdottoDescrizione product) {
+
+        if(!shop.getCatalog().getProducts().remove(product)) {
+            throw new EntityNotFoundException("Il catalogo dell'attività con partita iva " + shop.getShopPIVA() + " non contiene il prodotto col nome " + product.getProductName());
+        }
+
+        shopRepository.save(shop);
+
+        return true;
+    }
 }

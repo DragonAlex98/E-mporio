@@ -20,7 +20,21 @@ public class ProdottoDescrizioneService {
 
     @Autowired
     private ProdottoDescrizioneRepository productRepository;
-    
+
+    public boolean existsByProductName(String productName) {
+        return productRepository.existsByProductName(productName);
+    }
+
+    public ProdottoDescrizione getProduct(String productName) {
+        Optional<ProdottoDescrizione> product = productRepository.findByProductName(productName);
+
+        if(!product.isPresent()) {
+            throw new EntityNotFoundException("Il prodotto con nome " + productName + " non è presente!");
+        }
+
+        return product.get();
+    }
+
     public ProdottoDescrizione saveProductDescription(ProdottoDescrizione product) {
         if(productRepository.existsByProductName(product.getProductName()))
             throw new EntityExistsException("Il prodotto " + product.getProductName() + " è già esistente!");

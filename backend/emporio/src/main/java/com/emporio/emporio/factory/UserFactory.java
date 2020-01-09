@@ -1,8 +1,11 @@
 package com.emporio.emporio.factory;
 
+import java.util.function.Function;
+
+import com.emporio.emporio.model.Role;
 import com.emporio.emporio.model.User;
-import com.emporio.emporio.repository.RoleRepository;
 
 public interface UserFactory {
-    abstract User createUser(String username, String password, RoleRepository roleRepository);
+
+    abstract User createUser(String username, String password, Function<String, Role> role);
 }

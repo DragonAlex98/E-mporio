@@ -1,11 +1,13 @@
 package com.emporio.emporio.factory;
 
+import java.util.function.Function;
+
 import com.emporio.emporio.model.Acquirente;
+import com.emporio.emporio.model.Role;
 import com.emporio.emporio.model.User;
-import com.emporio.emporio.repository.RoleRepository;
 
 public class AcquirenteUserFactory implements UserFactory {
-    public User createUser(String username, String password, RoleRepository roleRepository) {
-        return new Acquirente(username, password, roleRepository.findByNameIgnoreCase("Acquirente").get());
+    public User createUser(String username, String password, Function<String, Role> role) {
+        return new Acquirente(username, password, role.apply("Acquirente"));
     }
 }
