@@ -1,0 +1,8 @@
+language: java
+jdk:
+  - openjdk12
+script:
+  - cd backend/emporio/src/main/resources
+  - sed -i 's/emporio?use/emporiotravis?use/g' application.properties
+  - cd ../../..
+  - mvn test
