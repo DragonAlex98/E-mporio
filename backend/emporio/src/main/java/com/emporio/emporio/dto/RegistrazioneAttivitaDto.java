@@ -30,5 +30,5 @@ public class RegistrazioneAttivitaDto implements Serializable {
 	private String shopHeadquarter;
 	
 	@NotBlank
-	private String shopCategory;
+	private String shopCategoryDescription;
 }

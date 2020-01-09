@@ -5,23 +5,30 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
+import com.emporio.emporio.dto.AttivitaGetDto;
 import com.emporio.emporio.dto.RegistrazioneAttivitaDto;
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.CategoriaAttivita;
+import com.emporio.emporio.model.Dipendente;
 import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.model.User;
 import com.emporio.emporio.repository.AttivitaRepository;
-import com.emporio.emporio.repository.CategoriaAttivitaRepository;
 import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
 import com.emporio.emporio.repository.UserRepository;
+import com.emporio.emporio.services.AttivitaService;
+import com.emporio.emporio.services.CategoriaAttivitaService;
+import com.emporio.emporio.services.DipendenteService;
+import com.emporio.emporio.services.TitolareService;
 import com.emporio.emporio.services.UserService;
 import com.emporio.emporio.dto.ShopAddEmployeeDto;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,18 +44,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Responsabilità: - Gestisce i dati delle chiamate in entrata ed uscita.
+ *                 - Coordina i service per assolvere ad un determinato compito.
+ */
 @RestController
 @RequestMapping("/api/v1")
 public class AttivitaController {
 
     @Autowired
+    private DipendenteService employeeService;
+
+    @Autowired
     private AttivitaRepository attivitaRepository;
 
     @Autowired
-    private CategoriaAttivitaRepository categoriaAttivitaRepository;
+    private CategoriaAttivitaService shopCategoryService;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AttivitaService shopService;
 
     @Autowired
     private UserService userService;
@@ -56,108 +73,65 @@ public class AttivitaController {
     @Autowired
     private ProdottoDescrizioneRepository productRepository;
 
+    @Autowired
+    private TitolareService titolareService;
+    
+    @Autowired
+    private ModelMapper modelMapper;
+
     @PostMapping("/shops")
     public ResponseEntity<String> insertNewAttivita(@Valid @RequestBody RegistrazioneAttivitaDto attivita)
             throws URISyntaxException {
-        if(attivitaRepository.existsAttivitaByShopPIVA(attivita.getShopPIVA())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+        
+        CategoriaAttivita shopCategory = shopCategoryService.getShopCategory(attivita.getShopCategoryDescription());
 
-        Optional<CategoriaAttivita> categoria = categoriaAttivitaRepository.findByShopCategoryDescription(attivita.getShopCategory());
-        if (!categoria.isPresent()) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        Attivita newShop = Attivita.builder().shopPIVA(attivita.getShopPIVA()).shopAddress(attivita.getShopAddress()).shopBusinessName(attivita.getShopBusinessName()).shopHeadquarter(attivita.getShopHeadquarter()).shopCategory(categoria.get()).build();
+        Attivita newShop = Attivita.builder().shopPIVA(attivita.getShopPIVA()).shopAddress(attivita.getShopAddress()).shopBusinessName(attivita.getShopBusinessName()).shopHeadquarter(attivita.getShopHeadquarter()).shopCategory(shopCategory).build();
         Catalogo catalogo = Catalogo.builder().build();
         newShop.setCatalog(catalogo);
 
-        attivitaRepository.save(newShop);
+        newShop = shopService.addShop(newShop);
 
-        return ResponseEntity.created(new URI("/shops/" + attivita.getShopPIVA())).build();
+        return ResponseEntity.created(new URI("/shops/" + newShop.getShopPIVA())).build();
     }
 
     @GetMapping("/shops/search")
-    public ResponseEntity<List<Attivita>> findAttivita(@NotBlank @RequestParam(name = "ragSociale", required = true) String ragSociale) {
-        List<Attivita> toReturnShopsList = attivitaRepository.findByShopBusinessNameContaining(ragSociale);
+    public ResponseEntity<List<AttivitaGetDto>> findAttivita(@NotBlank @RequestParam(name = "ragSociale", required = true) String ragSociale) {
+        List<Attivita> toReturnShopsList = shopService.getShopsContaining(ragSociale);
 
-        if(toReturnShopsList.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(toReturnShopsList);
+        return ResponseEntity.ok(toReturnShopsList.stream().map(this::convertToDto).collect(Collectors.toList()));
     }
 
     @PutMapping("/shops/employees")
     public ResponseEntity<String> addEmployeeToShop(@Valid @RequestBody ShopAddEmployeeDto addEmployeeDTO) {
+        Attivita shop = titolareService.getShopOwnedBy(addEmployeeDTO.getOwnerUsername());
+
+        Dipendente employee = employeeService.getDipendente(addEmployeeDTO.getEmployeeUsername());
         
-        User employee = userService.getUser(addEmployeeDTO.getEmployeeUsername());
-
-        //Controllo se lo username dipendente passato corrisponde effettivamente ad un dipendente
-        if(!employee.getRole().getName().toLowerCase().equalsIgnoreCase("dipendente")) {
-            return ResponseEntity.badRequest().body("L'utente inserito non è registrato come dipendente nel sistema.");
-        }
-
-        Optional<User> ownerOptional = userRepository.findByUsername(addEmployeeDTO.getOwnerUsername());
-
-        //Controllo se lo username titolare passato esiste nel sistema
-        if(!ownerOptional.isPresent()) {
-            return ResponseEntity.badRequest().body("Titolare non registrato nel sistema");
-        }
-
-        User owner = ownerOptional.get();
-        
-        Attivita shop = owner.getShopOwned();
-
-        //Controllo se al titolare passato è associata un'attività
-        if(shop == null) {
-            return ResponseEntity.badRequest().body("Il titolare non ha alcuna attività a lui associata");
-        }
-
-        if(employee.getShopEmployed() != null) {
-            return ResponseEntity.badRequest().body("Il dipendente è già inserito nell'attività");
-        }
-
-        employee.setShopEmployed(shop);
-        userRepository.save(employee);
+        shop.getShopEmployeeList().add(employee);
+        employeeService.addShopEmployed(shop, employee);
 
         return ResponseEntity.ok("Aggiunto dipendente");
     }
 
     @DeleteMapping("/shops")
     public ResponseEntity<String> deleteAttivita(@AuthenticationPrincipal UserDetails userDetails) {
-        Optional<User> optionalUser = userRepository.findByUsername(userDetails.getUsername());
-        if (!optionalUser.isPresent()) {
-            return ResponseEntity.badRequest().body("Utente non trovato");
-        }
+        Attivita shop = titolareService.getShopOwnedBy(userDetails.getUsername());
 
-        User user = optionalUser.get();
+        titolareService.deleteShopFromOwner(userDetails.getUsername());
 
-        Attivita shop = user.getShopOwned();
-        if (shop == null) {
-            return ResponseEntity.badRequest().body("Il titolare non ha alcuna attività a lui associata");
-        }
+        shopService.deleteAttivitaBy(shop.getShopPIVA());
 
-        user.setShopOwned(null);
-        userRepository.save(user);
-
-        attivitaRepository.deleteByShopPIVA(shop.getShopPIVA());
         return ResponseEntity.ok("Attività cancellata");
     }
 
     @GetMapping("/shops/{piva}/products")
     public ResponseEntity<Set<ProdottoDescrizione>> getCatalog(@NotBlank @PathVariable(name = "piva", required = true) String piva) {
-        Optional<Attivita> optionalAttivita = attivitaRepository.findById(piva);
-        if(!optionalAttivita.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Attivita attivita = optionalAttivita.get();
-        return ResponseEntity.ok(attivita.getCatalog().getProducts());
+        return ResponseEntity.ok(shopService.getCatalogProducts(piva));
     }
 
     @DeleteMapping("/shops/{piva}/products")
     public ResponseEntity<String> deleteProductFromAttivita(@AuthenticationPrincipal UserDetails userDetails, @NotBlank @PathVariable(name = "piva", required = true) String piva, @NotBlank @RequestParam(name = "productName", required = true) String productName) {
+        //TODO
         Optional<User> optionalUser = userRepository.findByUsername(userDetails.getUsername());
         if (!optionalUser.isPresent()) {
             return ResponseEntity.badRequest().body("Utente non trovato");
@@ -202,14 +176,11 @@ public class AttivitaController {
 
     @GetMapping("/shops/{piva}")
     public ResponseEntity<Attivita> findAttivitaByPIVA(@NotBlank @PathVariable(name = "piva", required = true) String piva) {
-        Optional<Attivita> toReturnShop = attivitaRepository.findById(piva);
+        return ResponseEntity.ok(shopService.getShop(piva));
+    }
 
-        if(!toReturnShop.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Attivita shopFound = toReturnShop.get();
-
-        return ResponseEntity.ok(shopFound);
+    private AttivitaGetDto convertToDto(Attivita shop) {
+        AttivitaGetDto shopDto = this.modelMapper.map(shop, AttivitaGetDto.class);
+        return shopDto;
     }
 }
