@@ -3,18 +3,14 @@ package com.emporio.emporio.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Optional;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-
 import com.emporio.emporio.dto.ProductDescriptionDto;
 import com.emporio.emporio.model.CategoriaProdotto;
 import com.emporio.emporio.model.ProdottoDescrizione;
-import com.emporio.emporio.repository.CategoriaProdottoRepository;
-import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
+import com.emporio.emporio.services.CategoriaProdottoService;
+import com.emporio.emporio.services.ProdottoDescrizioneService;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,54 +24,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1")
 public class ProdottoDescrizioneController {
-    
-    @Autowired
-    private ProdottoDescrizioneRepository productRepository;
 
     @Autowired
-    private CategoriaProdottoRepository productCategoryRepository;
+    private CategoriaProdottoService productCategoryService;
+
+    @Autowired
+    private ProdottoDescrizioneService  productDescriptionService;
 
     @PostMapping("/products")
     public ResponseEntity<String> insertNewProduct(@Valid @RequestBody ProductDescriptionDto product)
             throws URISyntaxException {
-        if (productRepository.existsByProductName(product.getProductName())) {
-            return ResponseEntity.badRequest().build();
-        }
 
-        Optional<CategoriaProdotto> cat = productCategoryRepository.findByDescription(product.getProductCategoryName());
-        if (!cat.isPresent()) {
-            return ResponseEntity.badRequest().build();
-        }
+        CategoriaProdotto cat = productCategoryService.getProductCategory(product.getProductCategoryName());
 
-        ProdottoDescrizione newProduct = ProdottoDescrizione.builder().productName(product.getProductName()).productCategory(cat.get()).build();
-        productRepository.save(newProduct);
+        ProdottoDescrizione newProduct = ProdottoDescrizione.builder().productName(product.getProductName()).productCategory(cat).build();
+        
+        newProduct = productDescriptionService.saveProductDescription(newProduct);
         
         return ResponseEntity.created(new URI("/products/" + newProduct.getProductId())).build();
     }
 
     @GetMapping("/products/search")
     public ResponseEntity<List<ProdottoDescrizione>> findProduct(@NotBlank @RequestParam(name = "nome", required = true) String nome) {
-        
-        List<ProdottoDescrizione> toReturnProductsList = productRepository.findByProductNameContaining(nome);
-
-        if(toReturnProductsList.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(toReturnProductsList);
+        return ResponseEntity.ok(productDescriptionService.getProductsContaining(nome));
     }
 
     @GetMapping("/products")
     public ResponseEntity<List<ProdottoDescrizione>> getAllProducts() {
-        List<ProdottoDescrizione> toReturnProductsList = productRepository.findAll();
-
-        return ResponseEntity.ok(toReturnProductsList);
+        return ResponseEntity.ok(productDescriptionService.getAllProductsDescription());
     }
 
     @GetMapping("/products/{id}")
-    public ResponseEntity<Optional<ProdottoDescrizione>> getProductById(@Valid @Type(value = Integer.class) @PathVariable(name = "id", required = true) Integer id) {
-        Optional<ProdottoDescrizione> product = productRepository.findById(id);
-
-        return (product.isPresent()) ? ResponseEntity.ok(product) : ResponseEntity.notFound().build();
+    public ResponseEntity<ProdottoDescrizione> getProductById(@Valid @Type(value = Integer.class) @PathVariable(name = "id", required = true) Integer id) {
+        return ResponseEntity.ok(productDescriptionService.getProductDescriptionById(id));
     }
 }
