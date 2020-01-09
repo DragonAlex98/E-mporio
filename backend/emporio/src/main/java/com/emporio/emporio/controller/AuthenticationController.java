@@ -26,6 +26,8 @@ import com.emporio.emporio.model.Role;
 import com.emporio.emporio.repository.RoleRepository;
 import com.emporio.emporio.repository.UserRepository;
 import com.emporio.emporio.security.JwtTokenProvider;
+import com.emporio.emporio.services.RoleService;
+import com.emporio.emporio.services.UserService;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -38,10 +40,10 @@ public class AuthenticationController {
     JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    RoleRepository roles;
+    RoleService roleService;
 
     @Autowired
-    UserRepository users;
+    UserService userService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -53,7 +55,7 @@ public class AuthenticationController {
         try {
             String username = data.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-            Role role = this.users.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found")).getRole();
+            Role role = userService.getUser(username).getRole();
             String token = jwtTokenProvider.createToken(username, role);
 
             Map<Object, Object> model = new HashMap<>();
@@ -73,17 +75,10 @@ public class AuthenticationController {
         try {
             String username = data.getUsername();
 
-            boolean userExists = this.users.findByUsername(username).isPresent();
-
-            if (userExists) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).build();
-            }
-
-            Role role = this.roles.findByNameIgnoreCase(data.getRole()).orElseThrow(() -> new NoSuchElementException("Role " + data.getRole() + "not found"));
+            Role role = this.roleService.getRole(data.getRole());
 
             UserFactory factory = Class.forName("com.emporio.emporio.factory." + role.getName() + "UserFactory").asSubclass(UserFactory.class).getDeclaredConstructor().newInstance();
-
-            this.users.save(factory.createUser(username, this.passwordEncoder.encode(data.getPassword()), roles));
+            this.userService.createUser(factory.createUser(username, this.passwordEncoder.encode(data.getPassword()), this.roleService::getRole));
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (AuthenticationException e) {

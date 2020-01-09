@@ -20,6 +20,10 @@ public class TitolareService {
     @Autowired
     private TitolareRepository ownerRepository;
 
+    public boolean existsTitolare(String username) {
+        return ownerRepository.existsByUsername(username);
+    }
+
     public boolean hasShop(Titolare titolare) {
         if(titolare.getShopOwned() == null)
             return false;

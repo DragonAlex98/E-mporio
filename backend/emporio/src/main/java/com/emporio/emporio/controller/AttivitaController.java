@@ -24,6 +24,7 @@ import com.emporio.emporio.repository.UserRepository;
 import com.emporio.emporio.services.AttivitaService;
 import com.emporio.emporio.services.CategoriaAttivitaService;
 import com.emporio.emporio.services.DipendenteService;
+import com.emporio.emporio.services.ProdottoDescrizioneService;
 import com.emporio.emporio.services.TitolareService;
 import com.emporio.emporio.services.UserService;
 import com.emporio.emporio.dto.ShopAddEmployeeDto;
@@ -66,6 +67,9 @@ public class AttivitaController {
 
     @Autowired
     private AttivitaService shopService;
+
+    @Autowired
+    private ProdottoDescrizioneService productDescriptionService;
 
     @Autowired
     private UserService userService;
@@ -131,47 +135,30 @@ public class AttivitaController {
 
     @DeleteMapping("/shops/{piva}/products")
     public ResponseEntity<String> deleteProductFromAttivita(@AuthenticationPrincipal UserDetails userDetails, @NotBlank @PathVariable(name = "piva", required = true) String piva, @NotBlank @RequestParam(name = "productName", required = true) String productName) {
-        //TODO
-        Optional<User> optionalUser = userRepository.findByUsername(userDetails.getUsername());
-        if (!optionalUser.isPresent()) {
-            return ResponseEntity.badRequest().body("Utente non trovato");
+
+        boolean isDipendente = employeeService.existsDipendente(userDetails.getUsername());
+        boolean isTitolare = titolareService.existsTitolare(userDetails.getUsername());
+
+        if (!isDipendente && !isTitolare) {
+            return ResponseEntity.badRequest().body("Utente non trovato o permessi non adeguati");
         }
 
-        User user = optionalUser.get();
         Attivita shop;
-        if (user.getRole().getName().equalsIgnoreCase("dipendente")) {
-            shop = user.getShopEmployed();
-            if (shop == null) {
-                return ResponseEntity.badRequest().body("Il titolare non lavora per alcuna attività");
-            }
-        } else if (user.getRole().getName().equalsIgnoreCase("titolare")) {
-            shop = user.getShopOwned();
-            if (shop == null) {
-                return ResponseEntity.badRequest().body("Il titolare non ha alcuna attività a lui associata");
-            }
+        if (isTitolare) {
+            shop = titolareService.getShopOwnedBy(userDetails.getUsername());
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("L'utente non ha i permessi neccessari per eseguire la richiesta");
+            shop = employeeService.getShopEmployedIn(userDetails.getUsername());
         }
 
         if (!shop.getShopPIVA().equalsIgnoreCase(piva)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("L'utente non ha i permessi neccessari per eseguire la richiesta");
         }
 
-        Optional<ProdottoDescrizione> optionalProdotto = productRepository.findByProductName(productName);
+        ProdottoDescrizione product = productDescriptionService.getProduct(productName);
+        
+        shopService.deleteCatalogProduct(shop, product);
 
-        if(!optionalProdotto.isPresent()) {
-            return ResponseEntity.badRequest().body("Prodotto non esistente");
-        }
-
-        ProdottoDescrizione prodotto = optionalProdotto.get();
-
-        if (shop.getCatalog().getProducts().contains(prodotto)) {
-            System.out.println(shop.getCatalog().getProducts().remove(prodotto));
-            attivitaRepository.save(shop);
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/shops/{piva}")
