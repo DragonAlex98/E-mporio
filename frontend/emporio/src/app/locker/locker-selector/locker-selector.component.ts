@@ -12,6 +12,7 @@ export class LockerSelectorComponent implements OnInit {
 
   lockers: Locker[];
   selectedLocker: Locker;
+  lockerEmptyPlaces: number;
 
   constructor(private lockerService: LockerService) { }
 
@@ -29,8 +30,12 @@ export class LockerSelectorComponent implements OnInit {
   }
 
   onLockerChange(event) {
-
+    // TODO METTERE CONTROLLO VALORE LOCKER
     this.selectedLocker = event.value;
+    this.lockerService.getEmtpyPlaces(this.selectedLocker.lockerId).subscribe(
+      (emptyPlaces) => {this.lockerEmptyPlaces = emptyPlaces; },
+      (error) => {alert('Impossibile recuperare i posti del locker selezionato'); }
+    );
 
   }
 
