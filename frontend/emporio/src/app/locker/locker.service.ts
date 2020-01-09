@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Locker } from './Locker';
 import { environment } from '@src/environments/environment';
+import { Posto } from './Posto';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,9 @@ export class LockerService {
 
   }
 
-  getEmtpyPlaces(idLocker): Observable<number> {
+  getEmtpyPlaces(idLocker): Observable<Posto[]> {
 
-    return this.httpClient.get<number>(this.apiUrl + '/' + idLocker + '/postiliberi');
+    return this.httpClient.get<Posto[]>(this.apiUrl + '/' + idLocker + '/postiliberi');
 
   }
 
