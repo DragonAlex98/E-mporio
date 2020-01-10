@@ -1,11 +1,12 @@
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
-import { DeliveryRoutingModule } from './delivery-routing.module';
+import { DeliveryRoutingModule } from '@src/app/delivery/delivery-routing.module';
 import { NativeScriptCommonModule } from 'nativescript-angular/common';
+import { CreateDeliveryComponent } from '@src/app/delivery/create-delivery/create-delivery.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [CreateDeliveryComponent],
   imports: [
     DeliveryRoutingModule,
     NativeScriptCommonModule
