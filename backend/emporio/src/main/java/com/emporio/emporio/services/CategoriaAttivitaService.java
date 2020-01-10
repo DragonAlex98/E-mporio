@@ -1,7 +1,9 @@
 package com.emporio.emporio.services;
 
+import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import com.emporio.emporio.model.CategoriaAttivita;
@@ -18,6 +20,10 @@ public class CategoriaAttivitaService {
     @Autowired
     private CategoriaAttivitaRepository shopCategoryRepository;
 
+    public boolean existsShopCategoryDescription(String shopCategoryDescription) {
+        return shopCategoryRepository.existsByShopCategoryDescription(shopCategoryDescription);
+    }
+
     public CategoriaAttivita getShopCategory(String shopCategory) {
         Optional<CategoriaAttivita> categoria = shopCategoryRepository.findByShopCategoryDescription(shopCategory);
         if (!categoria.isPresent()) {
@@ -25,6 +31,18 @@ public class CategoriaAttivitaService {
         }
 
         return categoria.get();
+    }
+
+    public List<CategoriaAttivita> getAllShopCategories() {
+        return shopCategoryRepository.findAll();
+    }
+
+    public CategoriaAttivita insertNewCategoryShop(String shopCategoryDescription) {
+        if (existsShopCategoryDescription(shopCategoryDescription)) {
+            throw new EntityExistsException("La categoria " + shopCategoryDescription + " è già stata inserita nel sistema");
+        }
+
+        return shopCategoryRepository.save(CategoriaAttivita.builder().shopCategoryDescription(shopCategoryDescription).build());
     }
     
 }

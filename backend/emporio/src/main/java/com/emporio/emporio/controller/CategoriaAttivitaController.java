@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.validation.Valid;
 import com.emporio.emporio.model.CategoriaAttivita;
-import com.emporio.emporio.repository.CategoriaAttivitaRepository;
+import com.emporio.emporio.services.CategoriaAttivitaService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,24 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class CategoriaAttivitaController {
 
     @Autowired
-    private CategoriaAttivitaRepository categoryShopRepository;
+    private CategoriaAttivitaService categoriaAttivitaService;
 
     @PostMapping("/categoryShop")
-    public ResponseEntity<String> insertNewCategoryShop(@Valid @RequestBody CategoriaAttivita categoryShop)
-            throws URISyntaxException {
-        if (categoryShopRepository.existsByShopCategoryDescription(categoryShop.getShopCategoryDescription())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-
-        categoryShopRepository.save(categoryShop);
-        
-        return ResponseEntity.created(new URI("/categoryShop/"+ categoryShop.getShopCategoryId())).build();
+    public ResponseEntity<String> insertNewCategoryShop(@Valid @RequestBody CategoriaAttivita categoryShop) throws URISyntaxException {
+        CategoriaAttivita shopCategory = categoriaAttivitaService.insertNewCategoryShop(categoryShop.getShopCategoryDescription());
+        return ResponseEntity.created(new URI("/categoryShop/"+ shopCategory.getShopCategoryId())).build();
     }
     
     @GetMapping("/categoryShop")
-    public ResponseEntity<List<CategoriaAttivita>> getAllShops() {
-        List<CategoriaAttivita> toReturnCategoryShopList = categoryShopRepository.findAll();
-
-        return ResponseEntity.ok(toReturnCategoryShopList);
+    public ResponseEntity<List<CategoriaAttivita>> getAllShopCategories() {
+        return ResponseEntity.ok(categoriaAttivitaService.getAllShopCategories());
     }
 }
