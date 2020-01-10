@@ -1,4 +1,4 @@
-package com.emporio.emporio.controllers;
+package com.emporio.emporio.unit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.emporio.emporio.dto.AttivitaGetDto;

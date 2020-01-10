@@ -93,8 +93,8 @@ public class AttivitaController {
 
         Dipendente employee = employeeService.getDipendente(addEmployeeDTO.getEmployeeUsername());
         
-        shop.getShopEmployeeList().add(employee);
         employeeService.addShopEmployed(shop, employee);
+        shop.getShopEmployeeList().add(employee);
 
         return ResponseEntity.ok("Aggiunto dipendente");
     }
