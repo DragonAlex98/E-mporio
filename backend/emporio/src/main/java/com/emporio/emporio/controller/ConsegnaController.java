@@ -7,14 +7,14 @@ import javax.validation.Valid;
 
 import com.emporio.emporio.dto.ConsegnaDtoRequest;
 import com.emporio.emporio.model.Consegna;
+import com.emporio.emporio.model.Fattorino;
 import com.emporio.emporio.model.Ordine;
 import com.emporio.emporio.model.Posto;
 import com.emporio.emporio.model.StatoConsegna;
-import com.emporio.emporio.model.User;
-import com.emporio.emporio.repository.ConsegnaRepository;
-import com.emporio.emporio.repository.OrdineRepository;
-import com.emporio.emporio.repository.PostoRepository;
-import com.emporio.emporio.repository.UserRepository;
+import com.emporio.emporio.services.ConsegnaService;
+import com.emporio.emporio.services.FattorinoService;
+import com.emporio.emporio.services.OrdineService;
+import com.emporio.emporio.services.PostoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,53 +28,42 @@ import org.springframework.web.bind.annotation.RestController;
 public class ConsegnaController {
 
     @Autowired
-    ConsegnaRepository consegnaRepository;
+    private ConsegnaService consegnaService;
+    
     @Autowired
-    OrdineRepository ordineRepository;
+    private OrdineService ordineService;
+
     @Autowired
-    UserRepository UserRepository;
+    private PostoService postoService;
+    
     @Autowired
-    PostoRepository postoRepository;
+    private FattorinoService fattorinoService;
 
     @PostMapping("/delivery")
     public ResponseEntity<String> createDelivery (@RequestBody @Valid ConsegnaDtoRequest delivery) throws URISyntaxException {
 
-        //Vari controlli relativi alla validita' dell'ordine passato e se questo non sia
-        //gia' stato associato ad una consegna
-        if (!ordineRepository.existsOrdineByOrderId(delivery.getIdOrdine())) {
-            return ResponseEntity.badRequest().body("Ordine non trovato");
-        }
-
-        if (!postoRepository.existsById(delivery.getIdPosto())) {
-            return ResponseEntity.badRequest().body("Posto non corretto");
-        }
-
+        Ordine order = ordineService.getOrdine(delivery.getIdOrdine());
         
-        Ordine order = ordineRepository.findByOrderId(delivery.getIdOrdine()).get();
+        if (!ordineService.isOrdineAlreadyAssigned(delivery.getIdOrdine())) {
 
-        if (order.getOrderConsegna() == null) {
-
-            User fattorino = UserRepository.findByUsername(delivery.getFattorinoName()).get();
+            Fattorino fattorino = fattorinoService.getFattorino(delivery.getFattorinoName());
             
-            Posto posto = postoRepository.findById(delivery.getIdPosto()).get();
-            // TODO Manca il controllo se il posto e' occupato
+            Posto posto = postoService.getPosto(delivery.getIdPosto());
+            
+            if (postoService.isPostoOccupato(delivery.getIdPosto())) {
+                return ResponseEntity.badRequest().body("Il posto " + delivery.getIdPosto() + " è già occupato per una consegna");
+            }
 
-            Consegna consegna = consegnaRepository.save(Consegna.builder().fattorino(fattorino).ordine(order)
-            .statoConsegna(StatoConsegna.RITIRATA).posto(posto).build());
+            Consegna consegna = consegnaService.saveConsegna(Consegna.builder().fattorino(fattorino).ordine(order).statoConsegna(StatoConsegna.RITIRATA).posto(posto).build());
 
             posto.setConsegna(consegna);
-            postoRepository.save(posto);
+            postoService.savePosto(posto);
             order.setOrderConsegna(consegna);
-            ordineRepository.save(order);
+            ordineService.saveOrdine(order);
 
             return ResponseEntity.created(new URI("/delivery/" + consegna.getIdConsegna())).build();
-
-        }
-
-        else {
-
+        } else {
             return ResponseEntity.badRequest().body("Consegna esistente, non inserita");
-
         }
     }
 

@@ -1,13 +1,13 @@
 package com.emporio.emporio.controller;
 
 import java.util.List;
-import java.util.Optional;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
 
 import com.emporio.emporio.model.Locker;
 import com.emporio.emporio.model.Posto;
-import com.emporio.emporio.repository.LockerRepository;
+import com.emporio.emporio.services.LockerService;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,34 +21,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class LockerController {
 
     @Autowired
-    private LockerRepository lockerRepository;
+    private LockerService lockerService;
 
     @GetMapping("/locker")
     public ResponseEntity<List<Locker>> getLockers() {
 
-        List<Locker> lockers = lockerRepository.findAll();
+        List<Locker> lockers = lockerService.getAllLockers();
 
         if (lockers.isEmpty()) return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(lockers);
-
     }
 
     @GetMapping("/locker/{id}/postiliberi")
-    public ResponseEntity<List<Posto>> getPostiLiberi(@NotBlank @PathVariable(name = "id", required = true) int idLocker) {
+    public ResponseEntity<List<Posto>> getPostiLiberi(@Valid @Type(value = Integer.class) @PathVariable(name = "id", required = true) int idLocker) {
 
-        Optional<Locker> optionalLocker = lockerRepository.findById(idLocker);
-
-        if (!optionalLocker.isPresent()) return ResponseEntity.notFound().build();
-
-        Locker locker = optionalLocker.get();
-
-        List<Posto> postiLiberi = locker.getPosti();
-
-        postiLiberi.removeIf((posto) -> {if (posto.getConsegna() != null) return true; return false;});
-
-        return ResponseEntity.ok(postiLiberi);
-
+        return ResponseEntity.ok(lockerService.getLockerPostiLiberi(idLocker));
     }
 
 }

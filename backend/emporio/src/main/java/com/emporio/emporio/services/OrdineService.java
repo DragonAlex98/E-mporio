@@ -1,6 +1,7 @@
 package com.emporio.emporio.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -34,6 +35,24 @@ public class OrdineService {
 
     public Ordine saveOrdine(Ordine order) {
         return orderRepository.save(order);
+    }
+
+    public boolean existsOrdine(Long id) {
+        return orderRepository.existsOrdineByOrderId(id);
+    }
+
+    public Ordine getOrdine(Long id) {
+        Optional<Ordine> ordine = orderRepository.findByOrderId(id);
+        if (!ordine.isPresent()) {
+            throw new EntityNotFoundException("Ordine " + ordine + " non trovata!");
+        }
+
+        return ordine.get();
+    }
+
+    public boolean isOrdineAlreadyAssigned(Long id) {
+        Ordine ordine = getOrdine(id);
+        return ordine.getOrderConsegna() != null;
     }
     
 }
