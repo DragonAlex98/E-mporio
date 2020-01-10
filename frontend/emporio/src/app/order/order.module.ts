@@ -16,6 +16,7 @@ import { OrderToDeliveryDetailsComponent } from '@src/app/order/order-to-deliver
 import { OrderComponent } from '@src/app/order/order/order.component';
 import { LockerModule } from '../locker/locker.module';
 import { LockerSelectorComponent } from '../locker/locker-selector/locker-selector.component';
+import { DeliveryModule } from '../delivery/delivery.module';
 
 
 
@@ -39,7 +40,8 @@ import { LockerSelectorComponent } from '../locker/locker-selector/locker-select
     MatPaginatorModule,
     MatSortModule,
     MatIconModule,
-    LockerModule
+    LockerModule,
+    DeliveryModule
   ]
 })
 export class OrderModule { }

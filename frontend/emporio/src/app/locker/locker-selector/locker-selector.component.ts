@@ -32,7 +32,6 @@ export class LockerSelectorComponent implements OnInit {
 
   onLockerChange(event) {
 
-    // TODO Sistemare problema della prima selezione
     this.selectedLocker = event.value;
 
     if (typeof this.selectedLocker === 'undefined') {
