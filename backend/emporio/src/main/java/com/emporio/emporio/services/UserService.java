@@ -5,11 +5,8 @@ import java.util.Optional;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
-import com.emporio.emporio.model.Dipendente;
 import com.emporio.emporio.model.Role;
 import com.emporio.emporio.model.User;
-import com.emporio.emporio.repository.DipendenteRepository;
-import com.emporio.emporio.repository.RoleRepository;
 import com.emporio.emporio.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +21,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private DipendenteRepository employeeRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
+    public boolean existsUser(String username) {
+        return userRepository.existsByUsername(username);
+    }
 
     public User getUser(String username) {
         Optional<User> employeeOptional = userRepository.findByUsername(username);
@@ -40,46 +35,15 @@ public class UserService {
         return employeeOptional.get();
     }
 
-    public Role getRole(String role) {
-        Optional<Role> roleOptional = roleRepository.findByNameIgnoreCase(role);
-
-        if(!roleOptional.isPresent())
-            throw new EntityNotFoundException("Ruolo " + role + " non trovato!");
-
-        return roleOptional.get();
+    public boolean hasRole(User user, Role role) {
+        return (user.getRole().getName().equalsIgnoreCase(role.getName()));
     }
 
-    public boolean isDipendente(String username) {
-        return employeeRepository.existsByUsername(username);
-    }
+    public User createUser(User user) {
+        if (existsUser(user.getUsername())) {
+            throw new EntityExistsException("User " + user.getUsername() + " esiste già!");
+        }
 
-    public boolean isDipendente(User user) {
-        return isRole(user, "Dipendente");
-    }
-
-    public Dipendente addEmployee(Dipendente employee) {
-        return employeeRepository.save(employee);
-    }
-
-    /* public boolean isTitolare(String username) {
-        User user = this.getUser(username);
-        return isRole(user, "Titolare");
-    }
-
-    public boolean isTitolare(User user) {
-        return isRole(user, "Titolare");
-    }
-
-    public boolean isAcquirente(String username) {
-        User user = this.getUser(username);
-        return isRole(user, "Acquirente");
-    }
-
-    public boolean isAcquirente(User user) {
-        return isRole(user, "Acquirente");
-    } */
-
-    private boolean isRole(User user, String role) {
-        return (user.getClass().getSimpleName().equals(this.getRole(role).getName()));
+        return userRepository.save(user);
     }
 }
