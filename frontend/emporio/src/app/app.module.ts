@@ -19,6 +19,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { DeliveryModule } from './delivery/delivery.module';
+import { OrderService } from './order/order.service';
 
 
 @NgModule({
@@ -47,7 +48,9 @@ import { DeliveryModule } from './delivery/delivery.module';
     MatPaginatorModule,
     MatSortModule,
   ],
-  providers: [],
+  providers: [
+    OrderService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
