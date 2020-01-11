@@ -22,7 +22,7 @@ export class OrderToDeliveryComponent implements OnInit {
   getOrders() {
 
     this.orderService.getOrdersToDelivery().subscribe(orders => {this.orders = orders; },
-       (error) => {alert('Errore di connessione'); });
+       (error) => {alert('Non ci sono ordini da visualizzare'); });
 
   }
 
