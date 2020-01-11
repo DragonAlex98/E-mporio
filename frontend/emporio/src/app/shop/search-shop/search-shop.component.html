@@ -1,5 +1,17 @@
 
 <span><h3>Lista Attività</h3></span>
-<mat-grid-list cols="2" rowHeight="1:1">
-        <mat-grid-tile *ngFor="let shop of shopList">{{shop.shopBusinessName}}</mat-grid-tile>
+<mat-grid-list cols="4" rowHeight="100px">
+        <mat-grid-tile *ngFor="let shop of shopList">
+                <mat-card>
+                        <div class="product-list-content">
+                        <mat-card-header>
+                                {{shop.shopBusinessName}}
+                        </mat-card-header>
+                        <mat-card-content>
+                                <p>Situata in: {{shop.shopAddress}}</p>
+                        </mat-card-content>
+                        <a mat-raised-button color="accent" style="margin: 0px 5%;" [routerLink]="['/shops/', shop.shopPIVA]">Informazioni Attività</a>
+                </div>
+        </mat-card>
+        </mat-grid-tile>
 </mat-grid-list>
