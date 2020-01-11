@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Order } from '@src/app/order/Order';
 import { Posto } from '@src/app/locker/Posto';
 import { DeliveryService } from '../delivery.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-delivery',
@@ -14,7 +15,7 @@ export class CreateDeliveryComponent implements OnInit {
   posto: Posto;
   fattorino: string;
 
-  constructor(private deliveryService: DeliveryService) {}
+  constructor(private deliveryService: DeliveryService, private routerService: Router) {}
 
   ngOnInit() {}
 
@@ -29,7 +30,9 @@ export class CreateDeliveryComponent implements OnInit {
       (error) => {alert('Consegna non creata, gia presente o errore di connessione'); }
       );
 
-      // TODO Fare il redirect sulla lista degli ordini da consegnare in automatico
+
+      this.routerService.navigateByUrl('/home');
+
 
   }
 

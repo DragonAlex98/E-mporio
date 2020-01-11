@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
             console.log(currentUser.role);
             console.log(route.data.roles.indexOf(currentUser.role));
             if (route.data.roles && route.data.roles.indexOf(currentUser.role) === -1) {
-                // role not authorised so redirect to home page
+                alert('Utente' + currentUser.username + ' con ruolo ' + currentUser.role + ' non abilitato');
                 this.router.navigate(['/']);
                 return false;
             }
@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate {
             return true;
         }
 
-        // not logged in so redirect to login page with the return url
+        alert('Utente non loggato, impossibile accedere');
         this.router.navigate(['/']);
         return false;
     }

@@ -19,6 +19,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { DeliveryModule } from './delivery/delivery.module';
+import { OrderService } from './order/order.service';
+import { MatStepperModule } from '@angular/material';
 
 
 @NgModule({
@@ -35,6 +37,7 @@ import { DeliveryModule } from './delivery/delivery.module';
     ProductModule,
     ShopModule,
     AuthenticationModule,
+    DeliveryModule,
     AppRoutingModule,
     FormsModule,
     MaterialModule,
@@ -42,10 +45,10 @@ import { DeliveryModule } from './delivery/delivery.module';
     BrowserAnimationsModule,
     FlexLayoutModule,
     OrderModule,
-    DeliveryModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatStepperModule
   ],
   providers: [],
   bootstrap: [AppComponent]
