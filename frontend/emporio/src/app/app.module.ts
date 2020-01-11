@@ -20,6 +20,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { OrderService } from './order/order.service';
+import { MatStepperModule } from '@angular/material';
 
 
 @NgModule({
@@ -47,10 +48,9 @@ import { OrderService } from './order/order.service';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatStepperModule
   ],
-  providers: [
-    OrderService,
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
