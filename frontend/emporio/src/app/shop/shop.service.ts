@@ -54,6 +54,14 @@ export class ShopService {
     );
   }
 
+  deleteShopProduct(piva: string, productName: string): Observable<string> {
+    this.httpOptions = {headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.auth.currentUserValue.token })};
+    console.log(this.httpOptions);
+    return this.httpClient.delete(`${environment.apiUrl}/shops/${piva}/products?productName=${productName}`, this.httpOptions).pipe(
+      map((res: string) => res)
+    );
+  }
+
   getShopCatalog(piva: string): Observable<Product[]> {
     return this.httpClient.get<Product[]>(`${environment.apiUrl}/shops/${piva}/products`).pipe(
       map((data: any[]) => data.map(item => this.productAdapter.adapt(item)))

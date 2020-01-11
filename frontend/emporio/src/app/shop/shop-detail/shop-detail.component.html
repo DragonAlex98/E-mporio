@@ -35,6 +35,7 @@
                         </mat-card-header>
                         <mat-card-content>
                             <p>{{product.productCategory.description.toUpperCase()}}</p>
+                            <button *ngIf="shouldShowDeleteShopProductButton()" mat-raised-button color="accent" (click)="deleteProduct(product)">Elimina Prodotto</button>
                         </mat-card-content>
                     </div>
                 </mat-card>

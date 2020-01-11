@@ -16,8 +16,9 @@ import { Product } from '@src/app/product/product/product';
 export class ShopDetailComponent implements OnInit {
   piva = '';
   shop: Shop;
-  should: Boolean;
   productList: Product[];
+  shouldShowDeleteShop: Boolean;
+  shouldShowDeleteProduct: Boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private service: ShopService, private auth: AuthenticationService) { }
 
@@ -41,15 +42,33 @@ export class ShopDetailComponent implements OnInit {
 
     this.auth.currentUser.subscribe(
       (user) => {
-        this.should = (user != null) && (user.role == Role.Titolare);
+        this.shouldShowDeleteShop = (user != null) && (user.role == Role.Titolare);
       }
     );
 
-    return this.should;
+    return this.shouldShowDeleteShop;
+  }
+
+  shouldShowDeleteShopProductButton(): Boolean {
+    this.auth.currentUser.subscribe(
+      (user) => {
+         this.shouldShowDeleteProduct = (user != null) && (user.role == Role.Titolare || user.role == Role.Dipendente);
+      }
+    );
+
+    return this.shouldShowDeleteProduct;
   }
 
   deleteShop() {
     this.service.deleteShop().subscribe(
+      (res) => {
+        console.log(res);
+      }
+    );
+  }
+
+  deleteProduct(product: Product) {
+    this.service.deleteShopProduct(this.shop.shopPIVA, product.productName).subscribe(
       (res) => {
         console.log(res);
       }
