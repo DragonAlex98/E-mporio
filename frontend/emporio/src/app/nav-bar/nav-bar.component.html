@@ -16,16 +16,6 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <a mat-button [routerLink]="['/home']"><mat-icon>home</mat-icon> Emporio</a>
-    <button mat-button [matMenuTriggerFor]="productMenu">Prodotto</button>
-    <mat-menu #productMenu="matMenu">
-      <a mat-menu-item [routerLink]="['/crea-prodotto']">Nuovo Prodotto</a>
-      <a mat-menu-item [routerLink]="['/product/search']">Cerca Prodotto</a>
-    </mat-menu>
-    <button mat-button [matMenuTriggerFor]="shopMenu">Attività</button>
-    <mat-menu #shopMenu="matMenu">
-      <button mat-menu-item >Nuova Attività</button>
-      <button mat-menu-item>Cerca Attività</button>
-    </mat-menu>
     <span class="login-space"></span>
     <app-search-bar></app-search-bar>
     <a *ngIf="currentUser === null" mat-button [routerLink]="['/login']">Log In</a>

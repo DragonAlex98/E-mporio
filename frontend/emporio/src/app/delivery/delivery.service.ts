@@ -4,6 +4,7 @@ import { Posto } from '../locker/Posto';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '@src/environments/environment';
 import { Observable } from 'rxjs';
+import { AuthenticationService } from '../authentication/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,14 @@ export class DeliveryService {
 
   private selectedOrder: Order; // viene passato dalla lista degli ordini
   private selectedPlace: Posto; // viene passato dal componente del posto
+  private fattorino: string;
 
   private deliveryUrl = `${environment.apiUrl}/delivery`;
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private httpService: HttpClient) { }
+  constructor(private httpService: HttpClient, private authService: AuthenticationService) { }
 
   getSelectedPlace(): Posto {
 
@@ -60,7 +62,7 @@ export class DeliveryService {
 
     const body = {
       idOrdine: this.selectedOrder.id,
-      fattorinoName: 'diocleziano', // TODO Recuperare dal login
+      fattorinoName: this.authService.currentUserValue.username,
       idPosto: this.selectedPlace.postoId
     };
 
