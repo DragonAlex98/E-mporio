@@ -47,10 +47,6 @@ export const routes: Routes = [
     component: OrderFormComponent,
   },
   {
-    path: 'orders-to-delivery',
-    component: OrderToDeliveryComponent
-  },
-  {
     path: '**',
     component: PageNotFoundComponent,
   },
