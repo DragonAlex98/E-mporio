@@ -24,13 +24,13 @@ export class AddEmployeeComponent implements OnInit {
   onSubmit(formValue) {
     this.service.addEmployeeToShop(formValue).subscribe(
       data => {
-        alert('Vrau coccu li si aggiuntu!');
+        alert('Aggiunto!');
       },
       error => {
         if ([400, 404].indexOf(error.status) !== -1) {
           alert(error.error.message);
         } else {
-          alert('Rcamadonne che cosa non è jito a buon fine!');
+          alert('Errore di connessione!');
         }
       }
     );

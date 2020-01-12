@@ -54,10 +54,11 @@ public class OrdineController {
     private ModelMapper modelMapper;
 
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
-    public ResponseEntity<String> createNewOrder(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody OrdineDto newOrdine) {
-        
-        boolean isDipendente = employeeService.existsDipendente(userDetails.getUsername());
-        boolean isTitolare = ownerService.existsTitolare(userDetails.getUsername());
+    public ResponseEntity<String> createNewOrder(@Valid @RequestBody OrdineDto newOrdine) {
+        String worker = newOrdine.getEmployeeUsername();
+
+        boolean isDipendente = employeeService.existsDipendente(worker);
+        boolean isTitolare = ownerService.existsTitolare(worker);
 
         if (!isDipendente && !isTitolare) {
             return ResponseEntity.badRequest().body("Utente non trovato o permessi non adeguati");
@@ -65,9 +66,9 @@ public class OrdineController {
 
         Attivita shop;
         if (isTitolare) {
-            shop = ownerService.getShopOwnedBy(userDetails.getUsername());
+            shop = ownerService.getShopOwnedBy(worker);
         } else {
-            shop = employeeService.getShopEmployedIn(userDetails.getUsername());
+            shop = employeeService.getShopEmployedIn(worker);
         }
 
         newOrdine.setProductsList(orderProductLineService.checkLines(shop, newOrdine.getProductsList()));

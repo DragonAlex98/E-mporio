@@ -43,7 +43,7 @@ export class OrderFormComponent implements OnInit {
           if ([400].indexOf(error.status) !== -1) {
             alert(error.error.message);
           } else {
-            alert('Rcamadonne che cosa non è jito a buon fine!');
+            alert('Errore di connessione!');
           }
         }
       );
