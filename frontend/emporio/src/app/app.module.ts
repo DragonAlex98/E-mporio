@@ -21,6 +21,8 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { OrderService } from './order/order.service';
 import { MatStepperModule } from '@angular/material';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './authentication/helpers/jwt.interceptor';
 
 
 @NgModule({
@@ -50,7 +52,13 @@ import { MatStepperModule } from '@angular/material';
     MatSortModule,
     MatStepperModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

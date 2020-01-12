@@ -5,12 +5,16 @@ import { Observable } from 'rxjs';
 import { environment } from '@src/environments/environment';
 import { AuthenticationService } from '@src/app/authentication/services/authentication.service';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class JwtInterceptor implements HttpInterceptor {
     constructor(private authenticationService: AuthenticationService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // add auth header with jwt if user is logged in and request is to api url
+        console.log('Intercettato');
+        
         const currentUser = this.authenticationService.currentUserValue;
         const isLoggedIn = currentUser && currentUser.token; // veramente ambiguo
         const isApiUrl = request.url.startsWith(environment.apiUrl);

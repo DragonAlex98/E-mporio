@@ -10,6 +10,7 @@ import { LoginComponent } from './authentication/login/login.component';
 import { AuthGuard } from './authentication/helpers/auth.guard';
 import { RegistrationComponent } from './authentication/registration/registration.component';
 import { OrderToDeliveryComponent } from './order/order-to-delivery/order-to-delivery.component';
+import { Role } from './authentication/models/role';
 
 
 export const routes: Routes = [
@@ -45,6 +46,8 @@ export const routes: Routes = [
   {
     path: 'new-order',
     component: OrderFormComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Titolare, Role.Dipendente] }
   },
   {
     path: '**',

@@ -54,8 +54,8 @@ public class OrdineController {
     private ModelMapper modelMapper;
 
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
-    public ResponseEntity<String> createNewOrder(@Valid @RequestBody OrdineDto newOrdine) {
-        String worker = newOrdine.getEmployeeUsername();
+    public ResponseEntity<String> createNewOrder(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody OrdineDto newOrdine) {
+        String worker = userDetails.getUsername();
 
         boolean isDipendente = employeeService.existsDipendente(worker);
         boolean isTitolare = ownerService.existsTitolare(worker);
