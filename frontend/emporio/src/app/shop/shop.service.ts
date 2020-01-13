@@ -42,22 +42,15 @@ export class ShopService {
       map(item => this.adapter.adapt(item))
     );
   }
-
-  httpOptions = {
-  };
-
+  
   deleteShop(): Observable<string> {
-    this.httpOptions = {headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.auth.currentUserValue.token })};
-    console.log(this.httpOptions);
-    return this.httpClient.delete(`${environment.apiUrl}/shops`, this.httpOptions).pipe(
+    return this.httpClient.delete(`${environment.apiUrl}/shops`).pipe(
       map((res: string) => res)
     );
   }
 
   deleteShopProduct(piva: string, productName: string): Observable<string> {
-    this.httpOptions = {headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.auth.currentUserValue.token })};
-    console.log(this.httpOptions);
-    return this.httpClient.delete(`${environment.apiUrl}/shops/${piva}/products?productName=${productName}`, this.httpOptions).pipe(
+    return this.httpClient.delete(`${environment.apiUrl}/shops/${piva}/products?productName=${productName}`).pipe(
       map((res: string) => res)
     );
   }
