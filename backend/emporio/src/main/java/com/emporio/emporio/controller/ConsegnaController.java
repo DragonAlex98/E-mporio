@@ -49,10 +49,6 @@ public class ConsegnaController {
             Fattorino fattorino = fattorinoService.getFattorino(delivery.getFattorinoName());
             
             Posto posto = postoService.getPosto(delivery.getIdPosto());
-            
-            if (postoService.isPostoOccupato(delivery.getIdPosto())) {
-                return ResponseEntity.badRequest().body("Il posto " + delivery.getIdPosto() + " è già occupato per una consegna");
-            }
 
             Consegna consegna = consegnaService.saveConsegna(Consegna.builder().fattorino(fattorino).ordine(order).statoConsegna(StatoConsegna.RITIRATA).posto(posto).build());
 

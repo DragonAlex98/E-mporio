@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.emporio.emporio.model.Consegna;
 import com.emporio.emporio.model.Posto;
 import com.emporio.emporio.repository.PostoRepository;
 
@@ -37,6 +38,10 @@ public class PostoService {
     }
 
     public Posto savePosto(Posto posto) {
+        if (this.isPostoOccupato(posto.getPostoId())) {
+            // throw
+        }
+
         return postoRepository.save(posto);
     }
 }
