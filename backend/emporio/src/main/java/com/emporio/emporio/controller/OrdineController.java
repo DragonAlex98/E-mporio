@@ -23,16 +23,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
-
-
-
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
-@RequestMapping("/api/v1")
 public class OrdineController {
 
     @Autowired
@@ -53,7 +48,7 @@ public class OrdineController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @RequestMapping(value = "/orders", method = RequestMethod.POST)
+    @PostMapping("/orders")
     public ResponseEntity<String> createNewOrder(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody OrdineDto newOrdine) {
         String worker = userDetails.getUsername();
 
@@ -89,7 +84,7 @@ public class OrdineController {
         return ResponseEntity.created(URI.create("/orders/" + order.getOrderId())).build();
     }
 
-    @GetMapping(value="/orders/state/not-assigned")
+    @GetMapping("/orders/state/not-assigned")
     public ResponseEntity<List<OrdineGetDto>> getAllNotAssignedOrders() {
         List<OrdineGetDto> ordersList = orderService.getAllNotAssignedOrders()
                                                     .stream()
