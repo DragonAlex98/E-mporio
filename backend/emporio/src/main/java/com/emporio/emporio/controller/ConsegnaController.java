@@ -3,6 +3,7 @@ package com.emporio.emporio.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.persistence.EntityExistsException;
 import javax.validation.Valid;
 
 import com.emporio.emporio.dto.ConsegnaDtoRequest;
@@ -52,14 +53,13 @@ public class ConsegnaController {
 
             Consegna consegna = consegnaService.saveConsegna(Consegna.builder().fattorino(fattorino).ordine(order).statoConsegna(StatoConsegna.RITIRATA).posto(posto).build());
 
-            posto.setConsegna(consegna);
-            postoService.savePosto(posto);
+            postoService.updateConsegna(consegna, posto);
             order.setOrderConsegna(consegna);
             ordineService.saveOrdine(order);
 
             return ResponseEntity.created(new URI("/delivery/" + consegna.getIdConsegna())).build();
         } else {
-            return ResponseEntity.badRequest().body("Consegna esistente, non inserita");
+            throw new EntityExistsException("Errore: consegna esistente, non inserita");
         }
     }
 

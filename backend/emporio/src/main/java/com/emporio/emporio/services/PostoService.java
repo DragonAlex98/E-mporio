@@ -2,6 +2,7 @@ package com.emporio.emporio.services;
 
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import com.emporio.emporio.model.Consegna;
@@ -33,15 +34,17 @@ public class PostoService {
     }
 
     public boolean isPostoOccupato(int id) {
-        Posto posto = getPosto(id);
-        return posto.getConsegna() != null;
+        Posto posto = this.getPosto(id);
+        if (posto.getConsegna() == null) return false;
+        else { return true;}
     }
 
-    public Posto savePosto(Posto posto) {
+    public Posto updateConsegna(Consegna consegna, Posto posto) {
         if (this.isPostoOccupato(posto.getPostoId())) {
-            // throw
+            throw new EntityExistsException("Errore: Posto con "+ posto.getPostoId()+" gia occupato");
         }
 
+        posto.setConsegna(consegna);
         return postoRepository.save(posto);
     }
 }

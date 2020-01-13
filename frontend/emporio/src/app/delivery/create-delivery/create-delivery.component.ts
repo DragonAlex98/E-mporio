@@ -27,7 +27,7 @@ export class CreateDeliveryComponent implements OnInit {
 
     this.deliveryService.createDelivery().subscribe(
       (data) => {alert('Consegna creata con successo'); },
-      (error) => {alert('Consegna non creata, gia presente o errore di connessione'); }
+      (error) => {alert(error.error.message); }
       );
 
 
