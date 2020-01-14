@@ -27,6 +27,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -63,6 +64,7 @@ public class AttivitaController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @PreAuthorize("hasAuthority('CREATE_SHOP')")
     @PostMapping("/shops")
     public ResponseEntity<String> insertNewAttivita(@Valid @RequestBody RegistrazioneAttivitaDto attivita)
             throws URISyntaxException {
@@ -85,6 +87,7 @@ public class AttivitaController {
         return ResponseEntity.ok(toReturnShopsList.stream().map(this::convertToDto).collect(Collectors.toList()));
     }
 
+    @PreAuthorize("hasAuthority('ADD_EMPLOYEE')")
     @PutMapping("/shops/employees")
     public ResponseEntity<String> addEmployeeToShop(@Valid @RequestBody ShopAddEmployeeDto addEmployeeDTO) {
         Attivita shop = titolareService.getShopOwnedBy(addEmployeeDTO.getOwnerUsername());
@@ -97,6 +100,7 @@ public class AttivitaController {
         return ResponseEntity.ok("Aggiunto dipendente");
     }
 
+    @PreAuthorize("hasAuthority('DELETE_SHOP')")
     @DeleteMapping("/shops")
     public ResponseEntity<String> deleteAttivita(@AuthenticationPrincipal UserDetails userDetails) {
         Attivita shop = titolareService.getShopOwnedBy(userDetails.getUsername());
@@ -113,6 +117,7 @@ public class AttivitaController {
         return ResponseEntity.ok(shopService.getCatalogProducts(piva));
     }
 
+    @PreAuthorize("hasAuthority('DELETE_PRODUCT')")
     @DeleteMapping("/shops/{piva}/products")
     public ResponseEntity<String> deleteProductFromAttivita(@AuthenticationPrincipal UserDetails userDetails, @NotBlank @PathVariable(name = "piva", required = true) String piva, @NotBlank @RequestParam(name = "productName", required = true) String productName) {
 
