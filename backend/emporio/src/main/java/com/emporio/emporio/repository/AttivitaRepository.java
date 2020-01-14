@@ -10,13 +10,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AttivitaRepository extends JpaRepository<Attivita, String> {
-
-    Optional<Attivita> findByShopPIVA(String shopPIva);
-
-    boolean existsAttivitaByShopPIVA(String shopPIVA);
-
-    List<Attivita> findByShopBusinessNameContaining(String ragioneSociale);
     
-    void deleteByShopPIVA(String shopPIVA);
+    Optional<Attivita> findByShopDescription_shopPIVA(String pIva);
+
+    boolean existsAttivitaByShopDescription_shopPIVA(String shopPIVA);
+
+    List<Attivita> findByShopDescription_shopBusinessNameContaining(String ragioneSociale);
     
+    void deleteByShopDescription_shopPIVA(String shopPIVA);
 }

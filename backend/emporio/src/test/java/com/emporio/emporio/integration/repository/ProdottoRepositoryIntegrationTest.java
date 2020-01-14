@@ -20,9 +20,15 @@ import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.AttivitaDescrizione;
 import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.CategoriaAttivita;
+import com.emporio.emporio.model.CategoriaProdotto;
+import com.emporio.emporio.model.Prodotto;
+import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.repository.AttivitaDescrizioneRepository;
 import com.emporio.emporio.repository.AttivitaRepository;
 import com.emporio.emporio.repository.CategoriaAttivitaRepository;
+import com.emporio.emporio.repository.CategoriaProdottoRepository;
+import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
+import com.emporio.emporio.repository.ProdottoRepository;
 
 /**
  * AttivitaRepositoryIntegrationTest
@@ -30,33 +36,33 @@ import com.emporio.emporio.repository.CategoriaAttivitaRepository;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @PropertySource(value = "classpath:application-test.properties")
-public class AttivitaRepositoryIntegrationTest {
+public class ProdottoRepositoryIntegrationTest {
 
     @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
-    private AttivitaDescrizioneRepository shopDescRepo;
+    private ProdottoDescrizioneRepository prodDescRepo;
 
     @Autowired
-    private AttivitaRepository shopRepo;
+    private ProdottoRepository prodRepo;
 
     @Autowired
-    private CategoriaAttivitaRepository shopCatRepo;
+    private CategoriaProdottoRepository prodCatRepo;
 
     @Test
-    public void whenFindByShopPIVA_thenReturnAttivita() {
+    public void whenFindByProductDescription_productName_thenReturnProdotto() {
         // Dato
-        Attivita shop = this.createShop();
+        Prodotto prod = this.createShop();
 
         // Quando eseguo
-        Optional<Attivita> found = shopRepo.findByShopDescription_shopPIVA(shop.getShopDescription().getShopPIVA());
+        Optional<Prodotto> found = prodRepo.findByProductDescription_productName(prod.getProductDescription().getProductName());
 
         //Allora
         assertTrue(found.isPresent());
-        assertEquals(found.get(), shop);
+        assertEquals(found.get(), prod);
     }
-
+/* 
     @Test
     public void whenExistsAttivitaByShopPIVA_thenReturnBoolean() {
         // Dato
@@ -95,22 +101,17 @@ public class AttivitaRepositoryIntegrationTest {
         shopRepo.deleteByShopDescription_shopPIVA(shop.getShopDescription().getShopPIVA());
 
         assertFalse(shopRepo.exists(Example.of(shop)));
-    }
+    } */
 
-    private Attivita createShop() {
-        CategoriaAttivita cat = shopCatRepo.save(CategoriaAttivita.builder().shopCategoryDescription("supermercato").build());
+    private Prodotto createShop() {
+        CategoriaProdotto cat = prodCatRepo.save(CategoriaProdotto.builder().description("supermercato").build());
 
-        AttivitaDescrizione shopDesc = AttivitaDescrizione.builder().shopPIVA("P115424448")
-                                            .shopBusinessName("Superconti")
-                                            .shopAddress("Via stretta, 41")
-                                            .shopHeadquarter("Milano")
-                                            .shopCategory(cat)
-                                            .build();
+        ProdottoDescrizione prodDesc = entityManager.persist(ProdottoDescrizione.builder().productName("salame")
+                                                          .productCategory(cat)
+                                                          .build());
 
-        Catalogo catalog = Catalogo.builder().build();
-
-        Attivita shop = Attivita.builder().catalog(catalog).shopDescription(shopDesc).build();
-        return entityManager.persist(shop);
+        Prodotto prod = Prodotto.builder().productDescription(prodDesc).productPrice(15).build();
+        return entityManager.persist(prod);
     }
     
 }

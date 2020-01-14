@@ -19,14 +19,14 @@ import org.springframework.stereotype.Service;
 public class ProdottoDescrizioneService {
 
     @Autowired
-    private ProdottoDescrizioneRepository productRepository;
+    private ProdottoDescrizioneRepository productDescriptionRepository;
 
     public boolean existsByProductName(String productName) {
-        return productRepository.existsByProductName(productName);
+        return productDescriptionRepository.existsByProductName(productName);
     }
 
-    public ProdottoDescrizione getProduct(String productName) {
-        Optional<ProdottoDescrizione> product = productRepository.findByProductName(productName);
+    public ProdottoDescrizione getProductDescriptionFrom(String productName) {
+        Optional<ProdottoDescrizione> product = productDescriptionRepository.findByProductName(productName);
 
         if(!product.isPresent()) {
             throw new EntityNotFoundException("Il prodotto con nome " + productName + " non è presente!");
@@ -35,15 +35,19 @@ public class ProdottoDescrizioneService {
         return product.get();
     }
 
-    public ProdottoDescrizione saveProductDescription(ProdottoDescrizione product) {
-        if(productRepository.existsByProductName(product.getProductName()))
-            throw new EntityExistsException("Il prodotto " + product.getProductName() + " è già esistente!");
-
-        return productRepository.save(product);        
+    public ProdottoDescrizione getProductDescriptionFrom(ProdottoDescrizione productDescription) {
+        return this.getProductDescriptionFrom(productDescription.getProductName());
     }
 
-    public List<ProdottoDescrizione> getProductsContaining(String name) {
-        List<ProdottoDescrizione> toReturnProductsList = productRepository.findByProductNameContaining(name);
+    public ProdottoDescrizione saveProductDescription(ProdottoDescrizione product) {
+        if(productDescriptionRepository.existsByProductName(product.getProductName()))
+            throw new EntityExistsException("Il prodotto " + product.getProductName() + " è già esistente!");
+
+        return productDescriptionRepository.save(product);        
+    }
+
+    public List<ProdottoDescrizione> getProductsDescriptionsContaining(String name) {
+        List<ProdottoDescrizione> toReturnProductsList = productDescriptionRepository.findByProductNameContaining(name);
 
         if(toReturnProductsList.isEmpty())
             throw new EntityNotFoundException("Non è stato trovato alcun prodotto con nome " + name);
@@ -52,7 +56,7 @@ public class ProdottoDescrizioneService {
     }
 
     public List<ProdottoDescrizione> getAllProductsDescription() {
-        List<ProdottoDescrizione> toReturnProductsList = productRepository.findAll();
+        List<ProdottoDescrizione> toReturnProductsList = productDescriptionRepository.findAll();
 
         if(toReturnProductsList.isEmpty())
             throw new EntityNotFoundException("Non è stato trovato alcun prodotto");
@@ -61,7 +65,7 @@ public class ProdottoDescrizioneService {
     }
 
     public ProdottoDescrizione getProductDescriptionById(Integer id) {
-        Optional<ProdottoDescrizione> product = productRepository.findById(id);
+        Optional<ProdottoDescrizione> product = productDescriptionRepository.findById(id);
 
         if(!product.isPresent())
         throw new EntityNotFoundException("Il prodotto con id " + id + " non è presente!");

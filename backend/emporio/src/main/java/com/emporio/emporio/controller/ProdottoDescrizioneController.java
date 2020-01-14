@@ -41,21 +41,17 @@ public class ProdottoDescrizioneController {
         
         newProduct = productDescriptionService.saveProductDescription(newProduct);
         
-        return ResponseEntity.created(new URI("/products/" + newProduct.getProductId())).build();
+        return ResponseEntity.created(new URI("/products/" + newProduct.getProductId())).body("Prodotto " + newProduct.getProductName() + " aggiunto!");
     }
 
-    @GetMapping("/products/search")
-    public ResponseEntity<List<ProdottoDescrizione>> findProduct(@NotBlank @RequestParam(name = "nome", required = true) String nome) {
-        return ResponseEntity.ok(productDescriptionService.getProductsContaining(nome));
-    }
-
-    @GetMapping("/products")
-    public ResponseEntity<List<ProdottoDescrizione>> getAllProducts() {
+    @GetMapping("/products/all")
+    public ResponseEntity<List<ProdottoDescrizione>> getAllProductDescriptions() {
         return ResponseEntity.ok(productDescriptionService.getAllProductsDescription());
     }
 
     @GetMapping("/products/{id}")
     public ResponseEntity<ProdottoDescrizione> getProductById(@Valid @Type(value = Integer.class) @PathVariable(name = "id", required = true) Integer id) {
+        //TODO VALUTARE SE TENERE
         return ResponseEntity.ok(productDescriptionService.getProductDescriptionById(id));
     }
 }

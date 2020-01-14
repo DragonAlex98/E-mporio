@@ -6,24 +6,28 @@
   <mat-grid-tile [rowspan]=1 [colspan]=2>
     <div class="controles-container">
       <mat-card>
-      <form [formGroup]="shopForm">
+      <form [formGroup]="shopForm" (ngSubmit)="onSubmit(shopForm.value)">
         <div class="insert-product-form-container">
           <mat-form-field>
             <input matInput placeholder="Partita IVA*" formControlName="shopPIVA">
           </mat-form-field>
           
           <mat-form-field>
-            <input matInput placeholder="Ragione Sociale" formControlName="shopRagioneSociale">
+            <input matInput placeholder="Ragione Sociale" formControlName="shopBusinessName">
           </mat-form-field>
 
           <mat-form-field>
-            <mat-select placeholder="Categoria">
-              <mat-option value="option">Option</mat-option>
+            <mat-select placeholder="Categoria" formControlName="shopCategoryDescription">
+              <mat-option *ngFor="let category of categories" [value]="category.shopCategoryDescription">{{category.shopCategoryDescription}}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field>
-            <input matInput placeholder="Sede Operativa" formControlName="shopSedeOperativa">
+            <input matInput placeholder="Sede Operativa" formControlName="shopHeadquarter">
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput placeholder="Indirizzo" formControlName="shopAddress">
           </mat-form-field>
 
           <button mat-raised-button color="accent">Crea Attività</button>

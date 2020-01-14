@@ -23,13 +23,13 @@ public class CategoriaAttivitaController {
     @Autowired
     private CategoriaAttivitaService categoriaAttivitaService;
 
-    @PostMapping("/categoryShop")
+    @PostMapping("/shops/categories")
     public ResponseEntity<String> insertNewCategoryShop(@Valid @RequestBody CategoriaAttivita categoryShop) throws URISyntaxException {
         CategoriaAttivita shopCategory = categoriaAttivitaService.insertNewCategoryShop(categoryShop.getShopCategoryDescription());
         return ResponseEntity.created(new URI("/categoryShop/"+ shopCategory.getShopCategoryId())).build();
     }
     
-    @GetMapping("/categoryShop")
+    @GetMapping("/shops/categories")
     public ResponseEntity<List<CategoriaAttivita>> getAllShopCategories() {
         return ResponseEntity.ok(categoriaAttivitaService.getAllShopCategories());
     }

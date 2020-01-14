@@ -13,28 +13,29 @@ export class InsertProductFormComponent implements OnInit {
 
   productForm = new FormGroup({
     productName: new FormControl('', Validators.required),
-    productCategory : new FormControl(''),
-    productPrice : new FormControl(''),
-    productQuantity : new FormControl('')
+    productCategoryName : new FormControl(''),
   });
 
   constructor(private productService: ProductService) { }
 
   ngOnInit() {
-    this.productService.getCategories()
-    .subscribe((ProductCategoryListData) => this.categories = ProductCategoryListData.map(
-      item => {
-        return new ProductCategory(
-          item.categoryId,
-          item.description
-        );
-      }
-    ));
+    this.productService.getCategories().subscribe(
+      data => this.categories = data,
+      error => alert('Errore di connessione!')
+    );
   }
 
   onSubmit(productValue) {
-    console.log(productValue);
-    this.productService.addProduct(productValue).subscribe(item => console.log(item));
+    this.productService.addProduct(productValue).subscribe(
+      data => alert(data),
+      error => {
+        if ([400].indexOf(error.status) !== -1) {
+          alert(error.error.message);
+        } else {
+          alert('Errore di connessione!');
+        }
+      }
+    );
   }
 
 }

@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import com.emporio.emporio.model.Attivita;
+import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.ChiaveRigaOrdineProdotto;
 import com.emporio.emporio.model.Ordine;
 import com.emporio.emporio.model.ProdottoDescrizione;
@@ -39,21 +40,8 @@ public class RigaOrdineProdottoService {
         return lines;
     }
 
-    public List<RigaOrdineProdotto> checkLines(Attivita shop, List<RigaOrdineProdotto> lines) {
-        //Check dei valori inseriti:
-        //controllo che i prodotti inseriti esistano e se così fosse recupero le loro istanze dal db.
-        for(RigaOrdineProdotto line : lines) {
-            if(!productDescriptionRepository.exists(Example.of(line.getProduct())))
-                throw new EntityNotFoundException("Il prodotto " + line.getProduct().getProductName() + " non è registrato nel sistema!");
-            
-            Optional<ProdottoDescrizione> product = shop.getCatalog().getProducts().stream().filter(name -> name.getProductName().equals(line.getProduct().getProductName())).findFirst();
-            
-            if(!product.isPresent())
-                throw new EntityNotFoundException("Il prodotto " + line.getProduct().getProductName() + " non è presente nel negozio " + shop.getShopBusinessName() + "!");
-            
-            line.setProduct(product.get());
-        }
-
-        return lines;
+    public void checkLine(Catalogo catalogo, ProdottoDescrizione product) {
+        if(!catalogo.containsProduct(product.getProductName()))
+            throw new EntityNotFoundException("Il prodotto " + product.getProductName() + " non è presente nel catalogo!");
     }
 }

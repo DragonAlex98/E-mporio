@@ -12,6 +12,7 @@ import com.emporio.emporio.factory.DipendenteUserFactory;
 import com.emporio.emporio.factory.FattorinoUserFactory;
 import com.emporio.emporio.factory.TitolareUserFactory;
 import com.emporio.emporio.model.Attivita;
+import com.emporio.emporio.model.AttivitaDescrizione;
 import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.CategoriaAttivita;
 import com.emporio.emporio.model.CategoriaProdotto;
@@ -22,12 +23,14 @@ import com.emporio.emporio.model.Locker;
 import com.emporio.emporio.model.Ordine;
 import com.emporio.emporio.model.Posto;
 import com.emporio.emporio.model.Privilege;
+import com.emporio.emporio.model.Prodotto;
 import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.model.RigaOrdineProdotto;
 import com.emporio.emporio.model.Role;
 import com.emporio.emporio.model.StatoConsegna;
 import com.emporio.emporio.model.Titolare;
 import com.emporio.emporio.model.User;
+import com.emporio.emporio.repository.AttivitaDescrizioneRepository;
 import com.emporio.emporio.repository.AttivitaRepository;
 import com.emporio.emporio.repository.CatalogoRepository;
 import com.emporio.emporio.repository.CategoriaAttivitaRepository;
@@ -39,6 +42,7 @@ import com.emporio.emporio.repository.OrdineRepository;
 import com.emporio.emporio.repository.PostoRepository;
 import com.emporio.emporio.repository.PrivilegeRepository;
 import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
+import com.emporio.emporio.repository.ProdottoRepository;
 import com.emporio.emporio.repository.RigaOrdineProdottoRepository;
 import com.emporio.emporio.repository.RoleRepository;
 import com.emporio.emporio.repository.TitolareRepository;
@@ -104,6 +108,12 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private AttivitaDescrizioneRepository shopDescRepo;
+
+    @Autowired
+    private ProdottoRepository productRepo;
+
     @Override
     public void run(String... args) throws Exception {
         Function<String, Role> funcCreator = this.roleService::getRole;
@@ -150,24 +160,39 @@ public class DataInitializer implements CommandLineRunner {
         this.categories.save(cat1);
         this.categories.save(cat2);
 
-        ProdottoDescrizione pA = this.products.save(ProdottoDescrizione.builder().productCategory(cat1).productName("biscotti").build());
-        ProdottoDescrizione pB = this.products.save(ProdottoDescrizione.builder().productCategory(cat1).productName("latte").build());
-        ProdottoDescrizione pC = this.products.save(ProdottoDescrizione.builder().productCategory(cat2).productName("mannaia").build());
+        ProdottoDescrizione pdA = this.products.save(ProdottoDescrizione.builder().productCategory(cat1).productName("biscotti").build());
+        ProdottoDescrizione pdB = this.products.save(ProdottoDescrizione.builder().productCategory(cat1).productName("latte").build());
+        ProdottoDescrizione pdC = this.products.save(ProdottoDescrizione.builder().productCategory(cat2).productName("mannaia").build());
+        ProdottoDescrizione pdD = this.products.save(ProdottoDescrizione.builder().productCategory(cat2).productName("spaghetti").build());
+
+        Prodotto pA = this.productRepo.save(Prodotto.builder().productDescription(pdA).build());
+        Prodotto pB = this.productRepo.save(Prodotto.builder().productDescription(pdB).build());
+        Prodotto pC = this.productRepo.save(Prodotto.builder().productDescription(pdC).build());
 
         CategoriaAttivita catA1 = CategoriaAttivita.builder().shopCategoryDescription("Falegnameria").build();
         CategoriaAttivita catA2 = CategoriaAttivita.builder().shopCategoryDescription("Macelleria").build();
         this.shopCategory.save(catA1);
         this.shopCategory.save(catA2);
         
-        Attivita s1 = Attivita.builder().shopPIVA("abc123").shopBusinessName("La Falegnameria").shopAddress("Via questa 1").shopHeadquarter("Milano").shopCategory(catA1).build();
 
+        //Creo catalogo
         Catalogo c1 = Catalogo.builder().build();
-
         c1.setProducts(Arrays.asList(pA, pB, pC).stream().collect(Collectors.toSet()));
 
-        s1.setCatalog(c1);
+        //Creo descrizione
+        AttivitaDescrizione sd1 = AttivitaDescrizione.builder().shopPIVA("abc123").shopBusinessName("La Falegnameria").shopAddress("Via questa 1").shopHeadquarter("Milano").shopCategory(catA1).build();
 
-        this.shops.save(s1);
+        
+        //Creo attività e associo la descrizione e il catalogo vuoto
+        Attivita s1 = this.shops.save(Attivita.builder().catalog(c1).shopDescription(sd1).build());
+
+        // SE SI MODIFICA IL CATALOGO.
+        // SI PUO SCEGLIERE SE SALVARE SOLO IL CATALOGO O TUTTA L'ATTIVITA (IN AUTOMATICO VIENE SALVATO ANCHE IL CATALOGO.
+        // this.catalogs.save(c1);
+        // s1 = this.shops.save(s1);
+
+        //  PROVA DI DELETE ** FUNZIONA! CANCELLA TUTTO QUELLO CHE DEVE CANCELLARE E LASCIA QUELLO CHE DEVE RIMANERE.
+        // this.shops.delete(s1);
 
         this.users.save(new AcquirenteUserFactory().createUser("aldo", this.passwordEncoder.encode("aldo66"), funcCreator));
 
@@ -178,18 +203,17 @@ public class DataInitializer implements CommandLineRunner {
 
         this.users.save(new TitolareUserFactory().createUser("dino", this.passwordEncoder.encode("dino88"), funcCreator));
         Titolare t1 = this.titolareRepository.findByUsername("dino").get();
-        t1.setShopEmployed(s1);
         t1.setShopOwned(s1);
         this.titolareRepository.save(t1);
+
+        Prodotto pD = this.productRepo.save(Prodotto.builder().productDescription(pdD).build());
         
-        Attivita s2 = Attivita.builder().shopPIVA("def456").shopBusinessName("La Macelleria").shopAddress("Via quella 2").shopHeadquarter("Roma").shopCategory(catA2).build();
+        AttivitaDescrizione sd2 = AttivitaDescrizione.builder().shopPIVA("def456").shopBusinessName("La Macelleria").shopAddress("Via quella 2").shopHeadquarter("Roma").shopCategory(catA2).build();
+        
         Catalogo c2 = Catalogo.builder().build();
+        c2.setProducts(Arrays.asList(pD).stream().collect(Collectors.toSet()));
 
-        c2.setProducts(Arrays.asList(pC).stream().collect(Collectors.toSet()));
-
-        s2.setCatalog(c2);
-
-        this.shops.save(s2);
+        Attivita s2 = this.shops.save(Attivita.builder().catalog(c2).shopDescription(sd2).build());
 
         Locker locker1 = lockerRepository.save(Locker.builder().address("Via Alfreditica, 15").build());
         Posto posto1 = postoRepository.save(Posto.builder().nomePosto("A1").locker(locker1).build());
@@ -203,27 +227,27 @@ public class DataInitializer implements CommandLineRunner {
         Posto posto7 = postoRepository.save(Posto.builder().nomePosto("B4").locker(locker2).build());
         Ordine order1 = orderRepository.save(Ordine.builder()
                             .orderCustomer(users.findByUsername("aldo").get())
-                            .orderShop(s1)
+                            .orderShop(sd1)
                             .parkingAddress("Via Aldo Moro, 8")
                             .build());
 
         RigaOrdineProdotto orderLine1 = this.orderProdLineRepository.save(RigaOrdineProdotto.builder()
                                                                                             .id(ChiaveRigaOrdineProdotto.builder()
                                                                                                                         .orderId(order1.getOrderId())
-                                                                                                                        .productId(pA.getProductId())
+                                                                                                                        .productId(pdA.getProductId())
                                                                                                                         .build())
                                                                                             .order(order1)
-                                                                                            .product(pA)
+                                                                                            .product(pdA)
                                                                                             .quantity(8)
                                                                                             .build());
 
         RigaOrdineProdotto orderLine2 = this.orderProdLineRepository.save(RigaOrdineProdotto.builder()
                                                                                             .id(ChiaveRigaOrdineProdotto.builder()
                                                                                                                         .orderId(order1.getOrderId())
-                                                                                                                        .productId(pB.getProductId())
+                                                                                                                        .productId(pdB.getProductId())
                                                                                                                         .build())
                                                                                             .order(order1)
-                                                                                            .product(pB)
+                                                                                            .product(pdB)
                                                                                             .quantity(2)
                                                                                             .build());
 
@@ -235,17 +259,17 @@ public class DataInitializer implements CommandLineRunner {
 
         Ordine order2 = orderRepository.save(Ordine.builder()
                             .orderCustomer(users.findByUsername("aldo").get())
-                            .orderShop(s2)
+                            .orderShop(sd2)
                             .parkingAddress("Via Aldo Moro, 8")
                             .build());
 
         RigaOrdineProdotto orderLine3 = this.orderProdLineRepository.save(RigaOrdineProdotto.builder()
                                                                                             .id(ChiaveRigaOrdineProdotto.builder()
                                                                                                                         .orderId(order2.getOrderId())
-                                                                                                                        .productId(pC.getProductId())
+                                                                                                                        .productId(pdA.getProductId())
                                                                                                                         .build())
                                                                                             .order(order2)
-                                                                                            .product(pC)
+                                                                                            .product(pdA)
                                                                                             .quantity(11)
                                                                                             .build());
 
@@ -257,23 +281,29 @@ public class DataInitializer implements CommandLineRunner {
         Consegna consegna1 = consegnaRepository.save(Consegna.builder().ordine(order1).fattorino(fattorino1)
                                                 .statoConsegna(StatoConsegna.RITIRATA).build());
         
-       order1.setOrderConsegna(consegna1);
-       orderRepository.save(order1);
+        order1.setOrderConsegna(consegna1);
+        orderRepository.save(order1);
 
-        Attivita s3 = Attivita.builder().shopPIVA("ghi789").shopBusinessName("La Latteria").shopAddress("Via codesta 3").shopHeadquarter("Palermo").shopCategory(catA1).build();
 
+        Prodotto pE = this.productRepo.save(Prodotto.builder().productDescription(pdA).build());
+        Prodotto pF = this.productRepo.save(Prodotto.builder().productDescription(pdC).build());
+
+        
         Catalogo c3 = Catalogo.builder().build();
+        c3.setProducts(Arrays.asList(pE, pF).stream().collect(Collectors.toSet()));
 
-        c3.setProducts(Arrays.asList(pB, pC).stream().collect(Collectors.toSet()));
+        AttivitaDescrizione sd3 = AttivitaDescrizione.builder().shopPIVA("ghi789").shopBusinessName("La Latteria").shopAddress("Via codesta 3").shopHeadquarter("Palermo").shopCategory(catA1).build();
 
-        s3.setCatalog(c3);
-
-        this.shops.save(s3);
+        Attivita s3 = this.shops.save(Attivita.builder().catalog(c3).shopDescription(sd3).build());
 
         this.users.save(new TitolareUserFactory().createUser("provatitolare", this.passwordEncoder.encode("provaprova"), funcCreator));
         Titolare t2 = this.titolareRepository.findByUsername("provatitolare").get();
-        t2.setShopEmployed(s3);
         t2.setShopOwned(s3);
         this.titolareRepository.save(t2);
+
+        this.users.save(new TitolareUserFactory().createUser("dobby", this.passwordEncoder.encode("dobby66"), funcCreator));
+        Titolare t3 = this.titolareRepository.findByUsername("dobby").get();
+        t3.setShopOwned(s2);
+        this.titolareRepository.save(t3);
     }
 }

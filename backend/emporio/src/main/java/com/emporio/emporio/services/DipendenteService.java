@@ -1,5 +1,6 @@
 package com.emporio.emporio.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityExistsException;
@@ -57,5 +58,10 @@ public class DipendenteService {
 
         employee.setShopEmployed(shop);
         return employeeRepository.save(employee);
+    }
+
+    public void detachShopFromEmployees(List<Dipendente> employees) {
+        if(employees != null)
+            employees.stream().forEach(employee -> employee.setShopEmployed(null));
     }
 }

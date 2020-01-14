@@ -2,6 +2,7 @@ package com.emporio.emporio.services;
 
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import com.emporio.emporio.model.Attivita;
@@ -51,13 +52,23 @@ public class TitolareService {
         if(owner.getShopOwned() == null)
             throw new EntityNotFoundException("Il titolare " + username + " non ha attività associate!");
 
-        return owner.getShopEmployed();
+        return owner.getShopOwned();
     }
 
-    public void deleteShopFromOwner(String username) {
+    public void detachShopFromOwner(String username) {
         Titolare owner = this.getTitolare(username);
         owner.setShopOwned(null);
         ownerRepository.save(owner);
+    }
+
+    public void checkOnShopAdd(Titolare titolare) {
+        if(this.hasShop(titolare))
+            throw new EntityExistsException("Il titolare " + titolare.getUsername() + " ha già un negozio associato");   
+    }
+
+    public Titolare setShopOwnedBy(Titolare owner, Attivita shop) {
+        owner.setShopOwned(shop);
+        return this.ownerRepository.save(owner);
     }
     
 }

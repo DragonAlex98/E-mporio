@@ -3,11 +3,17 @@ package com.emporio.emporio.controller;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotBlank;
 
+import com.emporio.emporio.dto.AttivitaDescrizioneGetDto;
 import com.emporio.emporio.dto.AttivitaGetDto;
+import com.emporio.emporio.model.Attivita;
+import com.emporio.emporio.model.AttivitaDescrizione;
 import com.emporio.emporio.model.User;
+import com.emporio.emporio.services.DipendenteService;
 import com.emporio.emporio.services.RoleService;
+import com.emporio.emporio.services.TitolareService;
 import com.emporio.emporio.services.UserService;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +26,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
     private UserService userService;
+
+    @Autowired
+    private DipendenteService employeeService;
+
+    @Autowired
+    private TitolareService titolareService;
 
     @Autowired
     private RoleService roleService;
@@ -32,22 +47,23 @@ public class UserController {
     }
 
     @GetMapping("/users/{username}/shops")
-    public ResponseEntity<AttivitaGetDto> getShop(@NotBlank @PathVariable(name = "username", required = true) String username) {
-        User user = userService.getUser(username);
+    public ResponseEntity<AttivitaDescrizioneGetDto> getShop(@NotBlank @PathVariable(name = "username", required = true) String username) {
+        boolean isDipendente = employeeService.existsDipendente(username);
+        boolean isTitolare = titolareService.existsTitolare(username);
 
-        AttivitaGetDto shopDto;
-        if (userService.hasRole(user, roleService.getRole("Titolare"))) {
-            shopDto = AttivitaGetDto.parseAttivitaToAttivitaGetDto(user.getShopOwned());
-        } else if (userService.hasRole(user, roleService.getRole("Dipendente"))) {
-            shopDto = AttivitaGetDto.parseAttivitaToAttivitaGetDto(user.getShopEmployed());
+        Attivita shop;
+        if (isTitolare) {
+            shop = titolareService.getShopOwnedBy(username);
+        } else if (isDipendente) {
+            shop = employeeService.getShopEmployedIn(username);
         } else {
-            throw new EntityNotFoundException("L'utente " + username + " non è nè un titolare nè un dipendente");
+            return null;
         }
 
-        if (shopDto == null) {
-            throw new EntityNotFoundException("Il negozio associato all'utente " + username + " non esiste");
-        }
+        return ResponseEntity.ok(this.convertToDto(shop.getShopDescription()));
+    }
 
-        return ResponseEntity.ok(shopDto);
+    private AttivitaDescrizioneGetDto convertToDto(AttivitaDescrizione shopDescription) {
+        return this.modelMapper.map(shopDescription, AttivitaDescrizioneGetDto.class);
     }
 }

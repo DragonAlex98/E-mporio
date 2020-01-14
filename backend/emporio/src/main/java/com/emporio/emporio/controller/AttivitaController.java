@@ -9,17 +9,21 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
+import com.emporio.emporio.dto.AttivitaDescrizioneGetDto;
 import com.emporio.emporio.dto.AttivitaGetDto;
 import com.emporio.emporio.dto.RegistrazioneAttivitaDto;
 import com.emporio.emporio.model.Attivita;
+import com.emporio.emporio.model.AttivitaDescrizione;
 import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.CategoriaAttivita;
 import com.emporio.emporio.model.Dipendente;
-import com.emporio.emporio.model.ProdottoDescrizione;
+import com.emporio.emporio.model.Prodotto;
+import com.emporio.emporio.model.Titolare;
+import com.emporio.emporio.services.AttivitaDescrizioneService;
 import com.emporio.emporio.services.AttivitaService;
 import com.emporio.emporio.services.CategoriaAttivitaService;
 import com.emporio.emporio.services.DipendenteService;
-import com.emporio.emporio.services.ProdottoDescrizioneService;
+import com.emporio.emporio.services.ProdottoService;
 import com.emporio.emporio.services.TitolareService;
 import com.emporio.emporio.dto.ShopAddEmployeeDto;
 
@@ -57,39 +61,60 @@ public class AttivitaController {
     private AttivitaService shopService;
 
     @Autowired
-    private ProdottoDescrizioneService productDescriptionService;
+    private AttivitaDescrizioneService shopDescriptionService;
 
     @Autowired
     private TitolareService titolareService;
+
+    @Autowired
+    private ProdottoService productService;
     
     @Autowired
     private ModelMapper modelMapper;
 
     @PostMapping("/shops")
-    public ResponseEntity<String> insertNewAttivita(@Valid @RequestBody RegistrazioneAttivitaDto attivita)
+    public ResponseEntity<String> insertNewAttivita(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody RegistrazioneAttivitaDto attivita)
             throws URISyntaxException {
+        //Controllo se è un titolare
+        Titolare owner = titolareService.getTitolare(userDetails.getUsername());
+
+        //Controllo se ha già associato uno shop
+        titolareService.checkOnShopAdd(owner);
         
+        //Creazione
         CategoriaAttivita shopCategory = shopCategoryService.getShopCategory(attivita.getShopCategoryDescription());
 
-        Attivita newShop = Attivita.builder().shopPIVA(attivita.getShopPIVA()).shopAddress(attivita.getShopAddress()).shopBusinessName(attivita.getShopBusinessName()).shopHeadquarter(attivita.getShopHeadquarter()).shopCategory(shopCategory).build();
+        AttivitaDescrizione newShopDesc = AttivitaDescrizione.builder()
+                                                             .shopPIVA(attivita.getShopPIVA())
+                                                             .shopAddress(attivita.getShopAddress())
+                                                             .shopBusinessName(attivita.getShopBusinessName())
+                                                             .shopHeadquarter(attivita.getShopHeadquarter())
+                                                             .shopCategory(shopCategory)
+                                                             .build();
+                                                             
         Catalogo catalogo = Catalogo.builder().build();
-        newShop.setCatalog(catalogo);
 
+        Attivita newShop = Attivita.builder().catalog(catalogo).shopDescription(newShopDesc).build();
+
+        //Salvo shop e associo titolare
         newShop = shopService.addShop(newShop);
+        owner = titolareService.setShopOwnedBy(owner, newShop);
 
-        return ResponseEntity.created(new URI("/shops/" + newShop.getShopPIVA())).build();
+        return ResponseEntity.created(new URI("/shops/" + newShopDesc.getShopPIVA())).body("Attività aggiunta!");
     }
 
     @GetMapping("/shops/search")
-    public ResponseEntity<List<AttivitaGetDto>> findAttivita(@NotBlank @RequestParam(name = "ragSociale", required = true) String ragSociale) {
+    public ResponseEntity<List<AttivitaDescrizioneGetDto>> findAttivita(@NotBlank @RequestParam(name = "ragSociale", required = true) String ragSociale) {
         List<Attivita> toReturnShopsList = shopService.getShopsContaining(ragSociale);
-
-        return ResponseEntity.ok(toReturnShopsList.stream().map(this::convertToDto).collect(Collectors.toList()));
+        return ResponseEntity.ok(toReturnShopsList.stream().map(shop -> this.convertToDto(shop.getShopDescription())).collect(Collectors.toList()));
     }
 
     @PutMapping("/shops/employees")
-    public ResponseEntity<String> addEmployeeToShop(@Valid @RequestBody ShopAddEmployeeDto addEmployeeDTO) {
-        Attivita shop = titolareService.getShopOwnedBy(addEmployeeDTO.getOwnerUsername());
+    public ResponseEntity<String> addEmployeeToShop(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody ShopAddEmployeeDto addEmployeeDTO) {
+        
+        Titolare owner = titolareService.getTitolare(userDetails.getUsername());
+        
+        Attivita shop = titolareService.getShopOwnedBy(owner.getUsername());
 
         Dipendente employee = employeeService.getDipendente(addEmployeeDTO.getEmployeeUsername());
         
@@ -103,15 +128,16 @@ public class AttivitaController {
     public ResponseEntity<String> deleteAttivita(@AuthenticationPrincipal UserDetails userDetails) {
         Attivita shop = titolareService.getShopOwnedBy(userDetails.getUsername());
 
-        titolareService.deleteShopFromOwner(userDetails.getUsername());
-
-        shopService.deleteAttivitaBy(shop.getShopPIVA());
+        titolareService.detachShopFromOwner(userDetails.getUsername());
+        employeeService.detachShopFromEmployees(shop.getShopEmployeeList());
+        shopDescriptionService.detachAttivitaFrom(shop.getShopDescription());
+        shopService.deleteAttivita(shop);
 
         return ResponseEntity.ok("Attività cancellata");
     }
 
     @GetMapping("/shops/{piva}/products")
-    public ResponseEntity<Set<ProdottoDescrizione>> getCatalog(@NotBlank @PathVariable(name = "piva", required = true) String piva) {
+    public ResponseEntity<Set<Prodotto>> getCatalog(@NotBlank @PathVariable(name = "piva", required = true) String piva) {
         return ResponseEntity.ok(shopService.getCatalogProducts(piva));
     }
 
@@ -132,20 +158,26 @@ public class AttivitaController {
             shop = employeeService.getShopEmployedIn(userDetails.getUsername());
         }
 
-        if (!shop.getShopPIVA().equalsIgnoreCase(piva)) {
+        if (!shop.getShopDescription().getShopPIVA().equalsIgnoreCase(piva)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("L'utente non ha i permessi neccessari per eseguire la richiesta");
         }
 
-        ProdottoDescrizione product = productDescriptionService.getProduct(productName);
+        Prodotto product = this.shopService.getProductFromCatalog(shop, productName);
         
         shopService.deleteCatalogProduct(shop, product);
+        this.productService.deleteProduct(product);
 
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/shops/{piva}")
-    public ResponseEntity<Attivita> findAttivitaByPIVA(@NotBlank @PathVariable(name = "piva", required = true) String piva) {
-        return ResponseEntity.ok(shopService.getShop(piva));
+    public ResponseEntity<AttivitaDescrizione> findAttivitaByPIVA(@NotBlank @PathVariable(name = "piva", required = true) String piva) {
+        return ResponseEntity.ok(shopService.getShop(piva).getShopDescription());
+    }
+
+    private AttivitaDescrizioneGetDto convertToDto(AttivitaDescrizione shop) {
+        AttivitaDescrizioneGetDto shopDto = this.modelMapper.map(shop, AttivitaDescrizioneGetDto.class);
+        return shopDto;
     }
 
     private AttivitaGetDto convertToDto(Attivita shop) {
