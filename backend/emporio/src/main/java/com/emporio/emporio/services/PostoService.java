@@ -5,6 +5,7 @@ import java.util.Optional;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
+import com.emporio.emporio.model.Consegna;
 import com.emporio.emporio.model.Posto;
 import com.emporio.emporio.repository.PostoRepository;
 
