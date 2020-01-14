@@ -108,35 +108,41 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Function<String, Role> funcCreator = this.roleService::getRole;
 
-        Privilege priv1 = this.privileges.save(Privilege.builder().name("SEARCH_SHOP").build());
-        Privilege priv2 = this.privileges.save(Privilege.builder().name("SEARCH_PRODUCT").build());
-        Privilege priv3 = this.privileges.save(Privilege.builder().name("CREATE_SHOP").build());
-        Privilege priv4 = this.privileges.save(Privilege.builder().name("CREATE_PRODUCT").build());
+        Privilege priv1 = this.privileges.save(Privilege.builder().name("CREATE_SHOP").build());
+        Privilege priv2 = this.privileges.save(Privilege.builder().name("CREATE_PRODUCT").build());
+        Privilege priv3 = this.privileges.save(Privilege.builder().name("ADD_EMPLOYEE").build());
+        Privilege priv4 = this.privileges.save(Privilege.builder().name("CREATE_ORDER").build());
+        Privilege priv5 = this.privileges.save(Privilege.builder().name("DELETE_SHOP").build());
+        Privilege priv6 = this.privileges.save(Privilege.builder().name("DELETE_PRODUCT").build());
 
-        Role userRole = this.roles.save(Role.builder().name("Utente").build());
         this.roles.save(Role.builder().name("Acquirente").build());
         this.roles.save(Role.builder().name("Fattorino").build());
-        this.roles.save(Role.builder().name("Dipendente").build());
+        Role employee = this.roles.save(Role.builder().name("Dipendente").build());
         Role owner = this.roles.save(Role.builder().name("Titolare").build());
         this.roles.save(Role.builder().name("GestoreMarketing").build());
         this.roles.save(Role.builder().name("Admin").build());
         this.roles.save(Role.builder().name("OperatoreSistema").build());
 
-        List<Privilege> privs = new ArrayList<>();
-        privs.add(priv1);
-        privs.add(priv2);
-
-        userRole.setPrivileges(privs);
-
-        this.roles.save(userRole);
-
         List<Privilege> ownerPrivs = new ArrayList<>();
+        ownerPrivs.add(priv1);
+        ownerPrivs.add(priv2);
         ownerPrivs.add(priv3);
         ownerPrivs.add(priv4);
+        ownerPrivs.add(priv5);
+        ownerPrivs.add(priv6);
 
         owner.setPrivileges(ownerPrivs);
 
         this.roles.save(owner);
+
+        List<Privilege> employeePrivs = new ArrayList<>();
+        employeePrivs.add(priv2);
+        employeePrivs.add(priv4);
+        employeePrivs.add(priv6);
+
+        employee.setPrivileges(employeePrivs);
+
+        this.roles.save(employee);
 
         this.users.save(new AdminUserFactory().createUser("admin", this.passwordEncoder.encode("password"), funcCreator));
 
