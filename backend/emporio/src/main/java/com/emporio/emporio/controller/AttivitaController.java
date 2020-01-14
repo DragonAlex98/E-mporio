@@ -31,6 +31,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,7 +40,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,7 +48,6 @@ import org.springframework.web.bind.annotation.RestController;
  *                 - Coordina i service per assolvere ad un determinato compito.
  */
 @RestController
-@RequestMapping("/api/v1")
 public class AttivitaController {
 
     @Autowired
@@ -72,6 +71,7 @@ public class AttivitaController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @PreAuthorize("hasAuthority('CREATE_SHOP')")
     @PostMapping("/shops")
     public ResponseEntity<String> insertNewAttivita(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody RegistrazioneAttivitaDto attivita)
             throws URISyntaxException {
@@ -109,6 +109,7 @@ public class AttivitaController {
         return ResponseEntity.ok(toReturnShopsList.stream().map(shop -> this.convertToDto(shop.getShopDescription())).collect(Collectors.toList()));
     }
 
+    @PreAuthorize("hasAuthority('ADD_EMPLOYEE')")
     @PutMapping("/shops/employees")
     public ResponseEntity<String> addEmployeeToShop(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody ShopAddEmployeeDto addEmployeeDTO) {
         
@@ -124,6 +125,7 @@ public class AttivitaController {
         return ResponseEntity.ok("Aggiunto dipendente");
     }
 
+    @PreAuthorize("hasAuthority('DELETE_SHOP')")
     @DeleteMapping("/shops")
     public ResponseEntity<String> deleteAttivita(@AuthenticationPrincipal UserDetails userDetails) {
         Attivita shop = titolareService.getShopOwnedBy(userDetails.getUsername());
@@ -141,6 +143,7 @@ public class AttivitaController {
         return ResponseEntity.ok(shopService.getCatalogProducts(piva));
     }
 
+    @PreAuthorize("hasAuthority('DELETE_PRODUCT')")
     @DeleteMapping("/shops/{piva}/products")
     public ResponseEntity<String> deleteProductFromAttivita(@AuthenticationPrincipal UserDetails userDetails, @NotBlank @PathVariable(name = "piva", required = true) String piva, @NotBlank @RequestParam(name = "productName", required = true) String productName) {
 

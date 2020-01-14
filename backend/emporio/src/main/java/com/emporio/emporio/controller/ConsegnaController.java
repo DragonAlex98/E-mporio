@@ -3,6 +3,7 @@ package com.emporio.emporio.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.persistence.EntityExistsException;
 import javax.validation.Valid;
 
 import com.emporio.emporio.dto.ConsegnaDtoRequest;
@@ -20,11 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1")
 public class ConsegnaController {
 
     @Autowired
@@ -52,14 +51,13 @@ public class ConsegnaController {
 
             Consegna consegna = consegnaService.saveConsegna(Consegna.builder().fattorino(fattorino).ordine(order).statoConsegna(StatoConsegna.RITIRATA).posto(posto).build());
 
-            posto.setConsegna(consegna);
-            postoService.savePosto(posto);
+            postoService.updateConsegna(consegna, posto);
             order.setOrderConsegna(consegna);
             ordineService.saveOrdine(order);
 
             return ResponseEntity.created(new URI("/delivery/" + consegna.getIdConsegna())).build();
         } else {
-            return ResponseEntity.badRequest().body("Consegna esistente, non inserita");
+            throw new EntityExistsException("Errore: consegna esistente, non inserita");
         }
     }
 

@@ -19,35 +19,34 @@ import com.emporio.emporio.util.ApiError;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-   protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-       String error = "Malformed JSON request";
-       return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
-   }
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+            HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String error = "Malformed JSON request";
+        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
+    }
 
-   private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
-       return new ResponseEntity<>(apiError, apiError.getStatus());
-   }
+    private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
+        return new ResponseEntity<>(apiError, apiError.getStatus());
+    }
 
-   private ResponseEntity<Object> buildResponseEntity(Exception ex, HttpStatus status) {
+    private ResponseEntity<Object> buildResponseEntity(Exception ex, HttpStatus status) {
         ApiError apiError = new ApiError(status);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
 
-   @ExceptionHandler(EntityExistsException.class)
-   protected ResponseEntity<Object> handleEntityExistsException(EntityExistsException ex) {
+    @ExceptionHandler(EntityExistsException.class)
+    protected ResponseEntity<Object> handleEntityExistsException(EntityExistsException ex) {
         return buildResponseEntity(ex, HttpStatus.BAD_REQUEST);
-   }
+    }
 
-   @ExceptionHandler(EntityNotFoundException.class)
-   protected ResponseEntity<Object> handleEntityNotFound(
-           EntityNotFoundException ex) {
-       return buildResponseEntity(ex, HttpStatus.NOT_FOUND);
-   }
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
+        return buildResponseEntity(ex, HttpStatus.NOT_FOUND);
+    }
 
-    @SuppressWarnings("rawtypes")
-    @ExceptionHandler(value = {InvalidJwtAuthenticationException.class})
-    public ResponseEntity invalidJwtAuthentication(InvalidJwtAuthenticationException ex, WebRequest request) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    @ExceptionHandler(InvalidJwtAuthenticationException.class)
+    protected ResponseEntity<Object> invalidJwtAuthentication(InvalidJwtAuthenticationException ex) {
+        return buildResponseEntity(ex, HttpStatus.UNAUTHORIZED);
     }
 }
