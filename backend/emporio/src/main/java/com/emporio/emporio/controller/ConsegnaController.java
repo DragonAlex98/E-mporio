@@ -2,11 +2,14 @@ package com.emporio.emporio.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityExistsException;
 import javax.validation.Valid;
 
 import com.emporio.emporio.dto.ConsegnaDtoRequest;
+import com.emporio.emporio.dto.ConsegnaGetDto;
 import com.emporio.emporio.model.Consegna;
 import com.emporio.emporio.model.Fattorino;
 import com.emporio.emporio.model.Ordine;
@@ -16,9 +19,14 @@ import com.emporio.emporio.services.ConsegnaService;
 import com.emporio.emporio.services.FattorinoService;
 import com.emporio.emporio.services.OrdineService;
 import com.emporio.emporio.services.PostoService;
+import com.emporio.emporio.services.UserService;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +47,9 @@ public class ConsegnaController {
     
     @Autowired
     private FattorinoService fattorinoService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping("/delivery")
     public ResponseEntity<String> createDelivery (@RequestBody @Valid ConsegnaDtoRequest delivery) throws URISyntaxException {
@@ -61,6 +72,27 @@ public class ConsegnaController {
         } else {
             throw new EntityExistsException("Errore: consegna esistente, non inserita");
         }
+    }
+
+    @GetMapping("/delivery")
+    public ResponseEntity<List<ConsegnaGetDto>> getDeliveryList(@AuthenticationPrincipal UserDetails userDetails) {
+
+        Fattorino fattorino = fattorinoService.getFattorino(userDetails.getUsername());
+        
+        // Conversione da lista di consegne a consegne dto tramite model mapper e map con rif a metodo
+        List<ConsegnaGetDto> deliveryList = consegnaService.getDeliveryByFattorino(fattorino).stream()
+                                                           .map(this::convertToDto).collect(Collectors.toList()); //Loreti Style
+        
+        return ResponseEntity.ok(deliveryList);
+
+
+    }
+
+    private ConsegnaGetDto convertToDto (Consegna consegna) {
+
+        ConsegnaGetDto consegnaGetDto = this.modelMapper.map(consegna, ConsegnaGetDto.class);
+        return consegnaGetDto;
+       
     }
 
 }

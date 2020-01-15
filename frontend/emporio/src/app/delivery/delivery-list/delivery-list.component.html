@@ -1,0 +1,13 @@
+<mat-accordion>
+    <mat-expansion-panel *ngFor="let delivery of deliveryList">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+               Parcheggio cliente: {{delivery.ordine.parkingAddress}}
+            </mat-panel-title>
+            <mat-panel-description>
+                 Stato: {{delivery.statoConsegna}}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+      
+    </mat-expansion-panel>
+</mat-accordion>
