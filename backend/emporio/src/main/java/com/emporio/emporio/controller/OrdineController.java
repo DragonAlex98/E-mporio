@@ -2,6 +2,8 @@ package com.emporio.emporio.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -80,11 +82,12 @@ public class OrdineController {
         } else {
             shop = employeeService.getShopEmployedIn(worker);
         }
+        List<RigaOrdineProdotto> lines = new ArrayList<RigaOrdineProdotto>();
 
         // CONTROLLO RIGHE
-        for(RigaOrdineProdotto line : orderDto.getProductsList()) {
-            Prodotto product = this.shopService.getProductFromCatalog(shop, line.getProduct().getProductName());
-            line.setProduct(product.getProductDescription());
+        for(Entry<String, Integer> line : orderDto.getLines().entrySet()) {
+            Prodotto product = this.shopService.getProductFromCatalog(shop, line.getKey());
+            lines.add(RigaOrdineProdotto.builder().product(product.getProductDescription()).quantity(line.getValue()).build());
         }
 
         Acquirente customer = customerService.getAcquirente(orderDto.getCustomerUsername());
@@ -97,9 +100,9 @@ public class OrdineController {
 
         order = orderService.saveOrdine(order);
 
-        order.setOrderProductsLineList(orderProductLineService.saveAllLines(order, orderDto.getProductsList()));
+        order.setOrderProductsLineList(orderProductLineService.saveAllLines(order, lines));
 
-        return ResponseEntity.created(URI.create("/orders/" + order.getOrderId())).build();
+        return ResponseEntity.created(URI.create("/orders/" + order.getOrderId())).body("Aggiunto ordine");
     }
 
     @GetMapping("/orders/state/not-assigned")

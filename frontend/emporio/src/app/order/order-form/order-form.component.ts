@@ -34,7 +34,7 @@ export class OrderFormComponent implements OnInit {
     this.service.addOrder(this.customerFormGroup.value.customerName,
       this.authService.currentUserValue.username,
       this.customerFormGroup.value.customerCarPosition,
-      this.dataSource.data).subscribe(
+      this.dataSource.getAsMap()).subscribe(
         data => {
           alert('Aggiunto');
         },

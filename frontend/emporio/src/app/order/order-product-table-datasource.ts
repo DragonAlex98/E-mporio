@@ -41,6 +41,12 @@ export class OrderProductTableDataSource extends DataSource<OrderProductTableIte
     this.data = copiedData;
   }
 
+  getAsMap(): Map<string, number> {
+    const m = new Map<string, number>();
+    this.data.forEach(item => m.set(item.product.productName, item.quantity));
+    return m;
+  }
+
   /**
    * Connect this data source to the table. The table will only update when
    * the returned stream emits new items.

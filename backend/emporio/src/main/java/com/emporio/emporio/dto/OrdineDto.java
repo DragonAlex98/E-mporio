@@ -1,7 +1,6 @@
 package com.emporio.emporio.dto;
 
-import java.util.List;
-import com.emporio.emporio.model.RigaOrdineProdotto;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,5 +19,5 @@ public class OrdineDto {
 
     private String carPosition;
 
-    private List<RigaOrdineProdotto> productsList;
+    private Map<String, Integer> lines;
 }
