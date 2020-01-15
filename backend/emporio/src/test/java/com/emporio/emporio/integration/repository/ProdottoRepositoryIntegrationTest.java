@@ -11,13 +11,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.List;
 import java.util.Optional;
 import com.emporio.emporio.model.CategoriaProdotto;
 import com.emporio.emporio.model.Prodotto;
 import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.repository.CategoriaProdottoRepository;
-import com.emporio.emporio.repository.ProdottoDescrizioneRepository;
 import com.emporio.emporio.repository.ProdottoRepository;
 
 /**
@@ -30,9 +28,6 @@ public class ProdottoRepositoryIntegrationTest {
 
     @Autowired
     private TestEntityManager entityManager;
-
-    @Autowired
-    private ProdottoDescrizioneRepository prodDescRepo;
 
     @Autowired
     private ProdottoRepository prodRepo;

@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import com.emporio.emporio.dto.AttivitaDescrizioneGetDto;
-import com.emporio.emporio.dto.AttivitaGetDto;
 import com.emporio.emporio.dto.ProductPostDto;
 import com.emporio.emporio.dto.RegistrazioneAttivitaDto;
 import com.emporio.emporio.model.Attivita;
@@ -115,7 +114,6 @@ public class AttivitaController {
 
     @PostMapping(value="/shops/{piva}/products")
     public ResponseEntity<String> insertNewProductOnShopCatalog(@AuthenticationPrincipal UserDetails userDetails ,@NotBlank @PathVariable(name = "piva", required = true) String piva ,@RequestBody ProductPostDto productDto) {
-        //TODO: process POST request AGGIUNTA DI UN PRODOTTO AL CATALOGO.
         Attivita shop = this.shopService.getShop(piva);
         
         this.catalogoService.checkProductAlreadyPresentInCatalog(shop.getCatalog(), productDto.getProductName());
@@ -211,8 +209,8 @@ public class AttivitaController {
         return shopDto;
     }
 
-    private AttivitaGetDto convertToDto(Attivita shop) {
+    /* private AttivitaGetDto convertToDto(Attivita shop) {
         AttivitaGetDto shopDto = this.modelMapper.map(shop, AttivitaGetDto.class);
         return shopDto;
-    }
+    } */
 }

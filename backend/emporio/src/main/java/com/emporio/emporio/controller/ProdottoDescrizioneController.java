@@ -4,7 +4,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import com.emporio.emporio.dto.ProductDescriptionDto;
 import com.emporio.emporio.model.CategoriaProdotto;
 import com.emporio.emporio.model.ProdottoDescrizione;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

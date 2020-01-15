@@ -20,7 +20,6 @@ import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.AttivitaDescrizione;
 import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.CategoriaAttivita;
-import com.emporio.emporio.repository.AttivitaDescrizioneRepository;
 import com.emporio.emporio.repository.AttivitaRepository;
 import com.emporio.emporio.repository.CategoriaAttivitaRepository;
 
@@ -34,9 +33,6 @@ public class AttivitaRepositoryIntegrationTest {
 
     @Autowired
     private TestEntityManager entityManager;
-
-    @Autowired
-    private AttivitaDescrizioneRepository shopDescRepo;
 
     @Autowired
     private AttivitaRepository shopRepo;

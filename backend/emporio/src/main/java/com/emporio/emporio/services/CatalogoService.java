@@ -1,12 +1,7 @@
 package com.emporio.emporio.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 
-import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.Prodotto;
 import com.emporio.emporio.repository.CatalogoRepository;

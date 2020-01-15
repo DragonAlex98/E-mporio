@@ -3,20 +3,16 @@ package com.emporio.emporio.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotBlank;
 
 import com.emporio.emporio.dto.AttivitaDescrizioneGetDto;
-import com.emporio.emporio.dto.AttivitaGetDto;
 import com.emporio.emporio.dto.OrdineGetDto;
 import com.emporio.emporio.model.Acquirente;
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.AttivitaDescrizione;
-import com.emporio.emporio.model.User;
 import com.emporio.emporio.services.AcquirenteService;
 import com.emporio.emporio.services.DipendenteService;
 import com.emporio.emporio.services.OrdineService;
-import com.emporio.emporio.services.RoleService;
 import com.emporio.emporio.services.TitolareService;
 import com.emporio.emporio.services.UserService;
 
@@ -41,9 +37,6 @@ public class UserController {
 
     @Autowired
     private TitolareService titolareService;
-
-    @Autowired
-    private RoleService roleService;
 
     @Autowired
     private OrdineService orderService;

@@ -14,14 +14,11 @@ import com.emporio.emporio.model.Acquirente;
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.Ordine;
 import com.emporio.emporio.model.Prodotto;
-import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.model.RigaOrdineProdotto;
 import com.emporio.emporio.services.AcquirenteService;
 import com.emporio.emporio.services.AttivitaService;
-import com.emporio.emporio.services.CatalogoService;
 import com.emporio.emporio.services.DipendenteService;
 import com.emporio.emporio.services.OrdineService;
-import com.emporio.emporio.services.ProdottoDescrizioneService;
 import com.emporio.emporio.services.RigaOrdineProdottoService;
 import com.emporio.emporio.services.TitolareService;
 
@@ -43,9 +40,6 @@ public class OrdineController {
 
     @Autowired
     private TitolareService ownerService;
-
-    @Autowired
-    private CatalogoService catalogService;
     
     @Autowired
     private DipendenteService employeeService;
@@ -58,9 +52,6 @@ public class OrdineController {
 
     @Autowired
     private AcquirenteService customerService;
-
-    @Autowired
-    private ProdottoDescrizioneService productDescriptionService;
 
     @Autowired
     private ModelMapper modelMapper;

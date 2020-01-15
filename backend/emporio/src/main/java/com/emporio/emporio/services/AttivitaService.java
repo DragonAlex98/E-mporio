@@ -8,11 +8,8 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import com.emporio.emporio.model.Attivita;
-import com.emporio.emporio.model.AttivitaDescrizione;
 import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.Prodotto;
-import com.emporio.emporio.model.ProdottoDescrizione;
-import com.emporio.emporio.repository.AttivitaDescrizioneRepository;
 import com.emporio.emporio.repository.AttivitaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
