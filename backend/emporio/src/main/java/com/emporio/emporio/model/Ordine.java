@@ -39,7 +39,7 @@ public class Ordine {
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "shop_id", nullable = false)
-    private Attivita orderShop;
+    private AttivitaDescrizione orderShop;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)

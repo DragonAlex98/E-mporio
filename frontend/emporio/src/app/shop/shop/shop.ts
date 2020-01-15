@@ -37,3 +37,12 @@ export class ShopAdapter implements Adapter<Shop> {
             new ShopCategory(item.shopCategory.shopCategoryId, item.shopCategory.shopCategoryDescription), item.shopHeadquarter);
     }
 }
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ShopCategoryAdapter implements Adapter<ShopCategory> {
+    adapt(item: any): ShopCategory {
+        return new ShopCategory(item.shopCategoryId, item.shopCategoryDescription);
+    }
+}

@@ -6,14 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * AttivitaGetDto
+ * ProductPostDto
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AttivitaGetDto {
+public class ProductPostDto {
 
-    private AttivitaDescrizioneGetDto shopDescription;
+    private String productName;
 
+    private Double price;
 }

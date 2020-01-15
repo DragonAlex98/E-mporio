@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -55,14 +54,4 @@ public abstract class User {
     @ManyToOne
     @JoinColumn(name = "Ruolo", nullable = false)
     private Role role;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_shop_owned_id", nullable = true)
-    @JsonIgnore
-    private Attivita shopOwned;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_shop_employed_id", nullable = true)
-    @JsonIgnore
-    private Attivita shopEmployed;
 }

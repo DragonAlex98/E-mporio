@@ -13,23 +13,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1")
 public class CategoriaAttivitaController {
 
     @Autowired
     private CategoriaAttivitaService categoriaAttivitaService;
 
-    @PostMapping("/categoryShop")
+    @PostMapping("/shops/categories")
     public ResponseEntity<String> insertNewCategoryShop(@Valid @RequestBody CategoriaAttivita categoryShop) throws URISyntaxException {
         CategoriaAttivita shopCategory = categoriaAttivitaService.insertNewCategoryShop(categoryShop.getShopCategoryDescription());
         return ResponseEntity.created(new URI("/categoryShop/"+ shopCategory.getShopCategoryId())).build();
     }
     
-    @GetMapping("/categoryShop")
+    @GetMapping("/shops/categories")
     public ResponseEntity<List<CategoriaAttivita>> getAllShopCategories() {
         return ResponseEntity.ok(categoriaAttivitaService.getAllShopCategories());
     }

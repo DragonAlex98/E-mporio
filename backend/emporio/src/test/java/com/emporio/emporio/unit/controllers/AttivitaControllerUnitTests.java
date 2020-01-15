@@ -1,9 +1,11 @@
 package com.emporio.emporio.unit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.emporio.emporio.dto.AttivitaGetDto;
+
+import com.emporio.emporio.dto.AttivitaDescrizioneGetDto;
 import com.emporio.emporio.dto.RegistrazioneAttivitaDto;
-import com.emporio.emporio.model.Attivita;
+import com.emporio.emporio.model.AttivitaDescrizione;
+
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 
@@ -15,14 +17,14 @@ public class AttivitaControllerUnitTests {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Test
-    public void whenConvertAttivitaEntityToAttivitaGetDto_thenCorrect() {
-        Attivita shop = Attivita.builder().shopPIVA("aaa111")
+    public void whenConvertAttivitaDescrizioneEntityToAttivitaDescrizioneGetDto_thenCorrect() {
+        AttivitaDescrizione shop = AttivitaDescrizione.builder().shopPIVA("aaa111")
                                           .shopBusinessName("Superconti")
                                           .shopAddress("Via Sassotetto, 11")
                                           .shopHeadquarter("shopHeadquarter")
                                           .build();
 
-        AttivitaGetDto shopDto = modelMapper.map(shop, AttivitaGetDto.class);
+        AttivitaDescrizioneGetDto shopDto = modelMapper.map(shop, AttivitaDescrizioneGetDto.class);
         assertTrue(shop.getShopPIVA().equals(shopDto.getShopPIVA()));
         assertTrue(shop.getShopBusinessName().equals(shopDto.getShopBusinessName()));
         assertTrue(shop.getShopAddress().equals(shopDto.getShopAddress()));
@@ -30,12 +32,12 @@ public class AttivitaControllerUnitTests {
     }
 
     @Test
-    public void whenConvertAttivitaGetDtoToAttivitaEntity_thenCorrect() {
+    public void whenConvertRegistrazioneAttivitaDtoToAttivitaDescrizioneEntity_thenCorrect() {
         RegistrazioneAttivitaDto shopDto = RegistrazioneAttivitaDto.builder().shopBusinessName("Superconti")
                                                                              .shopCategoryDescription("utensili")
                                                                              .build();
  
-        Attivita shop = modelMapper.map(shopDto, Attivita.class);
+        AttivitaDescrizione shop = modelMapper.map(shopDto, AttivitaDescrizione.class);
         assertTrue(shopDto.getShopBusinessName().equals(shop.getShopBusinessName()));
         assertTrue(shopDto.getShopCategoryDescription().equals(shop.getShopCategory().getShopCategoryDescription()));
     }

@@ -22,17 +22,12 @@ export class OrderService {
   };
   apiOrderUrl = `${environment.apiUrl}/orders`;
 
-  addOrder(customerUsername: string,
-    employeeUsername: string,
-    carPosition: string,
-    productsList: OrderProductTableItem[]) {
+  addOrder(customerUsername: string, employeeUsername: string, carPosition: string, productsList: Map<string, number>) {
     const body = { customerUsername: customerUsername,
       employeeUsername: employeeUsername,
       carPosition: carPosition,
-      productsList: productsList
+      lines: this.jsonizeMap(productsList)
     };
-    console.log(this.apiOrderUrl);
-    console.log(body);
     return this.httpClient.post<Order>(this.apiOrderUrl, JSON.stringify(body), this.httpOptions);
   }
 
@@ -40,5 +35,13 @@ export class OrderService {
 
     return this.httpClient.get<Order[]>(this.apiOrderUrl + '/state/not-assigned');
 
+  }
+
+  private jsonizeMap(toJsonizeMap: Map<string, number>) {
+    const convertedMap = {};
+    toJsonizeMap.forEach((val, key) => {
+      convertedMap[key] = val;
+    });
+    return convertedMap;
   }
 }

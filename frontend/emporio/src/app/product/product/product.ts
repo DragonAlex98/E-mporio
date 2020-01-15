@@ -33,3 +33,12 @@ export class ProductAdapter implements Adapter<Product> {
           new ProductCategory(item.productCategory.categoryId, item.productCategory.description));
     }
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProductCategoryAdapter implements Adapter<ProductCategory> {
+    adapt(item: any): ProductCategory {
+        return new ProductCategory(item.categoryId, item.description);
+    }
+}

@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.emporio.emporio.model.Role;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,21 +28,37 @@ public class JwtTokenProvider {
     private String secret;
 
     @Value("${jwt.expiration}")
-    private Long expiration;
+    private Long tokenExpiration;
 
-    public String createToken(String username, Role role) {
+    @Value("${refresh.token.expiration}")
+    private Long refreshExpiration;
 
+    private Claims createBaseTokenClaims(String username, String role) {
         Claims claims = Jwts.claims().setSubject(username);
-        
-        claims.put("role", role);
-
         Date now = new Date();
-        Date validity = new Date(now.getTime() + expiration);
+        claims.put("role", role);
+        claims.setIssuedAt(now);
+        return claims;
+    }
+
+    public String createToken(String username, String role) {
+        Claims claims = createBaseTokenClaims(username, role);
+        claims.setExpiration(new Date(claims.getIssuedAt().getTime() + tokenExpiration));
+        claims.put("scope", "token");
 
         return Jwts.builder()
             .setClaims(claims)
-            .setIssuedAt(now)
-            .setExpiration(validity)
+            .signWith(SignatureAlgorithm.HS256, secret)
+            .compact();
+    }
+
+    public String createRefreshToken(String username, String role) {
+        Claims claims = createBaseTokenClaims(username, role);
+        claims.setExpiration(new Date(claims.getIssuedAt().getTime() + refreshExpiration));
+        claims.put("scope", "refresh");
+
+        return Jwts.builder()
+            .setClaims(claims)
             .signWith(SignatureAlgorithm.HS256, secret)
             .compact();
     }
@@ -66,21 +80,20 @@ public class JwtTokenProvider {
         return null;
     }
 
-    public Boolean canTokenBeRefreshed(String token) {
+    public Boolean isTokenNotExpired(String token) {
         Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-
-        return (!claims.getBody().getExpiration().before(new Date()));
+        return !claims.getBody().getExpiration().before(new Date());
     }
 
-    public String refreshToken(String token) {
+    public String refreshToken(String refreshToken) {
         String refreshedToken;
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            if(!canTokenBeRefreshed(token)) {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(refreshToken);
+            if (!isTokenNotExpired(refreshToken) || !claims.getBody().get("scope", String.class).equals("refresh")) {
                 throw new IllegalArgumentException();
             }
 
-            refreshedToken = createToken(claims.getBody().getSubject(), claims.getBody().get("role", Role.class));
+            refreshedToken = createToken(claims.getBody().getSubject(), claims.getBody().get("role", String.class));
         } catch (Exception e) {
             refreshedToken = null;
         }
@@ -89,7 +102,8 @@ public class JwtTokenProvider {
 
     public Boolean validateToken(String token) {
         try {
-            return canTokenBeRefreshed(token);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            return isTokenNotExpired(token) && claims.getBody().get("scope", String.class).equals("token");
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
         }

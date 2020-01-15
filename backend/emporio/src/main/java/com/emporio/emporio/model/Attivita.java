@@ -5,15 +5,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,26 +29,9 @@ import lombok.NoArgsConstructor;
 public class Attivita {
 
     @Id
-    @Column(name = "Partita_IVA")
-    @NotBlank
-    private String shopPIVA;
-
-    @Column(name = "Indirizzo")
-    @NotBlank
-    private String shopAddress;
-
-    @Column(name = "Ragione_Sociale")
-    @NotBlank
-    private String shopBusinessName;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "Categoria_Attivita", nullable = false)
-    @NotNull
-    private CategoriaAttivita shopCategory;
-
-    @Column(name = "Sede_Operativa")
-    @NotBlank
-    private String shopHeadquarter;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Catalogo_Attivita", nullable = false)
@@ -58,5 +39,9 @@ public class Attivita {
 
     @OneToMany(mappedBy = "shopEmployed")
     @JsonIgnore
-    private List<User> shopEmployeeList;
+    private List<Dipendente> shopEmployeeList;
+    
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_attivita", nullable = false)
+    private AttivitaDescrizione shopDescription;
 }
