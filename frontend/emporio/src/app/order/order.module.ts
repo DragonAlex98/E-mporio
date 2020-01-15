@@ -14,10 +14,11 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { OrderToDeliveryComponent } from '@src/app/order/order-to-delivery/order-to-delivery.component';
 import { OrderToDeliveryDetailsComponent } from '@src/app/order/order-to-delivery-details/order-to-delivery-details.component';
 import { OrderComponent } from '@src/app/order/order/order.component';
-import { LockerModule } from '../locker/locker.module';
-import { LockerSelectorComponent } from '../locker/locker-selector/locker-selector.component';
-import { DeliveryModule } from '../delivery/delivery.module';
+import { LockerModule } from '@src/app/locker/locker.module';
+import { LockerSelectorComponent } from '@src/app/locker/locker-selector/locker-selector.component';
+import { DeliveryModule } from '@src/app/delivery/delivery.module';
 import { HttpClientModule } from '@angular/common/http';
+import { OrderHistoryComponent } from '@src/app/order/order-history/order-history.component';
 
 
 
@@ -29,7 +30,8 @@ import { HttpClientModule } from '@angular/common/http';
     OrderProductListComponent,
     OrderToDeliveryComponent,
     OrderToDeliveryDetailsComponent,
-    OrderComponent
+    OrderComponent,
+    OrderHistoryComponent
   ],
   imports: [
     MaterialModule,

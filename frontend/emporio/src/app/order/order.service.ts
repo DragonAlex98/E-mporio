@@ -15,7 +15,8 @@ export class OrderService {
 
   constructor(private httpClient: HttpClient,
     private shopAdapter: ShopAdapter,
-    private productsAdapter: ProductAdapter) { }
+    private productsAdapter: ProductAdapter,
+    private orderAdapter: OrderAdapter) { }
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -32,9 +33,13 @@ export class OrderService {
   }
 
   getOrdersToDelivery(): Observable<Order[]> {
-
     return this.httpClient.get<Order[]>(this.apiOrderUrl + '/state/not-assigned');
+  }
 
+  getAllCustomerOrder(customerUsername: string): Observable<Order[]> {
+    return this.httpClient.get(`${environment.apiUrl}/users/${customerUsername}/orders`, this.httpOptions).pipe(
+      map((data: any[]) => data.map(item => this.orderAdapter.adapt(item)))
+    );
   }
 
   private jsonizeMap(toJsonizeMap: Map<string, number>) {

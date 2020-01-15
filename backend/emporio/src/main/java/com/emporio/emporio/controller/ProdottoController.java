@@ -49,27 +49,13 @@ public class ProdottoController {
     @Autowired
     private CatalogoService catalogoService;
 
-    @PostMapping(value="/shops/{piva}/products")
-    public ResponseEntity<String> insertNewProductOnShopCatalog(@AuthenticationPrincipal UserDetails userDetails ,@NotBlank @PathVariable(name = "piva", required = true) String piva ,@RequestBody ProductPostDto productDto) {
-        //TODO: process POST request AGGIUNTA DI UN PRODOTTO AL CATALOGO.
-        Attivita shop = this.shopService.getShop(piva);
-
-        ProdottoDescrizione productDescription = this.productDescriptionService.getProductDescriptionFrom(productDto.getProductName());
-
-        Prodotto product = Prodotto.builder().productDescription(productDescription).productPrice(productDto.getPrice()).build();
-
-        shop.setCatalog(this.catalogoService.addProductToCatalog(product, shop.getCatalog()));
-        
-        return ResponseEntity.ok("Prodotto " + productDto.getProductName() + " aggiunto al catalogo!");
-    }
-
     @GetMapping("/products/search")
     public ResponseEntity<List<Prodotto>> findProduct(@NotBlank @RequestParam(name = "nome", required = true) String nome) {
         //Ricerca tutti i prodotti contenenti una stringa e associati ad una attività
         return ResponseEntity.ok(productService.getAllProductsContaining(nome));
     }
 
-    @GetMapping("/products")
+    @GetMapping("/shops/products")
     public ResponseEntity<List<Prodotto>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }

@@ -55,7 +55,7 @@ export class ShopService {
       map(item => this.adapter.adapt(item))
     );
   }
-  
+
   deleteShop(): Observable<string> {
     return this.httpClient.delete(`${environment.apiUrl}/shops`).pipe(
       map((res: string) => res)
@@ -72,5 +72,9 @@ export class ShopService {
     return this.httpClient.get<Product[]>(`${environment.apiUrl}/shops/${piva}/products`).pipe(
       map((data: any[]) => data.map(item => this.productAdapter.adapt(item.productDescription)))
     );
+  }
+
+  addProductToShop(piva: string, formValue: any): Observable<string> {
+    return this.httpClient.post<string>(`${environment.apiUrl}/shops/${piva}/products`, formValue, this.httpPostOptions);
   }
 }

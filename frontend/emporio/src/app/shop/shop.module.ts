@@ -11,6 +11,8 @@ import { InsertShopFormComponent } from '@src/app/shop/insert-shop-form/insert-s
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddEmployeeComponent } from '@src/app/shop/add-employee/add-employee.component';
 import { ShopDetailComponent } from '@src/app/shop/shop-detail/shop-detail.component';
+import { AddProductComponent } from '@src/app/shop/add-product/add-product.component';
+import { ShopCatalogComponent } from '@src/app/shop/shop-catalog/shop-catalog.component';
 
 
 @NgModule({
@@ -21,6 +23,8 @@ import { ShopDetailComponent } from '@src/app/shop/shop-detail/shop-detail.compo
     InsertShopFormComponent,
     AddEmployeeComponent,
     ShopDetailComponent,
+    AddProductComponent,
+    ShopCatalogComponent,
   ],
   imports: [
     CommonModule,

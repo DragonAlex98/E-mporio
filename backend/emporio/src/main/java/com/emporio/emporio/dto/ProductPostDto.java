@@ -16,5 +16,5 @@ public class ProductPostDto {
 
     private String productName;
 
-    private Double price;
+    private Double productPrice;
 }

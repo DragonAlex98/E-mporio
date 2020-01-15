@@ -24,10 +24,12 @@ public class CatalogoService {
     private CatalogoRepository catalogoRepo;
 
     public Catalogo addProductToCatalog(Prodotto product, Catalogo catalogo) {
-        if(catalogo.getProducts().contains(product))
-            throw new EntityExistsException("Il prodotto " + product.getProductDescription().getProductId() + " è già presente nell'attività!");
-
         catalogo.getProducts().add(product);
         return this.catalogoRepo.save(catalogo);
+    }
+
+    public void checkProductAlreadyPresentInCatalog(Catalogo catalogo, String productName) {
+        if(catalogo.containsProduct(productName))
+            throw new EntityExistsException("Il prodotto " + productName + " è già presente nell'attività!");
     }
 }

@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
             console.log(currentUser.role);
             console.log(route.data.roles.indexOf(currentUser.role));
             if (route.data.roles && route.data.roles.indexOf(currentUser.role) === -1) {
-                alert('Utente' + currentUser.username + ' con ruolo ' + currentUser.role + ' non abilitato');
+                alert('Utente ' + currentUser.username + ' con ruolo ' + currentUser.role + ' non abilitato');
                 this.router.navigate(['/']);
                 return false;
             }

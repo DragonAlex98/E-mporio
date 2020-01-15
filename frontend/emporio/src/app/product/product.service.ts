@@ -40,4 +40,10 @@ export class ProductService {
     );
   }
 
+  getAllProductsDescriptions(): Observable<Product[]> {
+    return this.httpClient.get(`${environment.apiUrl}/products`, this.httpOptions).pipe(
+      map((data: any[]) => data.map(elem => this.productAdapter.adapt(elem)))
+    );
+  }
+
 }

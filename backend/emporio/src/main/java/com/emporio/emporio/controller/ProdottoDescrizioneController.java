@@ -42,7 +42,7 @@ public class ProdottoDescrizioneController {
         return ResponseEntity.created(new URI("/products/" + newProduct.getProductId())).body("Prodotto " + newProduct.getProductName() + " aggiunto!");
     }
 
-    @GetMapping("/products/all")
+    @GetMapping("/products")
     public ResponseEntity<List<ProdottoDescrizione>> getAllProductDescriptions() {
         return ResponseEntity.ok(productDescriptionService.getAllProductsDescription());
     }

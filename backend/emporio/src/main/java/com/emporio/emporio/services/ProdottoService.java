@@ -49,6 +49,10 @@ public class ProdottoService {
 
 		public void deleteProduct(Prodotto product) {
             this.productRepo.delete(product);
-		}
+        }
+        
+        public Prodotto saveProdotto(Prodotto product) {
+            return this.productRepo.save(product);
+        }
     
 }

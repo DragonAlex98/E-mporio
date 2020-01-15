@@ -8,10 +8,11 @@ import { PhantomPageComponent } from '@src/app/order/phantom-page/phantom-page.c
 import { OrderToDeliveryComponent } from '@src/app/order/order-to-delivery/order-to-delivery.component';
 import { OrderToDeliveryDetailsComponent } from '@src/app/order/order-to-delivery-details/order-to-delivery-details.component';
 import { OrderComponent } from '@src/app/order/order/order.component';
+import { OrderHistoryComponent } from '@src/app/order/order-history/order-history.component';
 
 
 @NgModule({
-  declarations: [OrderFormComponent, OrderProductListComponent, PhantomPageComponent, OrderToDeliveryComponent, OrderToDeliveryDetailsComponent, OrderComponent],
+  declarations: [OrderFormComponent, OrderProductListComponent, PhantomPageComponent, OrderToDeliveryComponent, OrderToDeliveryDetailsComponent, OrderComponent, OrderHistoryComponent],
   imports: [
     OrderRoutingModule,
     NativeScriptCommonModule

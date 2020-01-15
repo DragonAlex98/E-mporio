@@ -12,34 +12,22 @@
             </mat-chip-list>
         </mat-card-header>
         <mat-card-content>
-            <p>Categoria: {{shop.shopCategory}}</p>
+            <p>Categoria: {{shop.shopCategory.shopCategoryDescription}}</p>
             <button mat-raised-button color="accent" (click)="showCatalog()">Visualizza Catalogo</button>
             <button *ngIf="shouldShowDeleteShopButton()" mat-raised-button color="accent" (click)="deleteShop()">Elimina
                 Attività</button>
+            <button mat-raised-button color="accent" *ngIf="shouldShowDeleteShopProductButton()" (click)="showAddProd()">
+                Aggiungi Prodotto
+            </button>
         </mat-card-content>
     </mat-card>
 
     <ng-template #noShopFound>Nessuna attività trovata con la partita IVA specificata</ng-template>
 
-    <div *ngIf="shop != null">
-        <span>
-            <h3>Catalogo</h3>
-        </span>
-        <mat-grid-list cols="3">
-            <mat-grid-tile *ngFor="let product of productList">
-                <mat-card>
-                    <div class="product-list-content">
-                        <mat-card-header>
-                            <div mat-card-avatar class="example-header-image"></div>
-                            <mat-card-title><span>{{product.productName.toUpperCase()}}</span></mat-card-title>
-                        </mat-card-header>
-                        <mat-card-content>
-                            <p>{{product.productCategory.description.toUpperCase()}}</p>
-                            <button *ngIf="shouldShowDeleteShopProductButton()" mat-raised-button color="accent" (click)="deleteProduct(product)">Elimina Prodotto</button>
-                        </mat-card-content>
-                    </div>
-                </mat-card>
-            </mat-grid-tile>
-        </mat-grid-list>
+    <div *ngIf="shop != null && showCatalogo">
+        <app-shop-catalog [piva]="piva"></app-shop-catalog>
+    </div>
+    <div *ngIf="shop != null && showAddProduct">
+        <app-add-product [piva]="piva"></app-add-product>
     </div>
 </div>

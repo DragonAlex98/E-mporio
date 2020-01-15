@@ -6,10 +6,12 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.emporio.emporio.model.Acquirente;
 import com.emporio.emporio.model.Ordine;
 import com.emporio.emporio.repository.OrdineRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 /**
@@ -53,6 +55,15 @@ public class OrdineService {
     public boolean isOrdineAlreadyAssigned(Long id) {
         Ordine ordine = getOrdine(id);
         return ordine.getOrderConsegna() != null;
+    }
+
+    public List<Ordine> getCustomerOrders(Acquirente customer) {
+        List<Ordine> orderList = this.orderRepository.findAll(Example.of(Ordine.builder().orderCustomer(customer).build()));
+
+        if(orderList.isEmpty())
+            throw new EntityNotFoundException("Nessun ordine trovato!");
+
+        return orderList;
     }
     
 }
