@@ -11,6 +11,7 @@ import com.emporio.emporio.dto.OrdineGetDto;
 import com.emporio.emporio.model.Acquirente;
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.Ordine;
+import com.emporio.emporio.model.Prodotto;
 import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.model.RigaOrdineProdotto;
 import com.emporio.emporio.services.AcquirenteService;
@@ -82,8 +83,8 @@ public class OrdineController {
 
         // CONTROLLO RIGHE
         for(RigaOrdineProdotto line : orderDto.getProductsList()) {
-            ProdottoDescrizione product = this.shopService.getProductFromCatalog(shop, line.getProduct().getProductName()).getProductDescription();
-            line.setProduct(product);
+            Prodotto product = this.shopService.getProductFromCatalog(shop, line.getProduct().getProductName());
+            line.setProduct(product.getProductDescription());
         }
 
         Acquirente customer = customerService.getAcquirente(orderDto.getCustomerUsername());
@@ -92,7 +93,6 @@ public class OrdineController {
                             .orderCustomer(customer)
                             .orderShop(shop.getShopDescription())
                             .parkingAddress(orderDto.getCarPosition())
-                            .orderProductsLineList(orderDto.getProductsList())
                             .build();
 
         order = orderService.saveOrdine(order);

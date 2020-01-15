@@ -40,7 +40,7 @@ export class OrderFormComponent implements OnInit {
         },
         error => {
           console.log(error);
-          if ([400].indexOf(error.status) !== -1) {
+          if ([400, 404].indexOf(error.status) !== -1) {
             alert(error.error.message);
           } else {
             alert('Errore di connessione!');

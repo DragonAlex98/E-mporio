@@ -33,7 +33,8 @@ public class RigaOrdineProdottoService {
     public List<RigaOrdineProdotto> saveAllLines(Ordine order, List<RigaOrdineProdotto> lines) {
         lines.stream().forEach(item -> {
             item.setOrder(order);
-            item.setId(ChiaveRigaOrdineProdotto.builder().orderId(order.getOrderId()).productId(item.getProduct().getProductId()).build());
+            ChiaveRigaOrdineProdotto key = ChiaveRigaOrdineProdotto.builder().orderId(order.getOrderId()).productId(item.getProduct().getProductId()).build();
+            item.setId(key);
             orderProductLineRepo.save(item);
         });
 
