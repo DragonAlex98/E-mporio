@@ -28,21 +28,37 @@ public class JwtTokenProvider {
     private String secret;
 
     @Value("${jwt.expiration}")
-    private Long expiration;
+    private Long tokenExpiration;
+
+    @Value("${refresh.token.expiration}")
+    private Long refreshExpiration;
+
+    private Claims createBaseTokenClaims(String username, String role) {
+        Claims claims = Jwts.claims().setSubject(username);
+        Date now = new Date();
+        claims.put("role", role);
+        claims.setIssuedAt(now);
+        return claims;
+    }
 
     public String createToken(String username, String role) {
-
-        Claims claims = Jwts.claims().setSubject(username);
-        
-        claims.put("role", role);
-
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + expiration);
+        Claims claims = createBaseTokenClaims(username, role);
+        claims.setExpiration(new Date(claims.getIssuedAt().getTime() + tokenExpiration));
+        claims.put("scope", "token");
 
         return Jwts.builder()
             .setClaims(claims)
-            .setIssuedAt(now)
-            .setExpiration(validity)
+            .signWith(SignatureAlgorithm.HS256, secret)
+            .compact();
+    }
+
+    public String createRefreshToken(String username, String role) {
+        Claims claims = createBaseTokenClaims(username, role);
+        claims.setExpiration(new Date(claims.getIssuedAt().getTime() + refreshExpiration));
+        claims.put("scope", "refresh");
+
+        return Jwts.builder()
+            .setClaims(claims)
             .signWith(SignatureAlgorithm.HS256, secret)
             .compact();
     }
@@ -64,17 +80,16 @@ public class JwtTokenProvider {
         return null;
     }
 
-    public Boolean canTokenBeRefreshed(String token) {
+    public Boolean isTokenNotExpired(String token) {
         Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-
-        return (!claims.getBody().getExpiration().before(new Date()));
+        return !claims.getBody().getExpiration().before(new Date());
     }
 
-    public String refreshToken(String token) {
+    public String refreshToken(String refreshToken) {
         String refreshedToken;
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            if(!validateToken(token)) {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(refreshToken);
+            if (!isTokenNotExpired(refreshToken) || !claims.getBody().get("scope", String.class).equals("refresh")) {
                 throw new IllegalArgumentException();
             }
 
@@ -87,7 +102,8 @@ public class JwtTokenProvider {
 
     public Boolean validateToken(String token) {
         try {
-            return canTokenBeRefreshed(token);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            return isTokenNotExpired(token) && claims.getBody().get("scope", String.class).equals("token");
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
         }
