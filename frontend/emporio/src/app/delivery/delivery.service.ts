@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '@src/environments/environment';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../authentication/services/authentication.service';
+import { Delivery } from './delivery';
 
 @Injectable({
   providedIn: 'root'
@@ -69,5 +70,11 @@ export class DeliveryService {
     return this.httpService.post<string>(this.deliveryUrl, JSON.stringify(body), this.httpOptions);
 
   }
+
+/*   getDeliveryList(): Delivery[] {
+
+    
+
+  } */
 
 }
