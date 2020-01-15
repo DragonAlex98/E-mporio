@@ -39,6 +39,7 @@ public class Posto {
     @JoinColumn(name = "Locker", nullable = true)
     private Locker locker;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "consegna_id", referencedColumnName = "idConsegna", nullable = true)
     private Consegna consegna;
