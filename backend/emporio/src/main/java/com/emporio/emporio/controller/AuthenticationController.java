@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import com.emporio.emporio.dto.AuthenticationRequest;
 import com.emporio.emporio.factory.UserFactory;
 import com.emporio.emporio.model.Role;
+import com.emporio.emporio.security.InvalidJwtAuthenticationException;
 import com.emporio.emporio.security.JwtTokenProvider;
 import com.emporio.emporio.services.RoleService;
 import com.emporio.emporio.services.UserService;
@@ -53,10 +54,12 @@ public class AuthenticationController {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
             Role role = userService.getUser(username).getRole();
             String token = jwtTokenProvider.createToken(username, role.getName());
+            String refreshToken = jwtTokenProvider.createRefreshToken(username, role.getName());
 
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);
+            model.put("refresh", refreshToken);
             model.put("role", role.getName());
             return ResponseEntity.ok(model);
         } catch (AuthenticationException e) {
@@ -85,10 +88,14 @@ public class AuthenticationController {
     @SuppressWarnings("rawtypes")
     @GetMapping("/auth/refresh")
     public ResponseEntity refresh(HttpServletRequest req) throws Exception {
-        String token = jwtTokenProvider.resolveToken(req);
-        String refreshedToken = jwtTokenProvider.refreshToken(token);
-        Map<Object, Object> model = new HashMap<>();
-        model.put("token", refreshedToken);
-        return ResponseEntity.ok(model);
+        try {
+            String refreshToken = jwtTokenProvider.resolveToken(req);
+            String refreshedToken = jwtTokenProvider.refreshToken(refreshToken);
+            Map<Object, Object> model = new HashMap<>();
+            model.put("token", refreshedToken);
+            return ResponseEntity.ok(model);
+        } catch (AuthenticationException e) {
+            throw new InvalidJwtAuthenticationException("Invalid or expired token supplied");
+        }
     }
 }
