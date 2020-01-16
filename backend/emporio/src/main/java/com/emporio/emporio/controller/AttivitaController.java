@@ -10,7 +10,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import com.emporio.emporio.dto.AttivitaDescrizioneGetDto;
-import com.emporio.emporio.dto.AttivitaGetDto;
+import com.emporio.emporio.dto.ProductPostDto;
 import com.emporio.emporio.dto.RegistrazioneAttivitaDto;
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.AttivitaDescrizione;
@@ -18,11 +18,14 @@ import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.CategoriaAttivita;
 import com.emporio.emporio.model.Dipendente;
 import com.emporio.emporio.model.Prodotto;
+import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.model.Titolare;
 import com.emporio.emporio.services.AttivitaDescrizioneService;
 import com.emporio.emporio.services.AttivitaService;
+import com.emporio.emporio.services.CatalogoService;
 import com.emporio.emporio.services.CategoriaAttivitaService;
 import com.emporio.emporio.services.DipendenteService;
+import com.emporio.emporio.services.ProdottoDescrizioneService;
 import com.emporio.emporio.services.ProdottoService;
 import com.emporio.emporio.services.TitolareService;
 import com.emporio.emporio.dto.ShopAddEmployeeDto;
@@ -70,6 +73,12 @@ public class AttivitaController {
     
     @Autowired
     private ModelMapper modelMapper;
+    
+    @Autowired
+    private CatalogoService catalogoService;
+
+    @Autowired
+    private ProdottoDescrizioneService productDescriptionService;
 
     @PreAuthorize("hasAuthority('CREATE_SHOP')")
     @PostMapping("/shops")
@@ -101,6 +110,23 @@ public class AttivitaController {
         owner = titolareService.setShopOwnedBy(owner, newShop);
 
         return ResponseEntity.created(new URI("/shops/" + newShopDesc.getShopPIVA())).body("Attività aggiunta!");
+    }
+
+    @PostMapping(value="/shops/{piva}/products")
+    public ResponseEntity<String> insertNewProductOnShopCatalog(@AuthenticationPrincipal UserDetails userDetails ,@NotBlank @PathVariable(name = "piva", required = true) String piva ,@RequestBody ProductPostDto productDto) {
+        Attivita shop = this.shopService.getShop(piva);
+        
+        this.catalogoService.checkProductAlreadyPresentInCatalog(shop.getCatalog(), productDto.getProductName());
+
+        ProdottoDescrizione productDescription = this.productDescriptionService.getProductDescriptionFrom(productDto.getProductName());
+
+        Prodotto product = Prodotto.builder().productDescription(productDescription).productPrice(productDto.getProductPrice()).build();
+
+        product = this.productService.saveProdotto(product);
+
+        shop.setCatalog(this.catalogoService.addProductToCatalog(product, shop.getCatalog()));
+        
+        return ResponseEntity.ok("Prodotto " + productDto.getProductName() + " aggiunto al catalogo!");
     }
 
     @GetMapping("/shops/search")
@@ -183,8 +209,8 @@ public class AttivitaController {
         return shopDto;
     }
 
-    private AttivitaGetDto convertToDto(Attivita shop) {
+    /* private AttivitaGetDto convertToDto(Attivita shop) {
         AttivitaGetDto shopDto = this.modelMapper.map(shop, AttivitaGetDto.class);
         return shopDto;
-    }
+    } */
 }

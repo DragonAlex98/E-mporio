@@ -1,15 +1,18 @@
 package com.emporio.emporio.controller;
 
-import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.constraints.NotBlank;
 
 import com.emporio.emporio.dto.AttivitaDescrizioneGetDto;
-import com.emporio.emporio.dto.AttivitaGetDto;
+import com.emporio.emporio.dto.OrdineGetDto;
+import com.emporio.emporio.model.Acquirente;
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.AttivitaDescrizione;
-import com.emporio.emporio.model.User;
+import com.emporio.emporio.services.AcquirenteService;
 import com.emporio.emporio.services.DipendenteService;
-import com.emporio.emporio.services.RoleService;
+import com.emporio.emporio.services.OrdineService;
 import com.emporio.emporio.services.TitolareService;
 import com.emporio.emporio.services.UserService;
 
@@ -36,7 +39,10 @@ public class UserController {
     private TitolareService titolareService;
 
     @Autowired
-    private RoleService roleService;
+    private OrdineService orderService;
+
+    @Autowired
+    private AcquirenteService customerService;
 
     @GetMapping("/users/{username}")
     public ResponseEntity<Boolean> existsUser(@NotBlank @PathVariable(name = "username", required = true) String username) {
@@ -63,5 +69,15 @@ public class UserController {
 
     private AttivitaDescrizioneGetDto convertToDto(AttivitaDescrizione shopDescription) {
         return this.modelMapper.map(shopDescription, AttivitaDescrizioneGetDto.class);
+    }
+
+    @GetMapping("/users/{username}/orders")
+    public ResponseEntity<List<OrdineGetDto>> getAllCustomerOrders(@NotBlank @PathVariable(name = "username", required = true) String username) {
+        Acquirente customer = this.customerService.getAcquirente(username);
+        List<OrdineGetDto> orderList = this.orderService.getCustomerOrders(customer)
+                                              .stream()
+                                              .map((order) -> this.modelMapper.map(order, OrdineGetDto.class))
+                                              .collect(Collectors.toList());
+        return ResponseEntity.ok(orderList);
     }
 }

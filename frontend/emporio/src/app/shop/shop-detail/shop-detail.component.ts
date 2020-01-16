@@ -16,9 +16,10 @@ import { Product } from '@src/app/product/product/product';
 export class ShopDetailComponent implements OnInit {
   piva = '';
   shop: Shop;
-  productList: Product[];
   shouldShowDeleteShop: Boolean;
   shouldShowDeleteProduct: Boolean;
+  showCatalogo: Boolean;
+  showAddProduct: Boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private service: ShopService, private auth: AuthenticationService) { }
 
@@ -42,21 +43,11 @@ export class ShopDetailComponent implements OnInit {
 
     this.auth.currentUser.subscribe(
       (user) => {
-        this.shouldShowDeleteShop = (user != null) && (user.role == Role.Titolare);
+        this.shouldShowDeleteShop = (user != null) && (user.role === Role.Titolare);
       }
     );
 
     return this.shouldShowDeleteShop;
-  }
-
-  shouldShowDeleteShopProductButton(): Boolean {
-    this.auth.currentUser.subscribe(
-      (user) => {
-         this.shouldShowDeleteProduct = (user != null) && (user.role == Role.Titolare || user.role == Role.Dipendente);
-      }
-    );
-
-    return this.shouldShowDeleteProduct;
   }
 
   deleteShop() {
@@ -67,20 +58,24 @@ export class ShopDetailComponent implements OnInit {
     );
   }
 
-  deleteProduct(product: Product) {
-    this.service.deleteShopProduct(this.shop.shopPIVA, product.productName).subscribe(
-      (res) => {
-        console.log(res);
+  shouldShowDeleteShopProductButton(): Boolean {
+    this.auth.currentUser.subscribe(
+      (user) => {
+         this.shouldShowDeleteProduct = (user != null) && (user.role === Role.Titolare || user.role === Role.Dipendente);
       }
     );
+
+    return this.shouldShowDeleteProduct;
   }
 
   showCatalog() {
-    this.service.getShopCatalog(this.piva).subscribe(
-      (products) => {
-        this.productList = products;
-      }
-    );
+    this.showCatalogo = true;
+    this.showAddProduct = false;
+  }
+
+  showAddProd() {
+    this.showCatalogo = false;
+    this.showAddProduct = true;
   }
 
 }

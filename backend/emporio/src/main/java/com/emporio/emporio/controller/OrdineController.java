@@ -2,6 +2,8 @@ package com.emporio.emporio.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -11,14 +13,12 @@ import com.emporio.emporio.dto.OrdineGetDto;
 import com.emporio.emporio.model.Acquirente;
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.Ordine;
-import com.emporio.emporio.model.ProdottoDescrizione;
+import com.emporio.emporio.model.Prodotto;
 import com.emporio.emporio.model.RigaOrdineProdotto;
 import com.emporio.emporio.services.AcquirenteService;
 import com.emporio.emporio.services.AttivitaService;
-import com.emporio.emporio.services.CatalogoService;
 import com.emporio.emporio.services.DipendenteService;
 import com.emporio.emporio.services.OrdineService;
-import com.emporio.emporio.services.ProdottoDescrizioneService;
 import com.emporio.emporio.services.RigaOrdineProdottoService;
 import com.emporio.emporio.services.TitolareService;
 
@@ -40,9 +40,6 @@ public class OrdineController {
 
     @Autowired
     private TitolareService ownerService;
-
-    @Autowired
-    private CatalogoService catalogService;
     
     @Autowired
     private DipendenteService employeeService;
@@ -55,9 +52,6 @@ public class OrdineController {
 
     @Autowired
     private AcquirenteService customerService;
-
-    @Autowired
-    private ProdottoDescrizioneService productDescriptionService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -79,11 +73,12 @@ public class OrdineController {
         } else {
             shop = employeeService.getShopEmployedIn(worker);
         }
+        List<RigaOrdineProdotto> lines = new ArrayList<RigaOrdineProdotto>();
 
         // CONTROLLO RIGHE
-        for(RigaOrdineProdotto line : orderDto.getProductsList()) {
-            ProdottoDescrizione product = this.shopService.getProductFromCatalog(shop, line.getProduct().getProductName()).getProductDescription();
-            line.setProduct(product);
+        for(Entry<String, Integer> line : orderDto.getLines().entrySet()) {
+            Prodotto product = this.shopService.getProductFromCatalog(shop, line.getKey());
+            lines.add(RigaOrdineProdotto.builder().product(product.getProductDescription()).quantity(line.getValue()).build());
         }
 
         Acquirente customer = customerService.getAcquirente(orderDto.getCustomerUsername());
@@ -92,14 +87,13 @@ public class OrdineController {
                             .orderCustomer(customer)
                             .orderShop(shop.getShopDescription())
                             .parkingAddress(orderDto.getCarPosition())
-                            .orderProductsLineList(orderDto.getProductsList())
                             .build();
 
         order = orderService.saveOrdine(order);
 
-        order.setOrderProductsLineList(orderProductLineService.saveAllLines(order, orderDto.getProductsList()));
+        order.setOrderProductsLineList(orderProductLineService.saveAllLines(order, lines));
 
-        return ResponseEntity.created(URI.create("/orders/" + order.getOrderId())).build();
+        return ResponseEntity.created(URI.create("/orders/" + order.getOrderId())).body("Aggiunto ordine");
     }
 
     @GetMapping("/orders/state/not-assigned")

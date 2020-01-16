@@ -1,0 +1,43 @@
+<span class="fill-remaining-space"></span>
+<mat-grid-list [cols]=4 rowHeight="400px">
+  <mat-grid-tile [rowspan]=1 [colspan]=1>
+
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]=1 [colspan]=2>
+    <div class="controles-container">
+      <mat-card>
+      <form [formGroup]="addProductForm" (ngSubmit)="onSubmit(addProductForm.value)">
+        <div class="insert-product-form-container">
+            <div>
+                <mat-form-field>
+                    <mat-select placeholder="Nome Prodotto" formControlName="productName" required>
+                      <mat-option *ngFor="let product of productsDescriptions" [value]="product.productName" (onSelectionChange)="setSelected(product)">
+                        {{product.productName}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input matInput placeholder="Categoria" [value]="selectedProductDescription.productCategory.description" disabled>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input matInput type="number" placeholder="Prezzo" formControlName="productPrice" required>
+                    <span matPrefix>€&nbsp;</span>
+                </mat-form-field>
+            </div>
+            <button mat-raised-button color="accent">Aggiungi Prodotto</button>
+            <!-- VEDERE CLEAR <button mat-raised-button color="warn" id="cancel-btn">Annulla</button> -->
+        </div>
+      </form>
+    </mat-card>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]=1 [colspan]=1>
+
+  </mat-grid-tile>
+
+</mat-grid-list>
+<span class="fill-remaining-space"></span>

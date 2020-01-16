@@ -285,10 +285,13 @@ public class DataInitializer implements CommandLineRunner {
         order2.setOrderProductsLineList(productsList);
 
         Consegna consegna1 = consegnaRepository.save(Consegna.builder().ordine(order1).fattorino(fattorino1)
-                                                .statoConsegna(StatoConsegna.RITIRATA).build());
+                                                .statoConsegna(StatoConsegna.RITIRATA).posto(posto1).build());
         
+    
         order1.setOrderConsegna(consegna1);
         orderRepository.save(order1);
+        posto1.setConsegna(consegna1);
+        postoRepository.save(posto1);
 
 
         Prodotto pE = this.productRepo.save(Prodotto.builder().productDescription(pdA).build());

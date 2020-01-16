@@ -1,0 +1,15 @@
+<div>
+    <mat-accordion>
+        <mat-expansion-panel *ngFor="let order of orders">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{order.shop.shopBusinessName}}
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{order.shop.shopAddress}}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <app-order-to-delivery-details [order]="order"></app-order-to-delivery-details>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

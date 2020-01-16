@@ -18,7 +18,7 @@ public class OrdineGetDto {
 
     private String parkingAddress;
 
-    private AttivitaGetDto shop;
+    private AttivitaDescrizioneGetDto shop;
 
     private String customerUsername;
 
