@@ -8,18 +8,18 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.emporio.emporio.dto.AuthenticationRequest;
+import com.emporio.emporio.dto.RefreshTokenDto;
 import com.emporio.emporio.factory.UserFactory;
 import com.emporio.emporio.model.Role;
 import com.emporio.emporio.security.InvalidJwtAuthenticationException;
@@ -85,15 +85,10 @@ public class AuthenticationController {
         }
     }
 
-    @SuppressWarnings("rawtypes")
-    @GetMapping("/auth/refresh")
-    public ResponseEntity refresh(HttpServletRequest req) throws Exception {
+    @PostMapping("/auth/refresh")
+    public @ResponseBody String refresh(@Valid @RequestBody RefreshTokenDto refreshToken) throws Exception {
         try {
-            String refreshToken = jwtTokenProvider.resolveToken(req);
-            String refreshedToken = jwtTokenProvider.refreshToken(refreshToken);
-            Map<Object, Object> model = new HashMap<>();
-            model.put("token", refreshedToken);
-            return ResponseEntity.ok(model);
+            return jwtTokenProvider.refreshToken(refreshToken.getRefresh());
         } catch (AuthenticationException e) {
             throw new InvalidJwtAuthenticationException("Invalid or expired token supplied");
         }

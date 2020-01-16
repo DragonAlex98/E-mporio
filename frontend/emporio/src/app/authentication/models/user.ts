@@ -7,6 +7,7 @@ export class User {
     password: string;
     role: Role;
     token?: string;
+    refresh?: string;
 
     constructor(id: number, username: string, password: string, role: Role) {
         this.id = id;
