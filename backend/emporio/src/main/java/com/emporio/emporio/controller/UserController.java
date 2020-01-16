@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.NotBlank;
 
 import com.emporio.emporio.dto.AttivitaDescrizioneGetDto;
-import com.emporio.emporio.dto.OrdineGetDto;
+import com.emporio.emporio.dto.OrdineHistoryDto;
 import com.emporio.emporio.model.Acquirente;
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.AttivitaDescrizione;
@@ -72,11 +72,11 @@ public class UserController {
     }
 
     @GetMapping("/users/{username}/orders")
-    public ResponseEntity<List<OrdineGetDto>> getAllCustomerOrders(@NotBlank @PathVariable(name = "username", required = true) String username) {
+    public ResponseEntity<List<OrdineHistoryDto>> getAllCustomerOrders(@NotBlank @PathVariable(name = "username", required = true) String username) {
         Acquirente customer = this.customerService.getAcquirente(username);
-        List<OrdineGetDto> orderList = this.orderService.getCustomerOrders(customer)
+        List<OrdineHistoryDto> orderList = this.orderService.getCustomerOrders(customer)
                                               .stream()
-                                              .map((order) -> this.modelMapper.map(order, OrdineGetDto.class))
+                                              .map((order) -> this.modelMapper.map(order, OrdineHistoryDto.class))
                                               .collect(Collectors.toList());
         return ResponseEntity.ok(orderList);
     }

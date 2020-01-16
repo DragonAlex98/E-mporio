@@ -31,18 +31,20 @@ export class ShopCategory {
 @Injectable({
     providedIn: 'root'
 })
-export class ShopAdapter implements Adapter<Shop> {
-    adapt(item: any): Shop {
-        return new Shop(item.shopPIVA, item.shopAddress, item.shopBusinessName,
-            new ShopCategory(item.shopCategory.shopCategoryId, item.shopCategory.shopCategoryDescription), item.shopHeadquarter);
+export class ShopCategoryAdapter implements Adapter<ShopCategory> {
+    adapt(item: any): ShopCategory {
+        return new ShopCategory(item.shopCategoryId, item.shopCategoryDescription);
     }
 }
 
 @Injectable({
     providedIn: 'root'
 })
-export class ShopCategoryAdapter implements Adapter<ShopCategory> {
-    adapt(item: any): ShopCategory {
-        return new ShopCategory(item.shopCategoryId, item.shopCategoryDescription);
+export class ShopAdapter implements Adapter<Shop> {
+    constructor(private catAdapter: ShopCategoryAdapter) {}
+
+    adapt(item: any): Shop {
+        return new Shop(item.shopPIVA, item.shopAddress, item.shopBusinessName,
+            this.catAdapter.adapt(item.shopCategory), item.shopHeadquarter);
     }
 }

@@ -1,0 +1,10 @@
+
+.products-list-container {
+    display: flex;
+    flex-direction: column;    
+    width: 80%;
+}
+
+#ritira-merce-button button {
+    width: 100%;
+}

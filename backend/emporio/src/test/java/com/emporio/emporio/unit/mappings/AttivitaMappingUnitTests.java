@@ -1,4 +1,4 @@
-package com.emporio.emporio.unit.controllers;
+package com.emporio.emporio.unit.mappings;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -12,7 +12,7 @@ import org.modelmapper.ModelMapper;
 /**
  * AttivitaControllerUnitTests
  */
-public class AttivitaControllerUnitTests {
+public class AttivitaMappingUnitTests {
 
     private ModelMapper modelMapper = new ModelMapper();
 

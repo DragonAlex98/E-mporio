@@ -1,0 +1,41 @@
+<span class="fill-remaining-space"></span>
+<mat-grid-list [cols]=4 rowHeight="400px">
+  <mat-grid-tile [rowspan]=1 [colspan]=1>
+    <div *ngIf="order">
+        <h3 mat-list>Parcheggio: {{order.carPosition}}</h3>
+        <h3 mat-list>Informazioni Negozio</h3>
+        <h4 mat-list>Partita Iva: {{order.shop.shopPIVA}}</h4>
+        <h4 mat-list>Ragione Sociale: {{order.shop.shopBusinessName}}</h4>
+        <h4 mat-list>Categoria: {{order.shop.shopCategory.shopCategoryDescription}}</h4>
+        <h4 mat-list>Sede: {{order.shop.shopHeadquarter}}</h4>
+        <h4 mat-list>Indirizzo: {{order.shop.shopAddress}}</h4>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]=1 [colspan]=2>
+    <div class="products-list-container">
+        <mat-list>
+            <mat-list-item *ngFor="let line of order.orderLine; last as last">
+                <mat-icon mat-list-icon>check</mat-icon>
+                <h3 mat-line>Prodotto: {{line.product.productName}}</h3>
+                <h5 mat-line>Quantità: {{line.quantity}}</h5>
+                <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+            </mat-list-item>
+        </mat-list>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]=1 [colspan]=1>
+    <div>
+        <h3 mat-list>STATO CONSEGNA: {{order.deliveryState}}</h3>
+        <div *ngIf="order.lockerId">
+            <h4 mat-list>ID Locker: {{order.lockerId}}</h4>
+            <h4 mat-list>Indirizzo Locker: {{order.lockerAddress}}</h4>
+            <h4 mat-list>Posto Locker: {{order.lockerSpaceName}}</h4>
+        </div>
+        <div id="ritira-merce-button">
+            <button mat-flat-button color="accent" [disabled]="!order.lockerId" (click)="ritiraMerce()">Ritira Merce</button>
+        </div>
+    </div>
+  </mat-grid-tile>
+
+</mat-grid-list>
+<span class="fill-remaining-space"></span>

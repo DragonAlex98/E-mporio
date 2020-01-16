@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 import com.emporio.emporio.model.CategoriaProdotto;
 import com.emporio.emporio.services.CategoriaProdottoService;
+import com.emporio.emporio.util.ApiPostResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +23,10 @@ public class CategoriaProdottoController {
     private CategoriaProdottoService categoryProductService;
 
     @PostMapping("/products/categories")
-    public ResponseEntity<String> insertNewCategoryProduct(@Valid @RequestBody CategoriaProdotto categoryProduct)
+    public ResponseEntity<ApiPostResponse> insertNewCategoryProduct(@Valid @RequestBody CategoriaProdotto categoryProduct)
             throws URISyntaxException {
         categoryProduct = categoryProductService.saveProductCategory(categoryProduct);
-        return ResponseEntity.created(new URI("/categoryProduct/"+ categoryProduct.getCategoryId())).build();
+        return ResponseEntity.created(new URI("/categoryProduct/"+ categoryProduct.getCategoryId())).body(ApiPostResponse.builder().message("Categoria aggiunta!").build());
     }
 
     @GetMapping("/products/categories")

@@ -3,7 +3,14 @@ package com.emporio.emporio.security;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import com.emporio.emporio.dto.OrdineHistoryDto;
+import com.emporio.emporio.model.Ordine;
+import com.emporio.emporio.model.StatoConsegna;
+
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
@@ -107,7 +114,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+
+        ModelMapper mm = new ModelMapper();
+
+        Converter<StatoConsegna, String> convertStatoConsegnaToString = new Converter<StatoConsegna, String>()
+        {
+            public String convert(MappingContext<StatoConsegna, String> context)
+            {
+                // If the dog weighs more than 25, then it must be large
+                if(context.getSource() == null)
+                    return "NON ASSEGNATA";
+
+                return context.getSource().toString();
+            }
+        };
+
+        PropertyMap<Ordine, OrdineHistoryDto> mymap = new PropertyMap<Ordine, OrdineHistoryDto>()
+        {
+            protected void configure()
+            {
+                using(convertStatoConsegnaToString).map(source.getOrderConsegna().getStatoConsegna()).setStatoConsegna(null);;
+                map(source.getOrderConsegna().getPosto().getLocker().getLockerId()).setLockerId(null);
+                map(source.getOrderConsegna().getPosto().getLocker().getAddress()).setLockerAddress(null);
+                map(source.getOrderConsegna().getPosto().getNomePosto()).setNomePosto(null);
+            }
+        };
+
+        mm.addMappings(mymap);
+
+        return mm;
     }
 
     @Bean

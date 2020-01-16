@@ -9,6 +9,7 @@ import com.emporio.emporio.model.CategoriaProdotto;
 import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.services.CategoriaProdottoService;
 import com.emporio.emporio.services.ProdottoDescrizioneService;
+import com.emporio.emporio.util.ApiPostResponse;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class ProdottoDescrizioneController {
     private ProdottoDescrizioneService  productDescriptionService;
 
     @PostMapping("/products")
-    public ResponseEntity<String> insertNewProduct(@Valid @RequestBody ProductDescriptionDto product)
+    public ResponseEntity<ApiPostResponse> insertNewProduct(@Valid @RequestBody ProductDescriptionDto product)
             throws URISyntaxException {
 
         CategoriaProdotto cat = productCategoryService.getProductCategory(product.getProductCategoryName());
@@ -37,7 +38,7 @@ public class ProdottoDescrizioneController {
         
         newProduct = productDescriptionService.saveProductDescription(newProduct);
         
-        return ResponseEntity.created(new URI("/products/" + newProduct.getProductId())).body("Prodotto " + newProduct.getProductName() + " aggiunto!");
+        return ResponseEntity.created(new URI("/products/" + newProduct.getProductId())).body(ApiPostResponse.builder().message("Prodotto " + newProduct.getProductName() + " aggiunto!").build());
     }
 
     @GetMapping("/products")

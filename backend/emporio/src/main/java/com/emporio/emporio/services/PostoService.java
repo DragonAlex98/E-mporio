@@ -47,4 +47,9 @@ public class PostoService {
         posto.setConsegna(consegna);
         return postoRepository.save(posto);
     }
+
+    public void detachConsegnaFrom(Posto posto) {
+        posto.setConsegna(null);
+        this.postoRepository.save(posto);
+    }
 }

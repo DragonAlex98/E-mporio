@@ -19,6 +19,7 @@ import { LockerSelectorComponent } from '@src/app/locker/locker-selector/locker-
 import { DeliveryModule } from '@src/app/delivery/delivery.module';
 import { HttpClientModule } from '@angular/common/http';
 import { OrderHistoryComponent } from '@src/app/order/order-history/order-history.component';
+import { OrderHistoryDetailsComponent } from '@src/app/order/order-history-details/order-history-details.component';
 
 
 
@@ -31,7 +32,8 @@ import { OrderHistoryComponent } from '@src/app/order/order-history/order-histor
     OrderToDeliveryComponent,
     OrderToDeliveryDetailsComponent,
     OrderComponent,
-    OrderHistoryComponent
+    OrderHistoryComponent,
+    OrderHistoryDetailsComponent
   ],
   imports: [
     MaterialModule,

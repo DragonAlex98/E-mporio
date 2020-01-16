@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import com.emporio.emporio.dto.OrdineDto;
 import com.emporio.emporio.dto.OrdineGetDto;
+import com.emporio.emporio.dto.OrdineHistoryDto;
 import com.emporio.emporio.model.Acquirente;
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.Ordine;
@@ -17,10 +18,13 @@ import com.emporio.emporio.model.Prodotto;
 import com.emporio.emporio.model.RigaOrdineProdotto;
 import com.emporio.emporio.services.AcquirenteService;
 import com.emporio.emporio.services.AttivitaService;
+import com.emporio.emporio.services.ConsegnaService;
 import com.emporio.emporio.services.DipendenteService;
 import com.emporio.emporio.services.OrdineService;
+import com.emporio.emporio.services.PostoService;
 import com.emporio.emporio.services.RigaOrdineProdottoService;
 import com.emporio.emporio.services.TitolareService;
+import com.emporio.emporio.util.ApiPostResponse;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +34,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 public class OrdineController {
@@ -54,17 +60,23 @@ public class OrdineController {
     private AcquirenteService customerService;
 
     @Autowired
+    private ConsegnaService deliveryService;
+
+    @Autowired
+    private PostoService postoService;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @PostMapping("/orders")
-    public ResponseEntity<String> createNewOrder(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody OrdineDto orderDto) {
+    public ResponseEntity<ApiPostResponse> createNewOrder(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody OrdineDto orderDto) {
         String worker = userDetails.getUsername();
 
         boolean isDipendente = employeeService.existsDipendente(worker);
         boolean isTitolare = ownerService.existsTitolare(worker);
 
         if (!isDipendente && !isTitolare) {
-            return ResponseEntity.badRequest().body("Utente non trovato o permessi non adeguati");
+            return ResponseEntity.badRequest().body(ApiPostResponse.builder().message("Utente non trovato o permessi non adeguati").build());
         }
 
         Attivita shop;
@@ -93,7 +105,7 @@ public class OrdineController {
 
         order.setOrderProductsLineList(orderProductLineService.saveAllLines(order, lines));
 
-        return ResponseEntity.created(URI.create("/orders/" + order.getOrderId())).body("Aggiunto ordine");
+        return ResponseEntity.created(URI.create("/orders/" + order.getOrderId())).body(ApiPostResponse.builder().message("Aggiunto ordine").build());
     }
 
     @GetMapping("/orders/state/not-assigned")
@@ -104,6 +116,15 @@ public class OrdineController {
                                                     .collect(Collectors.toList());
 
         return ResponseEntity.ok(ordersList);
+    }
+
+    @PutMapping("/orders/{id}/delivery/states/ritirata")
+    public ResponseEntity<OrdineHistoryDto> pickUpGoods(@PathVariable(name = "id", required = true) Long orderId) {
+        Ordine order =  this.orderService.getOrdine(orderId);
+        order.setOrderConsegna(this.deliveryService.changeDeliveryStatus(order.getOrderConsegna(), 2));
+        this.postoService.detachConsegnaFrom(order.getOrderConsegna().getPosto());
+        order.getOrderConsegna().setPosto(null);
+        return ResponseEntity.ok(this.modelMapper.map(order, OrdineHistoryDto.class));
     }
 
     private OrdineGetDto convertToDto(Ordine order) {

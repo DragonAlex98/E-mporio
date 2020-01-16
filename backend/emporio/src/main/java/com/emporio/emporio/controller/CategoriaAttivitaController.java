@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 import com.emporio.emporio.model.CategoriaAttivita;
 import com.emporio.emporio.services.CategoriaAttivitaService;
+import com.emporio.emporio.util.ApiPostResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,9 @@ public class CategoriaAttivitaController {
     private CategoriaAttivitaService categoriaAttivitaService;
 
     @PostMapping("/shops/categories")
-    public ResponseEntity<String> insertNewCategoryShop(@Valid @RequestBody CategoriaAttivita categoryShop) throws URISyntaxException {
+    public ResponseEntity<ApiPostResponse> insertNewCategoryShop(@Valid @RequestBody CategoriaAttivita categoryShop) throws URISyntaxException {
         CategoriaAttivita shopCategory = categoriaAttivitaService.insertNewCategoryShop(categoryShop.getShopCategoryDescription());
-        return ResponseEntity.created(new URI("/categoryShop/"+ shopCategory.getShopCategoryId())).build();
+        return ResponseEntity.created(new URI("/categoryShop/"+ shopCategory.getShopCategoryId())).body(ApiPostResponse.builder().message("Categoria aggiunta!").build());
     }
     
     @GetMapping("/shops/categories")

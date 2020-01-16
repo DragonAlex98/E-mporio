@@ -28,6 +28,7 @@ import com.emporio.emporio.services.DipendenteService;
 import com.emporio.emporio.services.ProdottoDescrizioneService;
 import com.emporio.emporio.services.ProdottoService;
 import com.emporio.emporio.services.TitolareService;
+import com.emporio.emporio.util.ApiPostResponse;
 import com.emporio.emporio.dto.ShopAddEmployeeDto;
 
 import org.modelmapper.ModelMapper;
@@ -82,7 +83,7 @@ public class AttivitaController {
 
     @PreAuthorize("hasAuthority('CREATE_SHOP')")
     @PostMapping("/shops")
-    public ResponseEntity<String> insertNewAttivita(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody RegistrazioneAttivitaDto attivita)
+    public ResponseEntity<ApiPostResponse> insertNewAttivita(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody RegistrazioneAttivitaDto attivita)
             throws URISyntaxException {
         //Controllo se è un titolare
         Titolare owner = titolareService.getTitolare(userDetails.getUsername());
@@ -109,11 +110,11 @@ public class AttivitaController {
         newShop = shopService.addShop(newShop);
         owner = titolareService.setShopOwnedBy(owner, newShop);
 
-        return ResponseEntity.created(new URI("/shops/" + newShopDesc.getShopPIVA())).body("Attività aggiunta!");
+        return ResponseEntity.created(new URI("/shops/" + newShopDesc.getShopPIVA())).body(ApiPostResponse.builder().message("Attività aggiunta!").build());
     }
 
     @PostMapping(value="/shops/{piva}/products")
-    public ResponseEntity<String> insertNewProductOnShopCatalog(@AuthenticationPrincipal UserDetails userDetails ,@NotBlank @PathVariable(name = "piva", required = true) String piva ,@RequestBody ProductPostDto productDto) {
+    public ResponseEntity<ApiPostResponse> insertNewProductOnShopCatalog(@AuthenticationPrincipal UserDetails userDetails ,@NotBlank @PathVariable(name = "piva", required = true) String piva ,@RequestBody ProductPostDto productDto) {
         Attivita shop = this.shopService.getShop(piva);
         
         this.catalogoService.checkProductAlreadyPresentInCatalog(shop.getCatalog(), productDto.getProductName());
@@ -126,7 +127,7 @@ public class AttivitaController {
 
         shop.setCatalog(this.catalogoService.addProductToCatalog(product, shop.getCatalog()));
         
-        return ResponseEntity.ok("Prodotto " + productDto.getProductName() + " aggiunto al catalogo!");
+        return ResponseEntity.ok(ApiPostResponse.builder().message("Prodotto " + productDto.getProductName() + " aggiunto al catalogo!").build());
     }
 
     @GetMapping("/shops/search")

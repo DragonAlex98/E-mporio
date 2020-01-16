@@ -6,6 +6,7 @@ import javax.persistence.EntityNotFoundException;
 
 import com.emporio.emporio.model.Consegna;
 import com.emporio.emporio.model.Fattorino;
+import com.emporio.emporio.model.StatoConsegna;
 import com.emporio.emporio.repository.ConsegnaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,21 @@ public class ConsegnaService {
 
         return deliveryList;
 
+    }
+
+    public Consegna changeDeliveryStatus(Consegna delivery, Integer statusId) {
+        switch (statusId) {
+            case 1:
+                delivery.setStatoConsegna(StatoConsegna.CONSEGNATA);
+                break;
+            case 2:
+                delivery.setStatoConsegna(StatoConsegna.RITIRATA);
+                break;
+            default:
+                throw new EntityNotFoundException("Lo stato consegna con id: " + statusId + " è inesistente!");
+        }
+
+        return this.consegnaRepository.save(delivery);
     }
     
 }

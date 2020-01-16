@@ -17,10 +17,6 @@ export class ProductService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json'})
   };
 
-  httpPostOptions = {
-    headers: this.httpOptions.headers,
-    responseType: 'text' as 'json'
-  };
   private productListUrlName = `${environment.apiUrl}/products/search`;
   private productsUrl = `${environment.apiUrl}/products`;
 
@@ -31,7 +27,9 @@ export class ProductService {
   }
 
   addProduct (form: any): Observable<string> {
-    return this.httpClient.post<string>(this.productsUrl, form, this.httpPostOptions);
+    return this.httpClient.post<string>(this.productsUrl, form, this.httpOptions).pipe(
+      map((item: any) => item.message)
+    );
   }
 
   getCategories(): Observable<ProductCategory[]> {

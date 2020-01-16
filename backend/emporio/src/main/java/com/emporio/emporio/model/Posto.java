@@ -29,7 +29,7 @@ public class Posto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IdPosto")
-    private int postoId;
+    private Integer postoId;
 
     @Column
     private String nomePosto;

@@ -29,7 +29,7 @@ public class Locker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "LockerId")
-    private int lockerId;
+    private Integer lockerId;
 
     @Column(name = "Address")
     private String address;

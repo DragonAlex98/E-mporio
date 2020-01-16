@@ -46,7 +46,7 @@ public class OrdineService {
     public Ordine getOrdine(Long id) {
         Optional<Ordine> ordine = orderRepository.findByOrderId(id);
         if (!ordine.isPresent()) {
-            throw new EntityNotFoundException("Ordine " + ordine + " non trovata!");
+            throw new EntityNotFoundException("Ordine " + ordine + " non trovato!");
         }
 
         return ordine.get();

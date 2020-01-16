@@ -5,6 +5,7 @@ import { AuthenticationService } from '@src/app/authentication/services/authenti
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { OrderHistory } from '../OrderHistory';
 
 @Component({
   selector: 'app-order-history',
@@ -12,7 +13,7 @@ import { of } from 'rxjs';
   styleUrls: ['./order-history.component.css']
 })
 export class OrderHistoryComponent implements OnInit {
-  orders: Order[];
+  orders: OrderHistory[];
 
   constructor(private route: ActivatedRoute, private router: Router,
     private orderService: OrderService, private authService: AuthenticationService) { }

@@ -16,11 +16,7 @@ export class ShopService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json'})
   };
 
-  httpPostOptions = {
-    headers: this.httpOptions.headers,
-    responseType: 'text' as 'json'
-  };
-  constructor(private httpClient: HttpClient, private adapter: ShopAdapter, private auth: AuthenticationService, 
+  constructor(private httpClient: HttpClient, private adapter: ShopAdapter, private auth: AuthenticationService,
     private productAdapter: ProductAdapter, private shopCatAdapter: ShopCategoryAdapter) { }
 
   searchShops (term: string): Observable<Shop[]> {
@@ -30,13 +26,15 @@ export class ShopService {
   }
 
   addShop(form: any): Observable<string>  {
-    return this.httpClient.post<string>(`${environment.apiUrl}/shops`, form, this.httpPostOptions);
+    return this.httpClient.post<string>(`${environment.apiUrl}/shops`, form, this.httpOptions).pipe(
+      map((item: any) => item.message)
+    );
   }
 
   getShopCategories(): Observable<ShopCategory[]> {
     return this.httpClient.get(`${environment.apiUrl}/shops/categories`, this.httpOptions).pipe(
       map((data: any[]) => data.map(item => this.shopCatAdapter.adapt(item)))
-    )
+    );
   }
 
   addEmployeeToShop(formData: any) {
@@ -75,6 +73,8 @@ export class ShopService {
   }
 
   addProductToShop(piva: string, formValue: any): Observable<string> {
-    return this.httpClient.post<string>(`${environment.apiUrl}/shops/${piva}/products`, formValue, this.httpPostOptions);
+    return this.httpClient.post<string>(`${environment.apiUrl}/shops/${piva}/products`, formValue, this.httpOptions).pipe(
+      map((item: any) => item.message)
+    );
   }
 }
