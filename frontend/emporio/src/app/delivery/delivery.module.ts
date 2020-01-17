@@ -7,10 +7,11 @@ import { MaterialModule } from '@src/app/material/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { DeliveryListComponent } from '@src/app/delivery/delivery-list/delivery-list.component';
 import { DeliveryDetailsComponent } from '@src/app/delivery/delivery-details/delivery-details.component';
+import { AssignDeliveryComponent } from '@src/app/delivery/assign-delivery/assign-delivery.component';
 
 
 @NgModule({
-  declarations: [CreateDeliveryComponent, DeliveryListComponent, DeliveryDetailsComponent],
+  declarations: [CreateDeliveryComponent, DeliveryListComponent, DeliveryDetailsComponent, AssignDeliveryComponent],
   imports: [
     CommonModule,
     HttpClientModule,

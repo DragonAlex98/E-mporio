@@ -40,4 +40,10 @@ public class LockerService {
         Locker locker = getLockerById(lockerId);
         return locker.getPosti().stream().filter(posto -> posto.getConsegna() == null).collect(Collectors.toList());
     }
+
+    public Locker getLockerByPosto(Posto posto) {
+
+        return posto.getLocker();
+
+    }
 }
