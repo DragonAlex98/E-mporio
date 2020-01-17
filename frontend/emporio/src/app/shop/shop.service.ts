@@ -38,8 +38,9 @@ export class ShopService {
   }
 
   addEmployeeToShop(formData: any) {
-    return this.httpClient.put(`${environment.apiUrl}/shops/employees`, formData)
-                          .pipe();
+    return this.httpClient.put(`${environment.apiUrl}/shops/employees`, formData).pipe(
+      map((item: any) => item.message)
+    );
   }
 
   getShopInfos(username: string): Observable<Shop> {

@@ -8,12 +8,11 @@
             <mat-card>
             <form [formGroup]="addEmployeeForm" (ngSubmit)="onSubmit(addEmployeeForm.value)">
             <div class="registration-form-container">
-            <mat-form-field>
-                <input matInput placeholder="Username Dipendente" formControlName="employeeUsername" required>
-            </mat-form-field>
-
-            <button mat-raised-button color="accent">Aggiungi</button>
+                <mat-form-field>
+                    <input matInput placeholder="Username Dipendente" formControlName="employeeUsername" required>
+                </mat-form-field>
             </div>
+            <button mat-flat-button color="accent">Aggiungi</button>            
         </form>
         </mat-card>
         </div>

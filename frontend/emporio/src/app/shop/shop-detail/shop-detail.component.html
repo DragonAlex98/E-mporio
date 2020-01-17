@@ -13,11 +13,14 @@
         </mat-card-header>
         <mat-card-content>
             <p>Categoria: {{shop.shopCategory.shopCategoryDescription}}</p>
-            <button mat-raised-button color="accent" (click)="showCatalog()">Visualizza Catalogo</button>
-            <button *ngIf="shouldShowDeleteShopButton()" mat-raised-button color="accent" (click)="deleteShop()">Elimina
+            <button mat-flat-button color="accent" (click)="showCatalog()">Visualizza Catalogo</button>
+            <button *ngIf="shouldShowDeleteShopButton()" mat-flat-button color="accent" (click)="deleteShop()">Elimina
                 Attività</button>
-            <button mat-raised-button color="accent" *ngIf="shouldShowDeleteShopProductButton()" (click)="showAddProd()">
+            <button mat-flat-button color="accent" *ngIf="shouldShowDeleteShopProductButton()" (click)="showAddProd()">
                 Aggiungi Prodotto
+            </button>
+            <button mat-flat-button color="accent" *ngIf="shouldShowDeleteShopButton()" (click)="showAddEmpl()">
+                Aggiungi Dipendente
             </button>
         </mat-card-content>
     </mat-card>
@@ -29,5 +32,8 @@
     </div>
     <div *ngIf="shop != null && showAddProduct">
         <app-add-product [piva]="piva"></app-add-product>
+    </div>
+    <div *ngIf="shop != null && showAddEmployee">
+        <app-add-employee></app-add-employee>
     </div>
 </div>

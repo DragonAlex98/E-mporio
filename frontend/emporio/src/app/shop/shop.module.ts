@@ -21,10 +21,10 @@ import { ShopCatalogComponent } from '@src/app/shop/shop-catalog/shop-catalog.co
     SearchShopComponent,
     InsertShopComponent,
     InsertShopFormComponent,
-    AddEmployeeComponent,
     ShopDetailComponent,
     AddProductComponent,
     ShopCatalogComponent,
+    AddEmployeeComponent,
   ],
   imports: [
     CommonModule,

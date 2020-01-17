@@ -138,7 +138,7 @@ public class AttivitaController {
 
     @PreAuthorize("hasAuthority('ADD_EMPLOYEE')")
     @PutMapping("/shops/employees")
-    public ResponseEntity<String> addEmployeeToShop(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody ShopAddEmployeeDto addEmployeeDTO) {
+    public ResponseEntity<ApiPostResponse> addEmployeeToShop(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody ShopAddEmployeeDto addEmployeeDTO) {
         
         Titolare owner = titolareService.getTitolare(userDetails.getUsername());
         
@@ -149,7 +149,7 @@ public class AttivitaController {
         employeeService.addShopEmployed(shop, employee);
         shop.getShopEmployeeList().add(employee);
 
-        return ResponseEntity.ok("Aggiunto dipendente");
+        return ResponseEntity.ok(ApiPostResponse.builder().message("Aggiunto dipendente").build());
     }
 
     @PreAuthorize("hasAuthority('DELETE_SHOP')")

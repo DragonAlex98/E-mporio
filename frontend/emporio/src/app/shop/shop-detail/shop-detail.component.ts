@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { AuthenticationService } from '@src/app/authentication/services/authentication.service';
 import { Role } from '@src/app/authentication/models/role';
 import { Product } from '@src/app/product/product/product';
+import { AuthenticationChecks } from '@src/app/AuthenticationChecks';
 
 @Component({
   selector: 'app-shop-detail',
@@ -16,12 +17,12 @@ import { Product } from '@src/app/product/product/product';
 export class ShopDetailComponent implements OnInit {
   piva = '';
   shop: Shop;
-  shouldShowDeleteShop: Boolean;
-  shouldShowDeleteProduct: Boolean;
   showCatalogo: Boolean;
   showAddProduct: Boolean;
+  showAddEmployee: Boolean;
 
-  constructor(private route: ActivatedRoute, private router: Router, private service: ShopService, private auth: AuthenticationService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private service: ShopService, private auth: AuthenticationService,
+    private authChecks: AuthenticationChecks) { }
 
   ngOnInit() {
     this.route.paramMap.pipe(
@@ -40,14 +41,7 @@ export class ShopDetailComponent implements OnInit {
   }
 
   shouldShowDeleteShopButton(): Boolean {
-
-    this.auth.currentUser.subscribe(
-      (user) => {
-        this.shouldShowDeleteShop = (user != null) && (user.role === Role.Titolare);
-      }
-    );
-
-    return this.shouldShowDeleteShop;
+    return this.authChecks.canOperateOnShopAsOwner();
   }
 
   deleteShop() {
@@ -59,23 +53,25 @@ export class ShopDetailComponent implements OnInit {
   }
 
   shouldShowDeleteShopProductButton(): Boolean {
-    this.auth.currentUser.subscribe(
-      (user) => {
-         this.shouldShowDeleteProduct = (user != null) && (user.role === Role.Titolare || user.role === Role.Dipendente);
-      }
-    );
-
-    return this.shouldShowDeleteProduct;
+    return this.authChecks.canOperateOnShop();
   }
 
   showCatalog() {
     this.showCatalogo = true;
     this.showAddProduct = false;
+    this.showAddEmployee = false;
   }
 
   showAddProd() {
     this.showCatalogo = false;
     this.showAddProduct = true;
+    this.showAddEmployee = false;
+  }
+
+  showAddEmpl() {
+    this.showCatalogo = false;
+    this.showAddProduct = false;
+    this.showAddEmployee = true;
   }
 
 }

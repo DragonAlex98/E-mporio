@@ -24,7 +24,7 @@ export class AddEmployeeComponent implements OnInit {
   onSubmit(formValue) {
     this.service.addEmployeeToShop(formValue).subscribe(
       data => {
-        alert('Aggiunto!');
+        alert(data);
       },
       error => {
         if ([400, 404].indexOf(error.status) !== -1) {

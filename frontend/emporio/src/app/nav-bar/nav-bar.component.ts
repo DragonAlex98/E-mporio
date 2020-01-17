@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '@src/app/authentication/services/authentication.service';
 import { Router } from '@angular/router';
-import { User } from '../authentication/models/user';
+import { AuthenticationChecks } from '@src/app/AuthenticationChecks';
+import { ShopService } from '../shop/shop.service';
+import { Shop } from '../shop/shop/shop';
 
 @Component({
   selector: 'app-navbar',
@@ -11,22 +13,55 @@ import { User } from '../authentication/models/user';
 export class NavBarComponent implements OnInit {
   events: string[] = [];
   opened: boolean;
-  currentUser: User;
 
-  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
+  constructor(private authService: AuthenticationService,
+    private authChecks: AuthenticationChecks, private router: Router) {
+  }
 
-  constructor(private authenticationService: AuthenticationService, private router: Router) {
-
-    this.authenticationService.currentUser.subscribe(user => this.currentUser = user);
-    console.log(this.currentUser);
-   }
-
-   logout() {
-    this.authenticationService.logout();
+  logout() {
+    this.authService.logout();
     this.router.navigate(['/']);
-   }
+  }
 
   ngOnInit() {
+  }
+
+  public getLoggedUsername(): string {
+    return this.authChecks.getUsername();
+  }
+
+  public getPartitaIva(): string {
+    const string = this.authChecks.getPartitaIva();
+    if (string !== '') {
+      return string;
+    }
+
+    return 'no-shop';
+  }
+
+  public isLoggedIn(): boolean {
+    return this.authChecks.isLoggedIn();
+  }
+
+  public canOperateOnShopAsOwner(): boolean {
+    return this.authChecks.canOperateOnShopAsOwner();
+  }
+
+
+  public canOperateOnShopAsEmployee(): boolean {
+    return this.authChecks.canOperateOnShopAsEmployee();
+  }
+
+  public canOperateOnShop(): boolean {
+    return this.authChecks.canOperateOnShop();
+  }
+
+  public isCustomer(): boolean {
+    return this.authChecks.isCustomer();
+  }
+
+  public isFattorino() {
+    return this.authChecks.isFattorino();
   }
 
 

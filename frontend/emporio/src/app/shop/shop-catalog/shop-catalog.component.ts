@@ -3,6 +3,7 @@ import { ShopService } from '../shop.service';
 import { Product } from '@src/app/product/product/product';
 import { AuthenticationService } from '@src/app/authentication/services/authentication.service';
 import { Role } from '@src/app/authentication/models/role';
+import { AuthenticationChecks } from '@src/app/AuthenticationChecks';
 
 @Component({
   selector: 'app-shop-catalog',
@@ -14,7 +15,7 @@ export class ShopCatalogComponent implements OnInit {
   shouldShowDeleteProduct: Boolean;
   productList: Product[];
 
-  constructor(private service: ShopService, private auth: AuthenticationService) { }
+  constructor(private service: ShopService, private auth: AuthenticationService, private authChecks: AuthenticationChecks) { }
 
   ngOnInit() {
     this.service.getShopCatalog(this.piva).subscribe(
@@ -25,13 +26,7 @@ export class ShopCatalogComponent implements OnInit {
   }
 
   shouldShowDeleteShopProductButton(): Boolean {
-    this.auth.currentUser.subscribe(
-      (user) => {
-         this.shouldShowDeleteProduct = (user != null) && (user.role === Role.Titolare || user.role === Role.Dipendente);
-      }
-    );
-
-    return this.shouldShowDeleteProduct;
+    return this.authChecks.canOperateOnShop();
   }
 
   deleteProduct(product: Product) {

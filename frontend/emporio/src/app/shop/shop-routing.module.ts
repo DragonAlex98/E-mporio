@@ -10,16 +10,20 @@ const routes: Routes = [
   {
     path: 'new-shop',
     component: InsertShopComponent,
-  },
-  {
-    path: 'add-employee',
-    component: AddEmployeeComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Titolare] }
   },
   {
     path: 'shops/:piva',
     component: ShopDetailComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Titolare, Role.Dipendente] }
+  },
+  {
+    path: 'add-employee',
+    component: AddEmployeeComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Titolare] }
   }
 ];
 
