@@ -71,10 +71,10 @@ export class DeliveryService {
 
   }
 
-/*   getDeliveryList(): Delivery[] {
+  getDeliveryList(): Observable<Delivery[]> {
 
-    
+    return this.httpService.get<Delivery[]>(this.deliveryUrl);
 
-  } */
+  }
 
 }
