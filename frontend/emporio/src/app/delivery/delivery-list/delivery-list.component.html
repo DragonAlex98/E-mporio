@@ -8,6 +8,7 @@
                  Stato: {{delivery.statoConsegna}}
             </mat-panel-description>
         </mat-expansion-panel-header>
-      
+        <app-delivery-details [delivery]="delivery"></app-delivery-details>
+        <app-assign-delivery [delivery]="delivery"></app-assign-delivery>
     </mat-expansion-panel>
 </mat-accordion>

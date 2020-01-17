@@ -63,6 +63,10 @@ public class JwtTokenProvider {
             .compact();
     }
 
+    public Jws<Claims> getTokenClaims(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+    }
+
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());

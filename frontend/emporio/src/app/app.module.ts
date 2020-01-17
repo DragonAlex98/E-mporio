@@ -12,17 +12,18 @@ import { NavBarComponent } from '@src/app/nav-bar/nav-bar.component';
 import { FooterComponent } from '@src/app/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { OrderModule } from './order/order.module';
-import { MaterialModule } from './material/material.module';
+import { OrderModule } from '@src/app/order/order.module';
+import { MaterialModule } from '@src/app/material/material.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { AuthenticationModule } from './authentication/authentication.module';
-import { DeliveryModule } from './delivery/delivery.module';
-import { OrderService } from './order/order.service';
+import { AuthenticationModule } from '@src/app/authentication/authentication.module';
+import { DeliveryModule } from '@src/app/delivery/delivery.module';
+import { OrderService } from '@src/app/order/order.service';
 import { MatStepperModule } from '@angular/material';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JwtInterceptor } from './authentication/helpers/jwt.interceptor';
+import { JwtInterceptor } from '@src/app/authentication/helpers/jwt.interceptor';
+import { DashboardHomeComponent } from '@src/app/dashboard/dashboard-home/dashboard-home.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { JwtInterceptor } from './authentication/helpers/jwt.interceptor';
     NavBarComponent,
     FooterComponent,
     SearchBarComponent,
+    DashboardHomeComponent,
   ],
   imports: [
     BrowserModule,

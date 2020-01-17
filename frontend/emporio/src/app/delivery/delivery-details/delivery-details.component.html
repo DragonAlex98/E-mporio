@@ -1,0 +1,7 @@
+<div *ngIf="delivery">
+    <h3 mat-list>Negozio: {{delivery.ordine.shop.shopBusinessName}}</h3>
+    <h3 mat-list>Parcheggio: {{delivery.ordine.parkingAddress}}</h3>
+    <h3 mat-list>Riferimento ordine: {{delivery.ordine.id}} </h3>
+    <h3 mat-list>Id locker: {{locker.lockerId}} situato in: {{locker.address}}</h3>
+    <h3 mat-list>Posto Locker: {{delivery.posto.nomePosto}}</h3>
+</div>
