@@ -11,6 +11,7 @@ import { AuthGuard } from './authentication/helpers/auth.guard';
 import { RegistrationComponent } from './authentication/registration/registration.component';
 import { OrderToDeliveryComponent } from './order/order-to-delivery/order-to-delivery.component';
 import { Role } from './authentication/models/role';
+import { DashboardHomeComponent } from './dashboard/dashboard-home/dashboard-home.component';
 
 
 export const routes: Routes = [
@@ -48,6 +49,12 @@ export const routes: Routes = [
     component: OrderFormComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Titolare, Role.Dipendente] }
+  },
+  {
+    path: 'dashboard',
+    component: DashboardHomeComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin, Role.OperatoreSistema] }
   },
   {
     path: '**',
