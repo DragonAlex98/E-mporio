@@ -27,4 +27,10 @@ export class LockerService {
 
   }
 
+  getLockerByPosto(idPosto): Observable<Locker> {
+
+    return this.httpClient.get<Locker>(this.apiUrl + '/posto/' + idPosto);
+
+  }
+
 }
