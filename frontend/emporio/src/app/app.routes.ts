@@ -12,6 +12,7 @@ import { RegistrationComponent } from './authentication/registration/registratio
 import { OrderToDeliveryComponent } from './order/order-to-delivery/order-to-delivery.component';
 import { Role } from './authentication/models/role';
 import { DashboardHomeComponent } from './dashboard/dashboard-home/dashboard-home.component';
+import { DashboardGuard } from './authentication/helpers/dashboard.guard';
 
 
 export const routes: Routes = [
@@ -27,6 +28,7 @@ export const routes: Routes = [
   {
       path: 'home',
       component: HomeComponent,
+      canActivate: [DashboardGuard]
   },
   {
     path: 'login',

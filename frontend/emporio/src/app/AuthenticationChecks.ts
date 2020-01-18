@@ -18,52 +18,36 @@ export class AuthenticationChecks {
     }
 
     public isLoggedIn(): boolean {
-    if (this.currentUser != null) {
-        return true;
-    }
-
-    return false;
+        return this.currentUser != null;
     }
 
     public canOperateOnShopAsOwner(): boolean {
-    if (this.isLoggedIn() && this.currentUser.role === Role.Titolare) {
-        return true;
-    }
-
-    return false;
+        return this.isLoggedIn() && this.currentUser.role === Role.Titolare;
     }
 
 
     public canOperateOnShopAsEmployee(): boolean {
-    if (this.isLoggedIn() && this.currentUser.role === Role.Dipendente) {
-        return true;
-    }
-
-    return false;
+        return this.isLoggedIn() && this.currentUser.role === Role.Dipendente;
     }
 
     public canOperateOnShop(): boolean {
-    if (this.canOperateOnShopAsOwner() || this.canOperateOnShopAsEmployee()) {
-        return true;
-    }
-
-    return false;
+        return (this.canOperateOnShopAsOwner() || this.canOperateOnShopAsEmployee());
     }
 
     public isCustomer(): boolean {
-    if (this.isLoggedIn() && this.currentUser.role === Role.Acquirente) {
-        return true;
+        return this.isLoggedIn() && this.currentUser.role === Role.Acquirente;
     }
 
-        return false;
+    public isFattorino(): boolean {
+        return this.isLoggedIn() && this.currentUser.role === Role.Fattorino;
     }
 
-    public isFattorino() {
-    if (this.isLoggedIn() && this.currentUser.role === Role.Fattorino) {
-        return true;
+    public isAdmin(): boolean {
+        return this.isLoggedIn() && this.currentUser.role === Role.Admin;
     }
 
-        return false;
+    public isOperatore(): boolean {
+        return this.isLoggedIn() && this.currentUser.role === Role.OperatoreSistema;
     }
 
     public getPartitaIva(): string {
