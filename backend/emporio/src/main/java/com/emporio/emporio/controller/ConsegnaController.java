@@ -26,7 +26,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -84,6 +86,17 @@ public class ConsegnaController {
 
 
     }
+
+    @PutMapping("/delivery/{id}/states/consegnata")
+    public ResponseEntity<String> updateState(@PathVariable(name = "id", required = true) int deliveryId) {
+
+        Consegna consegna = consegnaService.getDeliveryById(deliveryId);
+
+        consegnaService.changeDeliveryStatus(consegna, 1);
+
+        return ResponseEntity.ok("Consegna con id "+ deliveryId + "aggiornata");
+    }
+
 
     private ConsegnaGetDto convertToDto (Consegna consegna) {
 
