@@ -17,11 +17,21 @@ export class DeliveryDetailsComponent implements OnInit {
 
   ngOnInit() {
 
+    this.getLocker();
+
+  }
+
+  getLocker() {
+
+    if (this.delivery.posto === null) {return; }
+
     this.lockerService.getLockerByPosto(this.delivery.posto.postoId).subscribe(
       (data) => {this.locker = data; },
       (error) => {alert(error.error.message); }
     );
 
   }
+
+
 
 }

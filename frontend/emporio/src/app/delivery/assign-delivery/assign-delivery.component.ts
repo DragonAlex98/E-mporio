@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Delivery } from '../delivery';
+import { DeliveryService } from '../delivery.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-assign-delivery',
@@ -10,14 +12,21 @@ export class AssignDeliveryComponent implements OnInit {
 
   @Input()  delivery: Delivery;
 
-  constructor() { }
+  constructor(private deliveryService: DeliveryService, private router: Router) { }
 
   ngOnInit() {
   }
 
   onClick() {
 
-    alert('premuto');
+    this.deliveryService.updateDeliveryStatusToDelivery(this.delivery.idConsegna).subscribe(
+
+      (data) => {alert('Consegna assegnata correttamente al locker!'); },
+      (error) => {alert(error.error.message); }
+
+    );
+
+    this.router.navigateByUrl('/delivery-list');
 
   }
 
