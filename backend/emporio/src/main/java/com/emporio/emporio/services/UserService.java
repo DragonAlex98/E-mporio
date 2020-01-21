@@ -46,4 +46,12 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
+    public User updateUser(User user) {
+        if (!existsUser(user.getUsername())) {
+            throw new EntityNotFoundException("User " + user.getUsername() + "  non esiste!");
+        }
+        
+        return userRepository.save(user);
+    }
 }

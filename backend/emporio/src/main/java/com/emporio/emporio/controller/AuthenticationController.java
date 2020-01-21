@@ -26,6 +26,7 @@ import com.emporio.emporio.security.InvalidJwtAuthenticationException;
 import com.emporio.emporio.security.JwtTokenProvider;
 import com.emporio.emporio.services.RoleService;
 import com.emporio.emporio.services.UserService;
+import com.emporio.emporio.util.ApiPostResponse;
 
 @RestController
 public class AuthenticationController {
@@ -75,6 +76,10 @@ public class AuthenticationController {
             String username = data.getUsername();
 
             Role role = this.roleService.getRole(data.getRole());
+
+            if (role.getName().equalsIgnoreCase("Admin") || role.getName().equalsIgnoreCase("OperatoreSistema")) {
+                return ResponseEntity.badRequest().body(ApiPostResponse.builder().message("Non si possiedono privilegi sufficienti!").build());
+            }
 
             UserFactory factory = Class.forName("com.emporio.emporio.factory." + role.getName() + "UserFactory").asSubclass(UserFactory.class).getDeclaredConstructor().newInstance();
             this.userService.createUser(factory.createUser(username, this.passwordEncoder.encode(data.getPassword()), this.roleService::getRole));
