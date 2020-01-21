@@ -1,9 +1,12 @@
 package com.emporio.emporio.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import com.emporio.emporio.model.Locker;
@@ -42,8 +45,23 @@ public class LockerService {
     }
 
     public Locker getLockerByPosto(Posto posto) {
-
         return posto.getLocker();
+    }
 
+    public Boolean existsLockerByAddress(String address) {
+        return lockerRepository.existsLockerByAddress(address);
+    }
+
+    public Locker createLocker(String address, Integer numPosti) {
+        if (existsLockerByAddress(address)) {
+            throw new EntityExistsException("Il locker in via " + address + " è già esistente!");
+        }
+
+        Locker locker = Locker.builder().address(address).build();
+        List<Posto> posti = new ArrayList<>();
+        IntStream.range(1, numPosti + 1).boxed().forEach(i -> posti.add(Posto.builder().locker(locker).nomePosto(i.toString()).build()));
+        locker.setPosti(posti);
+
+        return lockerRepository.save(locker);
     }
 }
