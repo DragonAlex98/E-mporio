@@ -10,6 +10,7 @@ import com.emporio.emporio.factory.AcquirenteUserFactory;
 import com.emporio.emporio.factory.AdminUserFactory;
 import com.emporio.emporio.factory.DipendenteUserFactory;
 import com.emporio.emporio.factory.FattorinoUserFactory;
+import com.emporio.emporio.factory.OperatoreSistemaUserFactory;
 import com.emporio.emporio.factory.TitolareUserFactory;
 import com.emporio.emporio.model.Attivita;
 import com.emporio.emporio.model.AttivitaDescrizione;
@@ -124,35 +125,20 @@ public class DataInitializer implements CommandLineRunner {
         Privilege priv4 = this.privileges.save(Privilege.builder().name("CREATE_ORDER").build());
         Privilege priv5 = this.privileges.save(Privilege.builder().name("DELETE_SHOP").build());
         Privilege priv6 = this.privileges.save(Privilege.builder().name("DELETE_PRODUCT").build());
+        Privilege priv7 = this.privileges.save(Privilege.builder().name("TOGGLE_USER").build());
+        Privilege priv8 = this.privileges.save(Privilege.builder().name("CREATE_USER").build());
+        Privilege priv9 = this.privileges.save(Privilege.builder().name("CREATE_LOCKER").build());
+        Privilege priv10 = this.privileges.save(Privilege.builder().name("CHECK_USER").build());
 
         this.roles.save(Role.builder().name("Acquirente").build());
         this.roles.save(Role.builder().name("Fattorino").build());
-        Role employee = this.roles.save(Role.builder().name("Dipendente").build());
-        Role owner = this.roles.save(Role.builder().name("Titolare").build());
+        this.roles.save(Role.builder().name("Dipendente").privileges(Arrays.asList(priv2, priv4, priv6)).build());
+        this.roles.save(Role.builder().name("Titolare").privileges(Arrays.asList(priv1, priv2, priv3, priv4, priv5, priv6)).build());
         this.roles.save(Role.builder().name("GestoreMarketing").build());
-        this.roles.save(Role.builder().name("Admin").build());
-        this.roles.save(Role.builder().name("OperatoreSistema").build());
+        this.roles.save(Role.builder().name("Admin").privileges(Arrays.asList(priv7, priv8, priv9, priv10)).build());
+        this.roles.save(Role.builder().name("OperatoreSistema").privileges(Arrays.asList(priv9, priv10)).build());
 
-        List<Privilege> ownerPrivs = new ArrayList<>();
-        ownerPrivs.add(priv1);
-        ownerPrivs.add(priv2);
-        ownerPrivs.add(priv3);
-        ownerPrivs.add(priv4);
-        ownerPrivs.add(priv5);
-        ownerPrivs.add(priv6);
-
-        owner.setPrivileges(ownerPrivs);
-
-        this.roles.save(owner);
-
-        List<Privilege> employeePrivs = new ArrayList<>();
-        employeePrivs.add(priv2);
-        employeePrivs.add(priv4);
-        employeePrivs.add(priv6);
-
-        employee.setPrivileges(employeePrivs);
-
-        this.roles.save(employee);
+        this.users.save(new OperatoreSistemaUserFactory().createUser("operatore", this.passwordEncoder.encode("password"), funcCreator));
 
         this.users.save(new AdminUserFactory().createUser("admin", this.passwordEncoder.encode("password"), funcCreator));
 
