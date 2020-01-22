@@ -21,8 +21,8 @@ export class DashboardNavbarComponent implements OnInit {
     return this.authChecks.isOperatore();
   }
 
-  canAddLocker(): boolean {
-    return this.authChecks.canInsertLocker();
+  canOperateOnDashboard(): boolean {
+    return this.authChecks.canOperateOnDashboard();
   }
 
   ngOnInit() {

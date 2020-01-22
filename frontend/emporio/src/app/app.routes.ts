@@ -13,6 +13,7 @@ import { OrderToDeliveryComponent } from './order/order-to-delivery/order-to-del
 import { Role } from './authentication/models/role';
 import { DashboardHomeComponent } from './dashboard/dashboard-home/dashboard-home.component';
 import { DashboardGuard } from './authentication/helpers/dashboard.guard';
+import { DashboardUsersComponent } from './dashboard/dashboard-users/dashboard-users.component';
 
 
 export const routes: Routes = [
@@ -54,7 +55,25 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardHomeComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full',
+      },
+      {
+        path: 'home',
+        component: DashboardHomeComponent,
+      },
+      {
+        path: 'users',
+        component: DashboardUsersComponent,
+      },
+      {
+        path: '**',
+        component: PageNotFoundComponent,
+      }
+    ],
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin, Role.OperatoreSistema] }
   },

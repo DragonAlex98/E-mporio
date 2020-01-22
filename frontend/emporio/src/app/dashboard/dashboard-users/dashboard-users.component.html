@@ -1,0 +1,19 @@
+<div class="search-bar">
+    <input type="text" placeholder="Cerca utenti..." [(ngModel)]="searchText" (input)="updateSearch()">
+    <button type="button" mat-icon-button (click)="search()"><mat-icon>search</mat-icon></button>
+</div>
+
+<mat-accordion>
+    <mat-expansion-panel class="mat-elevation-z0" *ngFor="let user of users">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Nome Utente: {{user.username}}
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>Ruolo: {{user.role.name}}</p>
+        <p>Abilitato: {{user.enabled}}</p>
+        <mat-action-row *ngIf="showToggle()">
+            <button mat-button (click)="toggleUser(user.username)">Abilita/Disabilita</button>
+        </mat-action-row>
+    </mat-expansion-panel>
+</mat-accordion>

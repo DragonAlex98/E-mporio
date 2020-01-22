@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import com.emporio.emporio.dto.AttivitaDescrizioneGetDto;
 import com.emporio.emporio.dto.AuthenticationRequest;
 import com.emporio.emporio.dto.OrdineHistoryDto;
+import com.emporio.emporio.dto.UtenteGetDto;
 import com.emporio.emporio.factory.AdminUserFactory;
 import com.emporio.emporio.factory.OperatoreSistemaUserFactory;
 import com.emporio.emporio.model.Acquirente;
@@ -27,11 +28,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -126,5 +130,17 @@ public class UserController {
                                               .map((order) -> this.modelMapper.map(order, OrdineHistoryDto.class))
                                               .collect(Collectors.toList());
         return ResponseEntity.ok(orderList);
+    }
+
+    @PreAuthorize("hasAuthority('CHECK_USER')")
+    @GetMapping("/users/search")
+    public ResponseEntity<List<UtenteGetDto>> getAllUsersContaining(@AuthenticationPrincipal UserDetails userDetails, @NotBlank @RequestParam(name = "username", required = true) String username) {
+        List<UtenteGetDto> users = this.userService.getUsers(username).stream().map(u -> convertUserToDto(u)).collect(Collectors.toList());
+        users.removeIf(u -> u.getUsername().equalsIgnoreCase(userDetails.getUsername()));
+        return ResponseEntity.ok(users);
+    }
+
+    private UtenteGetDto convertUserToDto(User user) {
+        return this.modelMapper.map(user, UtenteGetDto.class);
     }
 }

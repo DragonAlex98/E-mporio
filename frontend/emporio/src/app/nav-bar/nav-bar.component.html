@@ -17,7 +17,7 @@
       <button *ngIf="isLoggedIn()" type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <a mat-button [routerLink]="['/home']"><mat-icon>home</mat-icon>Emporio</a>
+      <a mat-button [routerLink]="['/home']"><mat-icon>home</mat-icon> Emporio</a>
     <span class="login-space"></span>
     <app-search-bar></app-search-bar>
     <a *ngIf="!(isLoggedIn())" mat-button [routerLink]="['/login']">Log In</a>

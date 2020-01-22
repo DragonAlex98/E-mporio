@@ -1,5 +1,6 @@
 package com.emporio.emporio.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityExistsException;
@@ -53,5 +54,9 @@ public class UserService {
         }
         
         return userRepository.save(user);
+    }
+
+    public List<User> getUsers(String username) {
+        return userRepository.findByUsernameContainingIgnoreCase(username);
     }
 }

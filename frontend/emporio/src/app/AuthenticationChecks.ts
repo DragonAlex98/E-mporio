@@ -34,7 +34,7 @@ export class AuthenticationChecks {
         return (this.canOperateOnShopAsOwner() || this.canOperateOnShopAsEmployee());
     }
 
-    public canInsertLocker(): boolean {
+    public canOperateOnDashboard(): boolean {
         return this.isAdmin() || this.isOperatore();
     }
 
