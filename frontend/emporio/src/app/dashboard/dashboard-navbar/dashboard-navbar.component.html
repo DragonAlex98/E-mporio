@@ -1,2 +1,21 @@
-<p>dashboard-navbar works!</p>
-<button type="button" (click)="logout()">Logout</button>
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" mode="over" [(opened)]="opened" (opened)="events.push('open!')"
+        (closed)="events.push('close!')">
+        <mat-toolbar color="primary">Menu</mat-toolbar>
+        <mat-nav-list>
+            <a mat-list-item *ngIf="isAdmin()" [routerLink]="['/new-product']"><mat-icon>add</mat-icon>Nuovo Admin</a>
+            <a mat-list-item *ngIf="isAdmin()" [routerLink]="['/new-shop']"><mat-icon>add</mat-icon>Nuovo Operatore</a>
+            <a mat-list-item *ngIf="isAdmin()" [routerLink]="['/new-order']"><mat-icon>people</mat-icon>Abilita/Disabilita Utenti</a>
+            <a mat-list-item *ngIf="canAddLocker()" [routerLink]="['/new-order']"><mat-icon>add</mat-icon>Inserisci Locker</a>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-toolbar color="primary">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"><mat-icon aria-label="Side nav toggle icon">menu</mat-icon></button>
+            <a mat-button [routerLink]="['/dashboard']"><mat-icon>home</mat-icon>Dashboard</a>
+            <span class="fill-remaining-space"></span>
+            <a mat-button (click)="logout()">Log Out</a>
+        </mat-toolbar>
+        <ng-content></ng-content>
+    </mat-sidenav-content>
+</mat-sidenav-container>

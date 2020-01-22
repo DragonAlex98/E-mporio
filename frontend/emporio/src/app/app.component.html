@@ -2,7 +2,6 @@
     <router-outlet></router-outlet>
 </app-navbar>
 
-<div *ngIf="showDashboard()">
-    <app-dashboard-navbar></app-dashboard-navbar>
+<app-dashboard-navbar *ngIf="showDashboard()">
     <router-outlet></router-outlet>
-</div>
+</app-dashboard-navbar>

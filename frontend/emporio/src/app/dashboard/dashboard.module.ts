@@ -4,6 +4,7 @@ import { DashboardRoutingModule } from '@src/app/dashboard/dashboard-routing.mod
 import { DashboardHomeComponent } from '@src/app/dashboard/dashboard-home/dashboard-home.component';
 import { DashboardNavbarComponent } from '@src/app/dashboard/dashboard-navbar/dashboard-navbar.component';
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../material/material.module';
 
 
 @NgModule({
@@ -11,6 +12,7 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     DashboardRoutingModule,
+    MaterialModule,
   ],
   exports: [
     DashboardHomeComponent,

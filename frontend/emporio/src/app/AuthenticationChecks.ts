@@ -34,6 +34,10 @@ export class AuthenticationChecks {
         return (this.canOperateOnShopAsOwner() || this.canOperateOnShopAsEmployee());
     }
 
+    public canInsertLocker(): boolean {
+        return this.isAdmin() || this.isOperatore();
+    }
+
     public isCustomer(): boolean {
         return this.isLoggedIn() && this.currentUser.role === Role.Acquirente;
     }
