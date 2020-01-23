@@ -14,6 +14,7 @@ import { Role } from './authentication/models/role';
 import { DashboardHomeComponent } from './dashboard/dashboard-home/dashboard-home.component';
 import { DashboardGuard } from './authentication/helpers/dashboard.guard';
 import { DashboardUsersComponent } from './dashboard/dashboard-users/dashboard-users.component';
+import { InsertLockerComponent } from './locker/insert-locker/insert-locker.component';
 
 
 export const routes: Routes = [
@@ -68,6 +69,10 @@ export const routes: Routes = [
       {
         path: 'users',
         component: DashboardUsersComponent,
+      },
+      {
+        path: 'add-locker',
+        component: InsertLockerComponent,
       },
       {
         path: '**',

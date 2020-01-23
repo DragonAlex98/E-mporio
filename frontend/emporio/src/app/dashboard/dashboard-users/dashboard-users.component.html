@@ -10,7 +10,7 @@
                 Nome Utente: {{user.username}}
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <p>Ruolo: {{user.role.name}}</p>
+        <p>Ruolo: {{getRoleName(user.role)}}</p>
         <p>Abilitato: {{user.enabled}}</p>
         <mat-action-row *ngIf="showToggle()">
             <button mat-button (click)="toggleUser(user.username)">Abilita/Disabilita</button>

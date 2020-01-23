@@ -33,4 +33,8 @@ export class LockerService {
 
   }
 
+  insertNewLocker(street, numPosti) {
+    return this.httpClient.post(`${environment.apiUrl}/locker`, { address: street, posti: numPosti });
+  }
+
 }

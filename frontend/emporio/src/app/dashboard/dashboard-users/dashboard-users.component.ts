@@ -16,6 +16,10 @@ export class DashboardUsersComponent implements OnInit {
 
   constructor(private userService: UserService, private authChecks: AuthenticationChecks) { }
 
+  getRoleName(role) {
+    return role.name;
+  }
+
   ngOnInit() {
   }
 
