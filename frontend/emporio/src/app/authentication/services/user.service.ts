@@ -28,5 +28,13 @@ export class UserService {
     toggleUser(username: string) {
         return this.http.put(`${environment.apiUrl}/users/${username}`, null);
     }
+
+    createAdmin(user: User) {
+        return this.http.post(`${environment.apiUrl}/users/admins`, user);
+    }
+
+    createOperatore(user: User) {
+        return this.http.post(`${environment.apiUrl}/users/operators`, user);
+    }
 }
 

@@ -15,6 +15,8 @@ import { DashboardHomeComponent } from './dashboard/dashboard-home/dashboard-hom
 import { DashboardGuard } from './authentication/helpers/dashboard.guard';
 import { DashboardUsersComponent } from './dashboard/dashboard-users/dashboard-users.component';
 import { InsertLockerComponent } from './locker/insert-locker/insert-locker.component';
+import { DashboardCreateOperatoreComponent } from './dashboard/dashboard-create-operatore/dashboard-create-operatore.component';
+import { DashboardCreateAdminComponent } from './dashboard/dashboard-create-admin/dashboard-create-admin.component';
 
 
 export const routes: Routes = [
@@ -73,6 +75,14 @@ export const routes: Routes = [
       {
         path: 'add-locker',
         component: InsertLockerComponent,
+      },
+      {
+        path: 'create-admin',
+        component: DashboardCreateAdminComponent,
+      },
+      {
+        path: 'create-operatore',
+        component: DashboardCreateOperatoreComponent,
       },
       {
         path: '**',

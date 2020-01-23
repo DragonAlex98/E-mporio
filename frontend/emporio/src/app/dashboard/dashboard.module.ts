@@ -6,16 +6,19 @@ import { DashboardNavbarComponent } from '@src/app/dashboard/dashboard-navbar/da
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@src/app/material/material.module';
 import { DashboardUsersComponent } from '@src/app/dashboard/dashboard-users/dashboard-users.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DashboardCreateAdminComponent } from '@src/app/dashboard/dashboard-create-admin/dashboard-create-admin.component';
+import { DashboardCreateOperatoreComponent } from '@src/app/dashboard/dashboard-create-operatore/dashboard-create-operatore.component';
 
 
 @NgModule({
-  declarations: [DashboardHomeComponent, DashboardNavbarComponent, DashboardUsersComponent],
+  declarations: [DashboardHomeComponent, DashboardNavbarComponent, DashboardUsersComponent, DashboardCreateAdminComponent, DashboardCreateOperatoreComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
     MaterialModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     DashboardHomeComponent,
