@@ -2,7 +2,9 @@ package com.emporio.emporio.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -10,6 +12,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import com.emporio.emporio.dto.AttivitaDescrizioneGetDto;
+import com.emporio.emporio.dto.ProdottoVendutoDto;
 import com.emporio.emporio.dto.ProductPostDto;
 import com.emporio.emporio.dto.RegistrazioneAttivitaDto;
 import com.emporio.emporio.model.Attivita;
@@ -17,6 +20,7 @@ import com.emporio.emporio.model.AttivitaDescrizione;
 import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.CategoriaAttivita;
 import com.emporio.emporio.model.Dipendente;
+import com.emporio.emporio.model.Ordine;
 import com.emporio.emporio.model.Prodotto;
 import com.emporio.emporio.model.ProdottoDescrizione;
 import com.emporio.emporio.model.Titolare;
@@ -25,6 +29,7 @@ import com.emporio.emporio.services.AttivitaService;
 import com.emporio.emporio.services.CatalogoService;
 import com.emporio.emporio.services.CategoriaAttivitaService;
 import com.emporio.emporio.services.DipendenteService;
+import com.emporio.emporio.services.OrdineService;
 import com.emporio.emporio.services.ProdottoDescrizioneService;
 import com.emporio.emporio.services.ProdottoService;
 import com.emporio.emporio.services.TitolareService;
@@ -80,6 +85,9 @@ public class AttivitaController {
 
     @Autowired
     private ProdottoDescrizioneService productDescriptionService;
+
+    @Autowired
+    private OrdineService orderService;
 
     @PreAuthorize("hasAuthority('CREATE_SHOP')")
     @PostMapping("/shops")
@@ -198,6 +206,25 @@ public class AttivitaController {
         this.productService.deleteProduct(product);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasAuthority('CHECK_SHOP_SALES')")
+    @GetMapping("/shops/{piva}/sales")
+    public ResponseEntity<List<ProdottoVendutoDto>> getShopSales(@AuthenticationPrincipal UserDetails userDetails, @NotBlank @PathVariable(name = "piva", required = true) String piva) {
+        Attivita shopOwned = this.titolareService.getShopOwnedBy(userDetails.getUsername());
+        if (!shopOwned.getShopDescription().getShopPIVA().equalsIgnoreCase(piva)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<Ordine> orders = this.orderService.getShopOrders(shopOwned.getShopDescription());
+
+        Map<ProdottoDescrizione, Integer> sales = new HashMap<>();
+        orders.forEach(ordine -> ordine.getOrderProductsLineList().forEach(rigaOrdine -> {
+            Integer i = sales.get(rigaOrdine.getProduct());
+            sales.put(rigaOrdine.getProduct(), (i == null) ? rigaOrdine.getQuantity() : i + rigaOrdine.getQuantity());
+        }));
+
+        return ResponseEntity.ok(sales.entrySet().stream().map(e -> ProdottoVendutoDto.builder().product(e.getKey()).quantity(e.getValue()).build()).collect(Collectors.toList()));
     }
 
     @GetMapping("/shops/{piva}")

@@ -129,12 +129,13 @@ public class DataInitializer implements CommandLineRunner {
         Privilege priv8 = this.privileges.save(Privilege.builder().name("CREATE_USER").build());
         Privilege priv9 = this.privileges.save(Privilege.builder().name("CREATE_LOCKER").build());
         Privilege priv10 = this.privileges.save(Privilege.builder().name("CHECK_USER").build());
+        Privilege priv11 = this.privileges.save(Privilege.builder().name("CHECK_SHOP_SALES").build());
 
         this.roles.save(Role.builder().name("Acquirente").build());
         this.roles.save(Role.builder().name("Fattorino").build());
         this.roles.save(Role.builder().name("Dipendente").privileges(Arrays.asList(priv2, priv4, priv6)).build());
-        this.roles.save(Role.builder().name("Titolare").privileges(Arrays.asList(priv1, priv2, priv3, priv4, priv5, priv6)).build());
-        this.roles.save(Role.builder().name("GestoreMarketing").build());
+        this.roles.save(Role.builder().name("Titolare").privileges(Arrays.asList(priv1, priv2, priv3, priv4, priv5, priv6, priv11)).build());
+        this.roles.save(Role.builder().name("GestoreMarketing").privileges(Arrays.asList(priv11)).build());
         this.roles.save(Role.builder().name("Admin").privileges(Arrays.asList(priv7, priv8, priv9, priv10)).build());
         this.roles.save(Role.builder().name("OperatoreSistema").privileges(Arrays.asList(priv9, priv10)).build());
 
