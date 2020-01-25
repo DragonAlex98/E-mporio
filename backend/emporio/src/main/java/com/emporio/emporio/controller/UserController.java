@@ -18,6 +18,7 @@ import com.emporio.emporio.model.AttivitaDescrizione;
 import com.emporio.emporio.model.User;
 import com.emporio.emporio.services.AcquirenteService;
 import com.emporio.emporio.services.DipendenteService;
+import com.emporio.emporio.services.GestoreMarketingService;
 import com.emporio.emporio.services.OrdineService;
 import com.emporio.emporio.services.RoleService;
 import com.emporio.emporio.services.TitolareService;
@@ -62,6 +63,9 @@ public class UserController {
     @Autowired
     private AcquirenteService customerService;
 
+    @Autowired
+    private GestoreMarketingService gestoreMarketingService;
+
     @GetMapping("/users/{username}")
     public ResponseEntity<Boolean> existsUser(@NotBlank @PathVariable(name = "username", required = true) String username) {
         boolean exists = userService.existsUser(username);
@@ -105,12 +109,15 @@ public class UserController {
     public ResponseEntity<AttivitaDescrizioneGetDto> getShop(@NotBlank @PathVariable(name = "username", required = true) String username) {
         boolean isDipendente = employeeService.existsDipendente(username);
         boolean isTitolare = titolareService.existsTitolare(username);
+        boolean isGestoreMarketing = gestoreMarketingService.existsGestoreMarketing(username);
 
         Attivita shop;
         if (isTitolare) {
             shop = titolareService.getShopOwnedBy(username);
         } else if (isDipendente) {
             shop = employeeService.getShopEmployedIn(username);
+        } else if (isGestoreMarketing) {
+            shop = gestoreMarketingService.getShopWorksFor(username);
         } else {
             return null;
         }

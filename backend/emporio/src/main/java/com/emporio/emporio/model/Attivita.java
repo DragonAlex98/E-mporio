@@ -40,6 +40,10 @@ public class Attivita {
     @OneToMany(mappedBy = "shopEmployed")
     @JsonIgnore
     private List<Dipendente> shopEmployeeList;
+
+    @OneToMany(mappedBy = "shopWorksFor")
+    @JsonIgnore
+    private List<GestoreMarketing> shopMarketingManagerList;
     
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_attivita", nullable = false)

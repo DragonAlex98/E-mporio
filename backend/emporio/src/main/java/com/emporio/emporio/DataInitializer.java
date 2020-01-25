@@ -10,6 +10,7 @@ import com.emporio.emporio.factory.AcquirenteUserFactory;
 import com.emporio.emporio.factory.AdminUserFactory;
 import com.emporio.emporio.factory.DipendenteUserFactory;
 import com.emporio.emporio.factory.FattorinoUserFactory;
+import com.emporio.emporio.factory.GestoreMarketingUserFactory;
 import com.emporio.emporio.factory.OperatoreSistemaUserFactory;
 import com.emporio.emporio.factory.TitolareUserFactory;
 import com.emporio.emporio.model.Attivita;
@@ -20,6 +21,7 @@ import com.emporio.emporio.model.CategoriaProdotto;
 import com.emporio.emporio.model.ChiaveRigaOrdineProdotto;
 import com.emporio.emporio.model.Consegna;
 import com.emporio.emporio.model.Dipendente;
+import com.emporio.emporio.model.GestoreMarketing;
 import com.emporio.emporio.model.Locker;
 import com.emporio.emporio.model.Ordine;
 import com.emporio.emporio.model.Posto;
@@ -38,6 +40,7 @@ import com.emporio.emporio.repository.CategoriaAttivitaRepository;
 import com.emporio.emporio.repository.CategoriaProdottoRepository;
 import com.emporio.emporio.repository.ConsegnaRepository;
 import com.emporio.emporio.repository.DipendenteRepository;
+import com.emporio.emporio.repository.GestoreMarketingRepository;
 import com.emporio.emporio.repository.LockerRepository;
 import com.emporio.emporio.repository.OrdineRepository;
 import com.emporio.emporio.repository.PostoRepository;
@@ -115,6 +118,9 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private ProdottoRepository productRepo;
 
+    @Autowired
+    private GestoreMarketingRepository marketingRepository;
+
     @Override
     public void run(String... args) throws Exception {
         Function<String, Role> funcCreator = this.roleService::getRole;
@@ -130,11 +136,12 @@ public class DataInitializer implements CommandLineRunner {
         Privilege priv9 = this.privileges.save(Privilege.builder().name("CREATE_LOCKER").build());
         Privilege priv10 = this.privileges.save(Privilege.builder().name("CHECK_USER").build());
         Privilege priv11 = this.privileges.save(Privilege.builder().name("CHECK_SHOP_SALES").build());
+        Privilege priv12 = this.privileges.save(Privilege.builder().name("ADD_MANAGER").build());
 
         this.roles.save(Role.builder().name("Acquirente").build());
         this.roles.save(Role.builder().name("Fattorino").build());
         this.roles.save(Role.builder().name("Dipendente").privileges(Arrays.asList(priv2, priv4, priv6)).build());
-        this.roles.save(Role.builder().name("Titolare").privileges(Arrays.asList(priv1, priv2, priv3, priv4, priv5, priv6, priv11)).build());
+        this.roles.save(Role.builder().name("Titolare").privileges(Arrays.asList(priv1, priv2, priv3, priv4, priv5, priv6, priv11, priv12)).build());
         this.roles.save(Role.builder().name("GestoreMarketing").privileges(Arrays.asList(priv11)).build());
         this.roles.save(Role.builder().name("Admin").privileges(Arrays.asList(priv7, priv8, priv9, priv10)).build());
         this.roles.save(Role.builder().name("OperatoreSistema").privileges(Arrays.asList(priv9, priv10)).build());
@@ -301,5 +308,10 @@ public class DataInitializer implements CommandLineRunner {
         Titolare t3 = this.titolareRepository.findByUsername("dobby").get();
         t3.setShopOwned(s2);
         this.titolareRepository.save(t3);
+
+        this.users.save(new GestoreMarketingUserFactory().createUser("gestore", this.passwordEncoder.encode("marketing"), funcCreator));
+        GestoreMarketing g1 = this.marketingRepository.findByUsername("gestore").get();
+        g1.setShopWorksFor(s1);
+        this.marketingRepository.save(g1);
     }
 }

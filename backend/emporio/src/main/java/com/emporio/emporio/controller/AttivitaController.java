@@ -20,6 +20,7 @@ import com.emporio.emporio.model.AttivitaDescrizione;
 import com.emporio.emporio.model.Catalogo;
 import com.emporio.emporio.model.CategoriaAttivita;
 import com.emporio.emporio.model.Dipendente;
+import com.emporio.emporio.model.GestoreMarketing;
 import com.emporio.emporio.model.Ordine;
 import com.emporio.emporio.model.Prodotto;
 import com.emporio.emporio.model.ProdottoDescrizione;
@@ -29,12 +30,14 @@ import com.emporio.emporio.services.AttivitaService;
 import com.emporio.emporio.services.CatalogoService;
 import com.emporio.emporio.services.CategoriaAttivitaService;
 import com.emporio.emporio.services.DipendenteService;
+import com.emporio.emporio.services.GestoreMarketingService;
 import com.emporio.emporio.services.OrdineService;
 import com.emporio.emporio.services.ProdottoDescrizioneService;
 import com.emporio.emporio.services.ProdottoService;
 import com.emporio.emporio.services.TitolareService;
 import com.emporio.emporio.util.ApiPostResponse;
 import com.emporio.emporio.dto.ShopAddEmployeeDto;
+import com.emporio.emporio.dto.ShopAddManagerDto;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +91,9 @@ public class AttivitaController {
 
     @Autowired
     private OrdineService orderService;
+
+    @Autowired
+    private GestoreMarketingService gestoreMarketingService;
 
     @PreAuthorize("hasAuthority('CREATE_SHOP')")
     @PostMapping("/shops")
@@ -160,6 +166,22 @@ public class AttivitaController {
         return ResponseEntity.ok(ApiPostResponse.builder().message("Aggiunto dipendente").build());
     }
 
+    @PreAuthorize("hasAuthority('ADD_MANAGER')")
+    @PutMapping("/shops/managers")
+    public ResponseEntity<ApiPostResponse> addManagerToShop(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody ShopAddManagerDto addManagerDTO) {
+        
+        Titolare owner = titolareService.getTitolare(userDetails.getUsername());
+        
+        Attivita shop = titolareService.getShopOwnedBy(owner.getUsername());
+
+        GestoreMarketing manager = gestoreMarketingService.getGestoreMarketing(addManagerDTO.getManagerUsername());
+        
+        gestoreMarketingService.addShopManager(shop, manager);
+        shop.getShopMarketingManagerList().add(manager);
+
+        return ResponseEntity.ok(ApiPostResponse.builder().message("Aggiunto gestore marketing").build());
+    }
+
     @PreAuthorize("hasAuthority('DELETE_SHOP')")
     @DeleteMapping("/shops")
     public ResponseEntity<String> deleteAttivita(@AuthenticationPrincipal UserDetails userDetails) {
@@ -167,6 +189,7 @@ public class AttivitaController {
 
         titolareService.detachShopFromOwner(userDetails.getUsername());
         employeeService.detachShopFromEmployees(shop.getShopEmployeeList());
+        gestoreMarketingService.detachShopFromMarketingManagers(shop.getShopMarketingManagerList());
         shopDescriptionService.detachAttivitaFrom(shop.getShopDescription());
         shopService.deleteAttivita(shop);
 
@@ -211,12 +234,25 @@ public class AttivitaController {
     @PreAuthorize("hasAuthority('CHECK_SHOP_SALES')")
     @GetMapping("/shops/{piva}/sales")
     public ResponseEntity<List<ProdottoVendutoDto>> getShopSales(@AuthenticationPrincipal UserDetails userDetails, @NotBlank @PathVariable(name = "piva", required = true) String piva) {
-        Attivita shopOwned = this.titolareService.getShopOwnedBy(userDetails.getUsername());
-        if (!shopOwned.getShopDescription().getShopPIVA().equalsIgnoreCase(piva)) {
+        boolean isGestoreMarketing = gestoreMarketingService.existsGestoreMarketing(userDetails.getUsername());
+        boolean isTitolare = titolareService.existsTitolare(userDetails.getUsername());
+
+        if (!isGestoreMarketing && !isTitolare) {
             return ResponseEntity.badRequest().build();
         }
 
-        List<Ordine> orders = this.orderService.getShopOrders(shopOwned.getShopDescription());
+        Attivita shop;
+        if (isTitolare) {
+            shop = titolareService.getShopOwnedBy(userDetails.getUsername());
+        } else {
+            shop = gestoreMarketingService.getShopWorksFor(userDetails.getUsername());
+        }
+
+        if (!shop.getShopDescription().getShopPIVA().equalsIgnoreCase(piva)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<Ordine> orders = this.orderService.getShopOrders(shop.getShopDescription());
 
         Map<ProdottoDescrizione, Integer> sales = new HashMap<>();
         orders.forEach(ordine -> ordine.getOrderProductsLineList().forEach(rigaOrdine -> {

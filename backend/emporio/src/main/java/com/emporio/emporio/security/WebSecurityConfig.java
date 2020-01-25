@@ -121,7 +121,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         {
             public String convert(MappingContext<StatoConsegna, String> context)
             {
-                // If the dog weighs more than 25, then it must be large
                 if(context.getSource() == null)
                     return "NON ASSEGNATA";
 
