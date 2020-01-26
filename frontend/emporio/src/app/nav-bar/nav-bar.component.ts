@@ -52,6 +52,10 @@ export class NavBarComponent implements OnInit {
     return this.authChecks.canOperateOnShopAsEmployee();
   }
 
+  public canOperateOnShopAsMarketingManager(): boolean {
+    return this.authChecks.canOperatoreOnShopAsMarketingManager();
+  }
+
   public canOperateOnShop(): boolean {
     return this.authChecks.canOperateOnShop();
   }

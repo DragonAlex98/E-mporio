@@ -6,8 +6,9 @@
       <a mat-list-item *ngIf="canOperateOnShopAsOwner()" [routerLink]="['/new-shop']"><mat-icon>add</mat-icon> Nuova Attività</a>
       <a mat-list-item *ngIf="canOperateOnShop()" [routerLink]="['/new-order']"><mat-icon>add_shopping_cart</mat-icon> Nuovo Ordine</a>
       <a mat-list-item *ngIf="canOperateOnShopAsOwner()" [routerLink]="['/add-employee']"><mat-icon>add</mat-icon> Aggiungi Dipendente</a>
+      <a mat-list-item *ngIf="canOperateOnShopAsOwner()" [routerLink]="['/add-marketing-manager']"><mat-icon>add</mat-icon> Aggiungi Gestore Marketing</a>
       <a mat-list-item *ngIf="isCustomer()" [routerLink]="['users/' + getLoggedUsername() + '/orders']"><mat-icon>view_list</mat-icon> Storico Ordini</a>
-      <a mat-list-item *ngIf="canOperateOnShop()" [routerLink]="['/shops/' + getPartitaIva()]"><mat-icon>view_list</mat-icon> Dettaglio Attività</a>
+      <a mat-list-item *ngIf="canOperateOnShop() || canOperateOnShopAsMarketingManager()" [routerLink]="['/shops/' + getPartitaIva()]"><mat-icon>view_list</mat-icon> Dettaglio Attività</a>
       <a mat-list-item *ngIf="isFattorino()" [routerLink]="['/orders-to-delivery']"><mat-icon>view_list</mat-icon> Ordini da Consegnare</a>
       <a mat-list-item *ngIf="isFattorino()" [routerLink]="['/delivery-list']"><mat-icon>view_list</mat-icon> Storico consegne</a>
     </mat-nav-list>

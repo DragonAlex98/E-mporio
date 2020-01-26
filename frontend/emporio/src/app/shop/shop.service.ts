@@ -43,6 +43,12 @@ export class ShopService {
     );
   }
 
+  addMarketingManagerToShop(formData: any) {
+    return this.httpClient.put(`${environment.apiUrl}/shops/managers`, formData).pipe(
+      map((item: any) => item.message)
+    );
+  }
+
   getShopInfos(username: string): Observable<Shop> {
     return this.httpClient.get(`${environment.apiUrl}/users/${username}/shops`, ).pipe(
       map(item => this.adapter.adapt(item))

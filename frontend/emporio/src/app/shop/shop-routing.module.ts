@@ -5,6 +5,7 @@ import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { AuthGuard } from '../authentication/helpers/auth.guard';
 import { Role } from '../authentication/models/role';
 import { ShopDetailComponent } from './shop-detail/shop-detail.component';
+import { AddMarketingManagerComponent } from './add-marketing-manager/add-marketing-manager.component';
 
 const routes: Routes = [
   {
@@ -17,11 +18,17 @@ const routes: Routes = [
     path: 'shops/:piva',
     component: ShopDetailComponent,
     canActivate: [AuthGuard],
-    data: { roles: [Role.Titolare, Role.Dipendente] }
+    data: { roles: [Role.Titolare, Role.Dipendente, Role.GestoreMarketing] }
   },
   {
     path: 'add-employee',
     component: AddEmployeeComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Titolare] }
+  },
+  {
+    path: 'add-marketing-manager',
+    component: AddMarketingManagerComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Titolare] }
   }

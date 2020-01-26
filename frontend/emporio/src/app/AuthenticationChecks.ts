@@ -33,6 +33,10 @@ export class AuthenticationChecks {
     public canOperateOnShop(): boolean {
         return (this.canOperateOnShopAsOwner() || this.canOperateOnShopAsEmployee());
     }
+    
+    public canOperatoreOnShopAsMarketingManager(): boolean {
+        return this.isGestoreMarketing();
+    }
 
     public canOperateOnDashboard(): boolean {
         return this.isAdmin() || this.isOperatore();
@@ -54,8 +58,12 @@ export class AuthenticationChecks {
         return this.isLoggedIn() && this.currentUser.role === Role.OperatoreSistema;
     }
 
+    public isGestoreMarketing(): boolean {
+        return this.isLoggedIn() && this.currentUser.role === Role.GestoreMarketing;
+    }
+
     public getPartitaIva(): string {
-        if (this.canOperateOnShop() && this.userShop != null) {
+        if ((this.canOperateOnShop() || this.canOperatoreOnShopAsMarketingManager()) && this.userShop != null) {
             return this.userShop.shopPIVA;
         }
 
