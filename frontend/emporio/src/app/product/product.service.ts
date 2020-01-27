@@ -22,7 +22,7 @@ export class ProductService {
 
   searchProducts (term: string): Observable<Product[]> {
     return this.httpClient.get<Product[]>(`${this.productListUrlName}?nome=${term}`).pipe(
-      map((data: any[]) => data.map(item => this.productAdapter.adapt(item.productDescription)))
+      map((data: any[]) => data.map(item => this.productAdapter.adapt(item)))
     );
   }
 
