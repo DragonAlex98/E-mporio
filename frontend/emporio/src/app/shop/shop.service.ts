@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Shop, ShopAdapter, ShopCategory, ShopCategoryAdapter } from './shop/shop';
+import { Shop, ShopAdapter, ShopCategory, ShopCategoryAdapter, Sale } from './shop/shop';
 import { environment } from '@src/environments/environment';
 import { map, tap } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/services/authentication.service';
@@ -82,6 +82,12 @@ export class ShopService {
   addProductToShop(piva: string, formValue: any): Observable<string> {
     return this.httpClient.post<string>(`${environment.apiUrl}/shops/${piva}/products`, formValue, this.httpOptions).pipe(
       map((item: any) => item.message)
+    );
+  }
+  
+  getShopSalesList(piva: string): Observable<Sale[]> {
+    return this.httpClient.get<Sale[]>(`${environment.apiUrl}/shops/${piva}/sales`).pipe(
+      map((data: any[]) => data)
     );
   }
 }
