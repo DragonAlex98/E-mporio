@@ -20,6 +20,7 @@ export class ShopDetailComponent implements OnInit {
   showCatalogo: Boolean;
   showAddProduct: Boolean;
   showAddEmployee: Boolean;
+  showAddManager: Boolean;
   showShopTotalSales: Boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private service: ShopService, private auth: AuthenticationService,
@@ -49,6 +50,10 @@ export class ShopDetailComponent implements OnInit {
     return this.authChecks.canOperateOnShopAsOwner();
   }
 
+  shouldShowAddManagerButton(): Boolean {
+    return this.authChecks.canOperateOnShopAsOwner();
+  }
+
   deleteShop() {
     this.service.deleteShop().subscribe(
       (res) => {
@@ -65,6 +70,7 @@ export class ShopDetailComponent implements OnInit {
     this.showCatalogo = true;
     this.showAddProduct = false;
     this.showAddEmployee = false;
+    this.showAddManager = false;
     this.showShopTotalSales = false;
   }
 
@@ -72,6 +78,7 @@ export class ShopDetailComponent implements OnInit {
     this.showCatalogo = false;
     this.showAddProduct = true;
     this.showAddEmployee = false;
+    this.showAddManager = false;
     this.showShopTotalSales = false;
   }
 
@@ -79,6 +86,15 @@ export class ShopDetailComponent implements OnInit {
     this.showCatalogo = false;
     this.showAddProduct = false;
     this.showAddEmployee = true;
+    this.showAddManager = false;
+    this.showShopTotalSales = false;
+  }
+
+  showAddMarketingManager() {
+    this.showCatalogo = false;
+    this.showAddProduct = false;
+    this.showAddEmployee = false;
+    this.showAddManager = true;
     this.showShopTotalSales = false;
   }
 
@@ -86,6 +102,7 @@ export class ShopDetailComponent implements OnInit {
     this.showCatalogo = false;
     this.showAddProduct = false;
     this.showAddEmployee = false;
+    this.showAddManager = false;
     this.showShopTotalSales = true;
   }
 }
