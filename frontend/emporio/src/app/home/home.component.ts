@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ClassificaShop } from '../shop/shop/classificaShop';
+import { ShopService } from '../shop/shop.service';
 
 @Component({
   selector: 'app-home',
@@ -8,8 +10,16 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
   title = 'E-mporio';
 
-  constructor() { }
+  classificaShopList: ClassificaShop[];
+
+  constructor(private shopService: ShopService) { }
 
   ngOnInit() {
+    this.shopService.getClassifica().subscribe(
+      data => this.classificaShopList = data,
+      error => {
+          alert('Errore di connessione!');
+      }
+    );
   }
 }

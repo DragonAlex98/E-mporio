@@ -7,6 +7,7 @@ import { map, tap } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/services/authentication.service';
 import { User } from '../authentication/models/user';
 import { Product, ProductCategory, ProductAdapter } from '../product/product/product';
+import { ClassificaShop } from './shop/classificaShop';
 
 @Injectable({
   providedIn: 'root'
@@ -87,6 +88,12 @@ export class ShopService {
   
   getShopSalesList(piva: string): Observable<Sale[]> {
     return this.httpClient.get<Sale[]>(`${environment.apiUrl}/shops/${piva}/sales`).pipe(
+      map((data: any[]) => data)
+    );
+  }
+
+  getClassifica(): Observable<ClassificaShop[]> {
+    return this.httpClient.get<ClassificaShop[]>(`${environment.apiUrl}/classifica`).pipe(
       map((data: any[]) => data)
     );
   }
