@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.emporio.emporio.controller.ClassificaAttivitaController;
 import com.emporio.emporio.factory.AcquirenteUserFactory;
 import com.emporio.emporio.factory.AdminUserFactory;
 import com.emporio.emporio.factory.DipendenteUserFactory;
@@ -54,7 +55,9 @@ import com.emporio.emporio.repository.UserRepository;
 import com.emporio.emporio.services.RoleService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -120,6 +123,15 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private GestoreMarketingRepository marketingRepository;
+
+    @Autowired
+    private ThreadPoolTaskScheduler taskScheduler;
+
+    @Autowired
+    private ClassificaAttivitaController classificaAttivitaController;
+
+    @Value("${refresh.top.shops}")
+    private Long refreshTopShops;
 
     @Override
     public void run(String... args) throws Exception {
@@ -313,5 +325,8 @@ public class DataInitializer implements CommandLineRunner {
         GestoreMarketing g1 = this.marketingRepository.findByUsername("gestore").get();
         g1.setShopWorksFor(s1);
         this.marketingRepository.save(g1);
+
+        //Creo un task che viene eseguito una volta al giorno per aggiornare la classifica dei negozi che hanno venduto di più
+        taskScheduler.scheduleAtFixedRate(() -> classificaAttivitaController.updateClassifica(), refreshTopShops);
     }
 }
