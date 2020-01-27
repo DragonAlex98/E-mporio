@@ -23,6 +23,10 @@ public class OrdineService {
 
     @Autowired
     private OrdineRepository orderRepository;
+
+    public List<Ordine> getAllOrders() {
+        return orderRepository.findAll();
+    }
     
     public List<Ordine> getAllNotAssignedOrders() {
         List<Ordine> orders = orderRepository.findAll()

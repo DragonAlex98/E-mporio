@@ -1,5 +1,9 @@
 package com.emporio.emporio.services;
 
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
+
 import com.emporio.emporio.model.AttivitaDescrizione;
 import com.emporio.emporio.repository.AttivitaDescrizioneRepository;
 
@@ -19,5 +23,13 @@ public class AttivitaDescrizioneService {
         shopDescription.setShop(null);
         this.shopDescRepo.save(shopDescription);
     }
-    
+
+    public AttivitaDescrizione getAttivitaDescrizione(String piva) {
+        Optional<AttivitaDescrizione> shopDesc = shopDescRepo.findById(piva);
+
+        if(!shopDesc.isPresent())
+            throw new EntityNotFoundException("L'attività descrizione con partita iva " + piva + "non è registrata nel sistema!");
+
+        return shopDesc.get();
+    }    
 }
