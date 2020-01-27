@@ -32,6 +32,10 @@ export class DashboardNavbarComponent implements OnInit {
     return this.authService.currentUserValue.username;
   }
 
+  isLoggedIn(): boolean {
+    return this.authChecks.isLoggedIn();
+  }
+
   logout() {
     this.authService.logout();
   }

@@ -1,0 +1,9 @@
+.change-password-form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.controles-container{
+    width: 100%;
+    padding: 25%;    
+}

@@ -3,6 +3,7 @@
         (closed)="events.push('close!')">
         <mat-toolbar color="primary">Menu</mat-toolbar>
         <mat-nav-list>
+            <a mat-list-item *ngIf="isLoggedIn()" [routerLink]="['/profile']"><mat-icon>portrait</mat-icon>Gestione Profilo</a>
             <a mat-list-item *ngIf="isAdmin()" [routerLink]="['dashboard/create-admin']"><mat-icon>add</mat-icon>Nuovo Admin</a>
             <a mat-list-item *ngIf="isAdmin()" [routerLink]="['dashboard/create-operatore']"><mat-icon>add</mat-icon>Nuovo Operatore</a>
             <a mat-list-item *ngIf="canOperateOnDashboard()" [routerLink]="['dashboard/users']"><mat-icon>people</mat-icon>Gestione Utenti</a>

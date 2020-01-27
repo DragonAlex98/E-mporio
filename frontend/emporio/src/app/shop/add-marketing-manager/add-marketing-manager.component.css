@@ -1,3 +1,13 @@
 button {
     width: 100%;
 }
+
+.controles-container{
+    width: 100%;
+    padding: 25%;    
+}
+
+.registration-form-container {
+    display: flex;
+    flex-direction: column;
+}

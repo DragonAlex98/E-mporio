@@ -4,10 +4,11 @@ import { AuthenticationRoutingModule } from '@src/app/authentication/authenticat
 import { NativeScriptCommonModule } from 'nativescript-angular/common';
 import { LoginComponent } from '@src/app/authentication/login/login.component';
 import { RegistrationComponent } from '@src/app/authentication/registration/registration.component';
+import { ProfileComponent } from '@src/app/authentication/profile/profile.component';
 
 
 @NgModule({
-  declarations: [LoginComponent, RegistrationComponent],
+  declarations: [LoginComponent, RegistrationComponent, ProfileComponent],
   imports: [
     AuthenticationRoutingModule,
     NativeScriptCommonModule

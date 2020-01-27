@@ -26,6 +26,10 @@ export class AuthenticationService {
         this.currentShop = this.currentShopSubject.asObservable();
     }
 
+    changePassword(oldPassword: string, newPassword: string, confirmNewPassword: string) {
+        return this.http.post<any>(`${environment.apiUrl}/auth/change`, { oldPassword, newPassword, confirmNewPassword });
+    }
+
     public get currentUserValue(): User {
         return this.currentUserSubject.value;
     }

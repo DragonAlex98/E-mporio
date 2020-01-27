@@ -2,6 +2,7 @@
  <mat-sidenav #drawer class="sidenav" mode="over" [(opened)]="opened" (opened)="events.push('open!')" (closed)="events.push('close!')">  
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
+      <a mat-list-item *ngIf="isLoggedIn()" [routerLink]="['/profile']"><mat-icon>portrait</mat-icon> Gestione Profilo</a>
       <a mat-list-item *ngIf="canOperateOnShop()" [routerLink]="['/new-product']"><mat-icon>add</mat-icon> Nuovo Prodotto</a>
       <a mat-list-item *ngIf="canOperateOnShopAsOwner()" [routerLink]="['/new-shop']"><mat-icon>add</mat-icon> Nuova Attività</a>
       <a mat-list-item *ngIf="canOperateOnShop()" [routerLink]="['/new-order']"><mat-icon>add_shopping_cart</mat-icon> Nuovo Ordine</a>
@@ -12,6 +13,7 @@
       <a mat-list-item *ngIf="isFattorino()" [routerLink]="['/orders-to-delivery']"><mat-icon>view_list</mat-icon> Ordini da Consegnare</a>
       <a mat-list-item *ngIf="isFattorino()" [routerLink]="['/delivery-list']"><mat-icon>view_list</mat-icon> Storico consegne</a>
     </mat-nav-list>
+
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">

@@ -1,0 +1,38 @@
+<div class="main-containers">
+    <span mat-dialog-title>Gestione Profilo</span>
+    <span class="fill-remaining-space"></span>
+    <mat-grid-list [cols]=4 rowHeight="400px">
+        <mat-grid-tile [rowspan]=1 [colspan]=1>
+
+        </mat-grid-tile>
+        <mat-grid-tile [rowspan]=1 [colspan]=2>
+            <div class="controles-container">
+                <mat-card>
+                    <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmit()">
+                        <div class="change-password-form-container">
+                            <mat-form-field>
+                                <input matInput placeholder="Vecchia Password" formControlName="oldPassword" required>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <input type="password" matInput placeholder="Nuova Password" formControlName="newPassword" required>
+                                <mat-error>Inserisci la nuova password</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <input type="password" matInput placeholder="Ripeti Nuova Password" formControlName="confirmNewPassword" required [errorStateMatcher]="errorMatcher">
+                                <mat-error *ngIf="changePasswordForm.hasError('notSame')">Le password non combaciano</mat-error>
+                            </mat-form-field>
+
+                            <button mat-raised-button color="accent">Cambia password</button>
+                        </div>
+                    </form>
+                </mat-card>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [rowspan]=1 [colspan]=1>
+
+        </mat-grid-tile>
+    </mat-grid-list>
+    <span class="fill-remaining-space"></span>
+</div>

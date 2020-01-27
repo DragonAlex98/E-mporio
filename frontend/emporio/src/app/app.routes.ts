@@ -17,6 +17,7 @@ import { DashboardUsersComponent } from './dashboard/dashboard-users/dashboard-u
 import { InsertLockerComponent } from './locker/insert-locker/insert-locker.component';
 import { DashboardCreateOperatoreComponent } from './dashboard/dashboard-create-operatore/dashboard-create-operatore.component';
 import { DashboardCreateAdminComponent } from './dashboard/dashboard-create-admin/dashboard-create-admin.component';
+import { ProfileComponent } from './authentication/profile/profile.component';
 
 
 export const routes: Routes = [
@@ -33,6 +34,10 @@ export const routes: Routes = [
       path: 'home',
       component: HomeComponent,
       canActivate: [DashboardGuard]
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
   },
   {
     path: 'login',
