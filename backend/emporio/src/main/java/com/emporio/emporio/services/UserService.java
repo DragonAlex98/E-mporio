@@ -11,6 +11,7 @@ import com.emporio.emporio.model.User;
 import com.emporio.emporio.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,6 +22,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public boolean existsUser(String username) {
         return userRepository.existsByUsername(username);
@@ -58,5 +62,18 @@ public class UserService {
 
     public List<User> getUsers(String username) {
         return userRepository.findByUsernameContainingIgnoreCase(username);
+    }
+
+    public boolean changePassword(String username, String oldPassword, String newPassword, String confirmNewPassword) {
+        User user = this.getUser(username);
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            return false;
+        }
+        if (!newPassword.equals(confirmNewPassword)) {
+            return false;
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        this.updateUser(user);
+        return true;
     }
 }

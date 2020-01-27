@@ -7,6 +7,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import com.emporio.emporio.dto.AuthenticationRequest;
+import com.emporio.emporio.dto.ChangePasswordDto;
 import com.emporio.emporio.dto.RefreshTokenDto;
 import com.emporio.emporio.factory.UserFactory;
 import com.emporio.emporio.model.Role;
@@ -97,5 +100,15 @@ public class AuthenticationController {
         } catch (AuthenticationException e) {
             throw new InvalidJwtAuthenticationException("Invalid or expired token supplied");
         }
+    }
+
+    @SuppressWarnings("rawtypes")
+    @PostMapping("/auth/change")
+    public ResponseEntity changePassword(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody ChangePasswordDto change) {
+        if (!userService.changePassword(userDetails.getUsername(), change.getOldPassword(), change.getNewPassword(), change.getConfirmNewPassword())) {
+            throw new BadCredentialsException("Wrong old password or new password or confirm new password supplied");
+        }
+
+        return ResponseEntity.ok().build();
     }
 }
