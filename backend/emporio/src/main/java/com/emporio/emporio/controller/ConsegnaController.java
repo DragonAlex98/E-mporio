@@ -19,6 +19,7 @@ import com.emporio.emporio.services.ConsegnaService;
 import com.emporio.emporio.services.FattorinoService;
 import com.emporio.emporio.services.OrdineService;
 import com.emporio.emporio.services.PostoService;
+import com.emporio.emporio.util.ApiPostResponse;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,13 +89,14 @@ public class ConsegnaController {
     }
 
     @PutMapping("/delivery/{id}/states/consegnata")
-    public ResponseEntity<String> updateState(@PathVariable(name = "id", required = true) int deliveryId) {
+    public ResponseEntity<ApiPostResponse> updateState(@PathVariable(name = "id", required = true) int deliveryId) {
 
         Consegna consegna = consegnaService.getDeliveryById(deliveryId);
 
         consegnaService.changeDeliveryStatus(consegna, 1);
 
-        return ResponseEntity.ok("Consegna con id "+ deliveryId + "aggiornata");
+        return ResponseEntity.ok(ApiPostResponse.builder().message("Consegna con id "+ deliveryId + "aggiornata").build());
+
     }
 
 
