@@ -32,7 +32,7 @@
             <h4 mat-list>Posto Locker: {{order.lockerSpaceName}}</h4>
         </div>
         <div id="ritira-merce-button">
-            <button mat-flat-button color="accent" [disabled]="!order.lockerId" (click)="ritiraMerce()">Ritira Merce</button>
+            <button mat-flat-button color="accent" [disabled]="(order.deliveryState != 'CONSEGNATA')" (click)="ritiraMerce()">Ritira Merce</button>
         </div>
     </div>
   </mat-grid-tile>
