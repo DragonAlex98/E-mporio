@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from './authentication/services/authentication.service';
+import { AuthenticationChecks } from './AuthenticationChecks';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,11 @@ import { AuthenticationService } from './authentication/services/authentication.
 })
 export class AppComponent implements OnInit {
 
-  constructor(private authService: AuthenticationService) {}
+  constructor(private authService: AuthenticationService, private authChecks: AuthenticationChecks) {}
+
+  showDashboard() {
+    return this.authChecks.isAdmin() || this.authChecks.isOperatore();
+  }
 
   private checkExpiredToken() {
     if (!this.authService.currentUserValue) return;

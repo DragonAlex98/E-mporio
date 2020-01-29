@@ -1,6 +1,7 @@
 package com.emporio.emporio.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -34,6 +35,18 @@ public class ConsegnaService {
         if (deliveryList.size() == 0) throw new EntityNotFoundException("Non ci sono consegne da visualizzare");
 
         return deliveryList;
+
+    }
+
+    public Consegna getDeliveryById(Integer id) {
+
+       Optional<Consegna> consegnaOpt = consegnaRepository.findById(id);
+
+       if (!consegnaOpt.isPresent()) {throw new EntityNotFoundException("Consegna non trovata!");}
+
+       Consegna consegna = consegnaOpt.get();
+
+       return consegna;
 
     }
 

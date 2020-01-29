@@ -77,4 +77,10 @@ export class DeliveryService {
 
   }
 
+  updateDeliveryStatusToDelivery(idDelivery: number): Observable<String> {
+
+    return this.httpService.put<String>(this.deliveryUrl + '/' + idDelivery + '/states/consegnata', this.httpOptions);
+
+  }
+
 }

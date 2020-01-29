@@ -28,6 +28,8 @@ public class CustomUser implements UserDetails {
 
     private Role role;
 
+    private Boolean enabled;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = this.role.getPrivileges().stream().map(x -> new SimpleGrantedAuthority(x.getName())).collect(Collectors.toList());
@@ -52,6 +54,6 @@ public class CustomUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
     }
 }

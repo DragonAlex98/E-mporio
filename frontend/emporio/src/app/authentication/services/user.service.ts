@@ -20,5 +20,21 @@ export class UserService {
     register(user: User) {
         return this.http.post(`${environment.apiUrl}/auth/signup`, user);
     }
+
+    getUsers(username: string) {
+        return this.http.get<User[]>(`${environment.apiUrl}/users/search`, {params: { username: username }});
+    }
+
+    toggleUser(username: string) {
+        return this.http.put(`${environment.apiUrl}/users/${username}`, null);
+    }
+
+    createAdmin(user: User) {
+        return this.http.post(`${environment.apiUrl}/users/admins`, user);
+    }
+
+    createOperatore(user: User) {
+        return this.http.post(`${environment.apiUrl}/users/operators`, user);
+    }
 }
 

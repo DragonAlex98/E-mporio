@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Shop, ShopAdapter, ShopCategory, ShopCategoryAdapter } from './shop/shop';
+import { Shop, ShopAdapter, ShopCategory, ShopCategoryAdapter, Sale } from './shop/shop';
 import { environment } from '@src/environments/environment';
 import { map, tap } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/services/authentication.service';
 import { User } from '../authentication/models/user';
 import { Product, ProductCategory, ProductAdapter } from '../product/product/product';
+import { ClassificaShop } from './shop/classificaShop';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,12 @@ export class ShopService {
 
   addEmployeeToShop(formData: any) {
     return this.httpClient.put(`${environment.apiUrl}/shops/employees`, formData).pipe(
+      map((item: any) => item.message)
+    );
+  }
+
+  addMarketingManagerToShop(formData: any) {
+    return this.httpClient.put(`${environment.apiUrl}/shops/managers`, formData).pipe(
       map((item: any) => item.message)
     );
   }
@@ -76,6 +83,18 @@ export class ShopService {
   addProductToShop(piva: string, formValue: any): Observable<string> {
     return this.httpClient.post<string>(`${environment.apiUrl}/shops/${piva}/products`, formValue, this.httpOptions).pipe(
       map((item: any) => item.message)
+    );
+  }
+  
+  getShopSalesList(piva: string): Observable<Sale[]> {
+    return this.httpClient.get<Sale[]>(`${environment.apiUrl}/shops/${piva}/sales`).pipe(
+      map((data: any[]) => data)
+    );
+  }
+
+  getClassifica(): Observable<ClassificaShop[]> {
+    return this.httpClient.get<ClassificaShop[]>(`${environment.apiUrl}/classifica`).pipe(
+      map((data: any[]) => data)
     );
   }
 }

@@ -26,6 +26,10 @@ export class AuthenticationService {
         this.currentShop = this.currentShopSubject.asObservable();
     }
 
+    changePassword(oldPassword: string, newPassword: string, confirmNewPassword: string) {
+        return this.http.post<any>(`${environment.apiUrl}/auth/change`, { oldPassword, newPassword, confirmNewPassword });
+    }
+
     public get currentUserValue(): User {
         return this.currentUserSubject.value;
     }
@@ -42,7 +46,7 @@ export class AuthenticationService {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     this.currentUserSubject.next(user);
-                    if (user.role === Role.Dipendente || user.role === Role.Titolare) {
+                    if (user.role === Role.Dipendente || user.role === Role.Titolare || user.role == Role.GestoreMarketing) {
                         this.getShop(username).subscribe(
                             data => {
                                 console.log(data);

@@ -4,17 +4,23 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.emporio.emporio.dto.NuovoLockerDto;
 import com.emporio.emporio.model.Locker;
 import com.emporio.emporio.model.Posto;
 import com.emporio.emporio.services.LockerService;
 import com.emporio.emporio.services.PostoService;
+import com.emporio.emporio.util.ApiPostResponse;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 public class LockerController {
@@ -49,8 +55,12 @@ public class LockerController {
         Locker locker = this.lockerService.getLockerByPosto(posto);
 
         return ResponseEntity.ok(locker);
-
-
     }
 
+    @PreAuthorize("hasAuthority('CREATE_LOCKER')")
+    @PostMapping("/locker")
+    public ResponseEntity<ApiPostResponse> createLocker(@Valid @RequestBody NuovoLockerDto lockerDto) {
+        lockerService.createLocker(lockerDto.getAddress(), lockerDto.getPosti());
+        return ResponseEntity.ok(ApiPostResponse.builder().message("Il locker in via " + lockerDto.getAddress() + " con " + lockerDto.getPosti() + " posti è stato creato!").build());
+    }
 }

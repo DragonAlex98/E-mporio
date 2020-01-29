@@ -1,0 +1,36 @@
+<span class="fill-remaining-space"></span>
+<mat-grid-list [cols]=4 rowHeight="400px">
+  <mat-grid-tile [rowspan]=1 [colspan]=1>
+
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]=1 [colspan]=2>
+    <div>
+      <mat-card>
+      <form [formGroup]="lockerForm" (ngSubmit)="onSubmit(lockerForm.value)">
+        <div>
+          <p>
+            <mat-form-field>
+              <input matInput placeholder="Indirizzo Locker" formControlName="lockerStreet" required>
+            </mat-form-field>
+          </p>
+
+          <p>
+            <mat-form-field>
+              <input matInput type="number" placeholder="Numero Posti" formControlName="numPosti" required>
+            </mat-form-field>
+          </p>
+
+          <p>
+            <button mat-raised-button color="accent">Crea Locker</button>
+          </p>
+        </div>
+      </form>
+    </mat-card>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]=1 [colspan]=1>
+
+  </mat-grid-tile>
+
+</mat-grid-list>
+<span class="fill-remaining-space"></span>

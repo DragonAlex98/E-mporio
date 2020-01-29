@@ -51,4 +51,8 @@ public class AttivitaDescrizione {
     @OneToOne(mappedBy = "shopDescription")
     @JsonIgnore
     private Attivita shop;
+
+    @OneToOne(mappedBy = "shop")
+    @JsonIgnore
+    private ClassificaAttivita classifica;
 }

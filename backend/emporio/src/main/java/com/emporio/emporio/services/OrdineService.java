@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 
 import com.emporio.emporio.model.Acquirente;
+import com.emporio.emporio.model.AttivitaDescrizione;
 import com.emporio.emporio.model.Ordine;
 import com.emporio.emporio.repository.OrdineRepository;
 
@@ -22,6 +23,10 @@ public class OrdineService {
 
     @Autowired
     private OrdineRepository orderRepository;
+
+    public List<Ordine> getAllOrders() {
+        return orderRepository.findAll();
+    }
     
     public List<Ordine> getAllNotAssignedOrders() {
         List<Ordine> orders = orderRepository.findAll()
@@ -64,6 +69,16 @@ public class OrdineService {
             throw new EntityNotFoundException("Nessun ordine trovato!");
 
         return orderList;
+    }
+
+    public List<Ordine> getShopOrders(AttivitaDescrizione shop) {
+        List<Ordine> orderList = this.orderRepository.findAll(Example.of(Ordine.builder().orderShop(AttivitaDescrizione.builder().shopPIVA(shop.getShopPIVA()).build()).build()));
+        
+        if(orderList.isEmpty()) {
+            throw new EntityNotFoundException("Nessun ordine trovato!");
+        }
+
+        return orderList; 
     }
     
 }

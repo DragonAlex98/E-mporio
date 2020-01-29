@@ -1,0 +1,15 @@
+<mat-accordion>
+    <p *ngIf="salesList != null && salesList.length > 0">L'attività ha venduto complessivamente</p>
+    <p *ngIf="salesList == null || salesList.length == 0">L'attività non ha ancora venduto niente</p>
+    <mat-expansion-panel *ngFor="let sale of salesList">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Prodotto: {{sale.product.productName}}
+            </mat-panel-title>
+            <mat-panel-description>
+                Quantità: {{sale.quantity}}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>L'attività ha venduto {{sale.quantity}} {{sale.product.productName}}</p>
+    </mat-expansion-panel>
+</mat-accordion>

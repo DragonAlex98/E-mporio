@@ -1,5 +1,6 @@
 import { Adapter } from '../../adapter';
 import { Injectable } from '@angular/core';
+import { Product } from '@src/app/product/product/product';
 
 export class Shop {
 
@@ -17,6 +18,16 @@ export class Shop {
         this.shopHeadquarter = shopHeadquarter;
     }
 }
+
+export class Sale {
+    product: Product;
+    quantity: number;
+
+    constructor(product: Product, quantity: number) {
+      this.product = product;
+      this.quantity = quantity;
+    }
+  }
 
 export class ShopCategory {
     shopCategoryId: number;

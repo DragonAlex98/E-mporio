@@ -11,7 +11,7 @@ export class RegistrationComponent implements OnInit {
     registerForm: FormGroup;
     submitted = false;
     role = Role;
-    roles = Object.values(this.role); // array per la visualizzazione dell'enum dei ruoli
+    roles = Object.values(this.role).filter(x => x != Role.Admin && x != Role.OperatoreSistema); // array per la visualizzazione dell'enum dei ruoli
 
     constructor(
         private formBuilder: FormBuilder,

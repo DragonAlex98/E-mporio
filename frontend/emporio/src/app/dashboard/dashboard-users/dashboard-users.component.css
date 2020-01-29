@@ -1,0 +1,19 @@
+.search-bar {
+    margin: 25px 0px;
+    text-align: center;
+}
+  
+.search-bar input {
+    width: 320px;
+    padding: 10px 15px;
+    font-size: 16px;
+}
+
+.mat-button {
+    border: 1px solid green;
+}
+
+.mat-elevation-z0 {
+    margin: 3px;
+    border: 1px solid purple;
+}

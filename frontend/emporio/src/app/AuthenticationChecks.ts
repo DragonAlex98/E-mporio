@@ -18,56 +18,52 @@ export class AuthenticationChecks {
     }
 
     public isLoggedIn(): boolean {
-    if (this.currentUser != null) {
-        return true;
-    }
-
-    return false;
+        return this.currentUser != null;
     }
 
     public canOperateOnShopAsOwner(): boolean {
-    if (this.isLoggedIn() && this.currentUser.role === Role.Titolare) {
-        return true;
-    }
-
-    return false;
+        return this.isLoggedIn() && this.currentUser.role === Role.Titolare;
     }
 
 
     public canOperateOnShopAsEmployee(): boolean {
-    if (this.isLoggedIn() && this.currentUser.role === Role.Dipendente) {
-        return true;
-    }
-
-    return false;
+        return this.isLoggedIn() && this.currentUser.role === Role.Dipendente;
     }
 
     public canOperateOnShop(): boolean {
-    if (this.canOperateOnShopAsOwner() || this.canOperateOnShopAsEmployee()) {
-        return true;
+        return (this.canOperateOnShopAsOwner() || this.canOperateOnShopAsEmployee());
+    }
+    
+    public canOperatoreOnShopAsMarketingManager(): boolean {
+        return this.isGestoreMarketing();
     }
 
-    return false;
+    public canOperateOnDashboard(): boolean {
+        return this.isAdmin() || this.isOperatore();
     }
 
     public isCustomer(): boolean {
-    if (this.isLoggedIn() && this.currentUser.role === Role.Acquirente) {
-        return true;
+        return this.isLoggedIn() && this.currentUser.role === Role.Acquirente;
     }
 
-        return false;
+    public isFattorino(): boolean {
+        return this.isLoggedIn() && this.currentUser.role === Role.Fattorino;
     }
 
-    public isFattorino() {
-    if (this.isLoggedIn() && this.currentUser.role === Role.Fattorino) {
-        return true;
+    public isAdmin(): boolean {
+        return this.isLoggedIn() && this.currentUser.role === Role.Admin;
     }
 
-        return false;
+    public isOperatore(): boolean {
+        return this.isLoggedIn() && this.currentUser.role === Role.OperatoreSistema;
+    }
+
+    public isGestoreMarketing(): boolean {
+        return this.isLoggedIn() && this.currentUser.role === Role.GestoreMarketing;
     }
 
     public getPartitaIva(): string {
-        if (this.canOperateOnShop() && this.userShop != null) {
+        if ((this.canOperateOnShop() || this.canOperatoreOnShopAsMarketingManager()) && this.userShop != null) {
             return this.userShop.shopPIVA;
         }
 

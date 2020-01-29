@@ -1,0 +1,24 @@
+<span class="fill-remaining-space"></span>
+<mat-grid-list [cols]=4 rowHeight="400px">
+    <mat-grid-tile [rowspan]=1 [colspan]=1>
+
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]=1 [colspan]=2>
+        <div class="controles-container">
+            <mat-card>
+            <form [formGroup]="addManagerForm" (ngSubmit)="onSubmit(addManagerForm.value)">
+            <div class="registration-form-container">
+                <mat-form-field>
+                    <input matInput placeholder="Username Gestore Marketing" formControlName="managerUsername" required>
+                </mat-form-field>
+            </div>
+            <button mat-flat-button color="accent">Aggiungi</button>            
+        </form>
+        </mat-card>
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]=1 [colspan]=1>
+
+    </mat-grid-tile>
+</mat-grid-list>
+<span class="fill-remaining-space"></span>

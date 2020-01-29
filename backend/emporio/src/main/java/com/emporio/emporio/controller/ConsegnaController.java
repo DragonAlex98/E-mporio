@@ -26,7 +26,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,7 +61,7 @@ public class ConsegnaController {
             
             Posto posto = postoService.getPosto(delivery.getIdPosto());
 
-            Consegna consegna = consegnaService.saveConsegna(Consegna.builder().fattorino(fattorino).ordine(order).statoConsegna(StatoConsegna.RITIRATA).posto(posto).build());
+            Consegna consegna = consegnaService.saveConsegna(Consegna.builder().fattorino(fattorino).ordine(order).statoConsegna(StatoConsegna.PRELEVATA).posto(posto).build());
 
             postoService.updateConsegna(consegna, posto);
             order.setOrderConsegna(consegna);
@@ -78,12 +80,23 @@ public class ConsegnaController {
         
         // Conversione da lista di consegne a consegne dto tramite model mapper e map con rif a metodo
         List<ConsegnaGetDto> deliveryList = consegnaService.getDeliveryByFattorino(fattorino).stream()
-                                                           .map(this::convertToDto).collect(Collectors.toList()); //Loreti Style
+                                                           .map(this::convertToDto).collect(Collectors.toList());
         
         return ResponseEntity.ok(deliveryList);
 
 
     }
+
+    @PutMapping("/delivery/{id}/states/consegnata")
+    public ResponseEntity<String> updateState(@PathVariable(name = "id", required = true) int deliveryId) {
+
+        Consegna consegna = consegnaService.getDeliveryById(deliveryId);
+
+        consegnaService.changeDeliveryStatus(consegna, 1);
+
+        return ResponseEntity.ok("Consegna con id "+ deliveryId + "aggiornata");
+    }
+
 
     private ConsegnaGetDto convertToDto (Consegna consegna) {
 

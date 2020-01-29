@@ -1,0 +1,21 @@
+<div class="classifica-shop-list-page-container">
+    <span><h3>Le aziende che hanno venduto più prodotti</h3></span>
+    <mat-grid-list cols="3" rowHeight="400px">
+        <mat-grid-tile *ngFor="let classificaShop of classificaShopList">
+            <mat-card>
+                <div class="classifica-shop-list-content">
+                    <mat-card-header>
+                            <mat-card-title><span>{{classificaShop.shop.shopBusinessName.toUpperCase()}}</span></mat-card-title>
+                            <mat-card-subtitle><span>Prodotti Totali Venduti: {{classificaShop.productsSold}}</span></mat-card-subtitle>
+                            <mat-card-content>
+                                <p>{{classificaShop.shop.shopCategory.shopCategoryDescription}}</p>
+                                <p>{{classificaShop.shop.shopAddress}}, {{classificaShop.shop.shopHeadquarter}}</p>
+                                <button mat-raised-button color="accent" [routerLink]="['/shops/' + classificaShop.shop.shopPIVA]">Visita Attività</button>
+                            </mat-card-content>
+                            <span class="fill-remaining-space"></span>
+                    </mat-card-header>
+                </div>
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

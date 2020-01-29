@@ -23,7 +23,7 @@ import { OrderService } from '@src/app/order/order.service';
 import { MatStepperModule } from '@angular/material';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from '@src/app/authentication/helpers/jwt.interceptor';
-import { DashboardHomeComponent } from '@src/app/dashboard/dashboard-home/dashboard-home.component';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 
 @NgModule({
@@ -34,7 +34,6 @@ import { DashboardHomeComponent } from '@src/app/dashboard/dashboard-home/dashbo
     NavBarComponent,
     FooterComponent,
     SearchBarComponent,
-    DashboardHomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,7 +51,8 @@ import { DashboardHomeComponent } from '@src/app/dashboard/dashboard-home/dashbo
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatStepperModule
+    MatStepperModule,
+    DashboardModule
   ],
   providers: [
     {

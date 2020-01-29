@@ -22,6 +22,12 @@
             <button mat-flat-button color="accent" *ngIf="shouldShowDeleteShopButton()" (click)="showAddEmpl()">
                 Aggiungi Dipendente
             </button>
+            <button mat-flat-button color="accent" *ngIf="shouldShowAddManagerButton()" (click)="showAddMarketingManager()">
+                Aggiungi Gestore Marketing
+            </button>
+            <button mat-flat-button color="accent" *ngIf="shouldShowShopSalesButton()" (click)="showShopSales()">
+                Visualizza Vendite
+            </button>
         </mat-card-content>
     </mat-card>
 
@@ -35,5 +41,11 @@
     </div>
     <div *ngIf="shop != null && showAddEmployee">
         <app-add-employee></app-add-employee>
+    </div>
+    <div *ngIf="shop != null && showAddManager">
+        <app-add-marketing-manager></app-add-marketing-manager>
+    </div>
+    <div *ngIf="shop != null && showShopTotalSales">
+        <app-shop-sales></app-shop-sales>
     </div>
 </div>

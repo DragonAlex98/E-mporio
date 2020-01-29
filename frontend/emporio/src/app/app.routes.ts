@@ -12,6 +12,12 @@ import { RegistrationComponent } from './authentication/registration/registratio
 import { OrderToDeliveryComponent } from './order/order-to-delivery/order-to-delivery.component';
 import { Role } from './authentication/models/role';
 import { DashboardHomeComponent } from './dashboard/dashboard-home/dashboard-home.component';
+import { DashboardGuard } from './authentication/helpers/dashboard.guard';
+import { DashboardUsersComponent } from './dashboard/dashboard-users/dashboard-users.component';
+import { InsertLockerComponent } from './locker/insert-locker/insert-locker.component';
+import { DashboardCreateOperatoreComponent } from './dashboard/dashboard-create-operatore/dashboard-create-operatore.component';
+import { DashboardCreateAdminComponent } from './dashboard/dashboard-create-admin/dashboard-create-admin.component';
+import { ProfileComponent } from './authentication/profile/profile.component';
 
 
 export const routes: Routes = [
@@ -27,6 +33,11 @@ export const routes: Routes = [
   {
       path: 'home',
       component: HomeComponent,
+      canActivate: [DashboardGuard]
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
   },
   {
     path: 'login',
@@ -52,7 +63,37 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardHomeComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full',
+      },
+      {
+        path: 'home',
+        component: DashboardHomeComponent,
+      },
+      {
+        path: 'users',
+        component: DashboardUsersComponent,
+      },
+      {
+        path: 'add-locker',
+        component: InsertLockerComponent,
+      },
+      {
+        path: 'create-admin',
+        component: DashboardCreateAdminComponent,
+      },
+      {
+        path: 'create-operatore',
+        component: DashboardCreateOperatoreComponent,
+      },
+      {
+        path: '**',
+        component: PageNotFoundComponent,
+      }
+    ],
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin, Role.OperatoreSistema] }
   },

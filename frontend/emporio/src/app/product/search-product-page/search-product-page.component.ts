@@ -21,7 +21,7 @@ export class SearchProductPageComponent implements OnInit {
     this.service.searchProducts(this.searchTerm).subscribe(
       data => this.productList = data,
       error => {
-        if ([400, 404].indexOf(error.status) !== -1) {
+        if ([404].indexOf(error.status) !== -1) {
           alert(error.error.message);
         } else {
           alert('Errore di connessione!');

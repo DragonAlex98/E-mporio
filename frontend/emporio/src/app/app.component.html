@@ -1,8 +1,7 @@
-<!-- Header -->
-<app-navbar>
-
-<!-- Contenuto delle routes -->
-<router-outlet></router-outlet>
+<app-navbar *ngIf="!showDashboard()">
+    <router-outlet></router-outlet>
 </app-navbar>
-<!-- Footer 
-<app-footer></app-footer> -->
+
+<app-dashboard-navbar *ngIf="showDashboard()">
+    <router-outlet></router-outlet>
+</app-dashboard-navbar>

@@ -54,4 +54,8 @@ public abstract class User {
     @ManyToOne
     @JoinColumn(name = "Ruolo", nullable = false)
     private Role role;
+
+    @Column(name = "Abilitato", nullable = false)
+    @JsonIgnore
+    private Boolean enabled = true;
 }

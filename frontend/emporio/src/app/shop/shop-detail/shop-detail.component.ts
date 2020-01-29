@@ -20,6 +20,8 @@ export class ShopDetailComponent implements OnInit {
   showCatalogo: Boolean;
   showAddProduct: Boolean;
   showAddEmployee: Boolean;
+  showAddManager: Boolean;
+  showShopTotalSales: Boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private service: ShopService, private auth: AuthenticationService,
     private authChecks: AuthenticationChecks) { }
@@ -40,7 +42,15 @@ export class ShopDetailComponent implements OnInit {
     );
   }
 
+  shouldShowShopSalesButton(): Boolean {
+    return this.authChecks.canOperatoreOnShopAsMarketingManager() || this.authChecks.canOperateOnShopAsOwner();
+  }
+
   shouldShowDeleteShopButton(): Boolean {
+    return this.authChecks.canOperateOnShopAsOwner();
+  }
+
+  shouldShowAddManagerButton(): Boolean {
     return this.authChecks.canOperateOnShopAsOwner();
   }
 
@@ -60,18 +70,39 @@ export class ShopDetailComponent implements OnInit {
     this.showCatalogo = true;
     this.showAddProduct = false;
     this.showAddEmployee = false;
+    this.showAddManager = false;
+    this.showShopTotalSales = false;
   }
 
   showAddProd() {
     this.showCatalogo = false;
     this.showAddProduct = true;
     this.showAddEmployee = false;
+    this.showAddManager = false;
+    this.showShopTotalSales = false;
   }
 
   showAddEmpl() {
     this.showCatalogo = false;
     this.showAddProduct = false;
     this.showAddEmployee = true;
+    this.showAddManager = false;
+    this.showShopTotalSales = false;
   }
 
+  showAddMarketingManager() {
+    this.showCatalogo = false;
+    this.showAddProduct = false;
+    this.showAddEmployee = false;
+    this.showAddManager = true;
+    this.showShopTotalSales = false;
+  }
+
+  showShopSales() {
+    this.showCatalogo = false;
+    this.showAddProduct = false;
+    this.showAddEmployee = false;
+    this.showAddManager = false;
+    this.showShopTotalSales = true;
+  }
 }

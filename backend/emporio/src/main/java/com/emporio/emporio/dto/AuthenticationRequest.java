@@ -20,6 +20,8 @@ public class AuthenticationRequest implements Serializable {
 	@NotBlank
 	private String username;
 
+	@NotBlank
 	private String password;
+	
 	private String role;
 }
