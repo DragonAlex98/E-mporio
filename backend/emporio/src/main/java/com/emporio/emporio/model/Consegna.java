@@ -36,7 +36,7 @@ public class Consegna {
     private Ordine ordine;
 
     @OneToOne
-    private User fattorino;
+    private Fattorino fattorino;
 
     @OneToOne(mappedBy = "consegna")
     private Posto posto;

@@ -22,6 +22,7 @@ import com.emporio.emporio.model.CategoriaProdotto;
 import com.emporio.emporio.model.ChiaveRigaOrdineProdotto;
 import com.emporio.emporio.model.Consegna;
 import com.emporio.emporio.model.Dipendente;
+import com.emporio.emporio.model.Fattorino;
 import com.emporio.emporio.model.GestoreMarketing;
 import com.emporio.emporio.model.Locker;
 import com.emporio.emporio.model.Ordine;
@@ -34,6 +35,7 @@ import com.emporio.emporio.model.Role;
 import com.emporio.emporio.model.StatoConsegna;
 import com.emporio.emporio.model.Titolare;
 import com.emporio.emporio.model.User;
+import com.emporio.emporio.repository.AcquirenteRepository;
 import com.emporio.emporio.repository.AttivitaDescrizioneRepository;
 import com.emporio.emporio.repository.AttivitaRepository;
 import com.emporio.emporio.repository.CatalogoRepository;
@@ -41,6 +43,7 @@ import com.emporio.emporio.repository.CategoriaAttivitaRepository;
 import com.emporio.emporio.repository.CategoriaProdottoRepository;
 import com.emporio.emporio.repository.ConsegnaRepository;
 import com.emporio.emporio.repository.DipendenteRepository;
+import com.emporio.emporio.repository.FattorinoRepository;
 import com.emporio.emporio.repository.GestoreMarketingRepository;
 import com.emporio.emporio.repository.LockerRepository;
 import com.emporio.emporio.repository.OrdineRepository;
@@ -113,6 +116,12 @@ public class DataInitializer implements CommandLineRunner {
     private TitolareRepository titolareRepository;
 
     @Autowired
+    private AcquirenteRepository acquirenteRepository;
+
+    @Autowired
+    private FattorinoRepository fattorinoRepository;
+
+    @Autowired
     private RoleService roleService;
 
     @Autowired
@@ -164,7 +173,9 @@ public class DataInitializer implements CommandLineRunner {
 
         this.users.save(new DipendenteUserFactory().createUser("alberto", this.passwordEncoder.encode("albertino55"), funcCreator));
 
-        User fattorino1 = this.users.save(new FattorinoUserFactory().createUser("diocleziano", this.passwordEncoder.encode("bof55"), funcCreator));
+        this.users.save(new FattorinoUserFactory().createUser("diocleziano", this.passwordEncoder.encode("bof55"), funcCreator));
+
+        Fattorino fattorino1 = fattorinoRepository.findByUsername("diocleziano").get();
 
         CategoriaProdotto cat1 = CategoriaProdotto.builder().description("cibo").build();
         CategoriaProdotto cat2 = CategoriaProdotto.builder().description("utensili").build();
@@ -238,7 +249,7 @@ public class DataInitializer implements CommandLineRunner {
         Posto posto6 = postoRepository.save(Posto.builder().nomePosto("B3").locker(locker2).build());
         Posto posto7 = postoRepository.save(Posto.builder().nomePosto("B4").locker(locker2).build());
         Ordine order1 = orderRepository.save(Ordine.builder()
-                            .orderCustomer(users.findByUsername("aldo").get())
+                            .orderCustomer(acquirenteRepository.findByUsername("aldo").get())
                             .orderShop(sd1)
                             .parkingAddress("Via Aldo Moro, 8")
                             .build());
@@ -270,7 +281,7 @@ public class DataInitializer implements CommandLineRunner {
         order1.setOrderProductsLineList(productsList);
 
         Ordine order2 = orderRepository.save(Ordine.builder()
-                            .orderCustomer(users.findByUsername("aldo").get())
+                            .orderCustomer(acquirenteRepository.findByUsername("aldo").get())
                             .orderShop(sd2)
                             .parkingAddress("Via Aldo Moro, 8")
                             .build());

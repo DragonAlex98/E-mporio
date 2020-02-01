@@ -43,7 +43,7 @@ public class Ordine {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
-    private User orderCustomer;
+    private Acquirente orderCustomer;
 
     @OneToMany(mappedBy = "order")
     private List<RigaOrdineProdotto> orderProductsLineList;
