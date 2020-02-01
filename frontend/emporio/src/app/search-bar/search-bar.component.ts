@@ -21,7 +21,7 @@ export class SearchBarComponent implements OnInit {
     searchSelectorState : new FormControl({value : this.searchTypeStates[0]})
   });
 
-  daje(searchValue) {
+  search(searchValue) {
     console.log(searchValue.searchSelectorState);
     console.log(searchValue.searchSelectorState === 'Prodotti');
     if ( searchValue.searchSelectorState === 'Prodotti') {

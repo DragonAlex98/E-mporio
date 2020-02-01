@@ -1,12 +1,12 @@
 package com.emporio.emporio.integration.repository;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Example;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
@@ -28,11 +28,8 @@ import com.emporio.emporio.repository.CategoriaAttivitaRepository;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@PropertySource(value = "classpath:application-test.properties")
+@ActiveProfiles("test")
 public class AttivitaRepositoryIntegrationTest {
-
-    @Autowired
-    private TestEntityManager entityManager;
 
     @Autowired
     private AttivitaRepository shopRepo;
@@ -40,11 +37,30 @@ public class AttivitaRepositoryIntegrationTest {
     @Autowired
     private CategoriaAttivitaRepository shopCatRepo;
 
+    private Attivita shop;
+
+    @Before
+    public void createShop() {
+        System.out.println(shopRepo);
+        System.out.println(shopCatRepo);
+
+        CategoriaAttivita cat = shopCatRepo.save(CategoriaAttivita.builder().shopCategoryDescription("supermercato").build());
+
+        AttivitaDescrizione shopDesc = AttivitaDescrizione.builder().shopPIVA("P115424448")
+                                            .shopBusinessName("Superconti")
+                                            .shopAddress("Via stretta, 41")
+                                            .shopHeadquarter("Milano")
+                                            .shopCategory(cat)
+                                            .build();
+
+        Catalogo catalog = Catalogo.builder().build();
+
+        shop = Attivita.builder().catalog(catalog).shopDescription(shopDesc).build();
+        shopRepo.save(shop);
+    }
+
     @Test
     public void whenFindByShopPIVA_thenReturnAttivita() {
-        // Dato
-        Attivita shop = this.createShop();
-
         // Quando eseguo
         Optional<Attivita> found = shopRepo.findByShopDescription_shopPIVA(shop.getShopDescription().getShopPIVA());
 
@@ -55,9 +71,6 @@ public class AttivitaRepositoryIntegrationTest {
 
     @Test
     public void whenExistsAttivitaByShopPIVA_thenReturnBoolean() {
-        // Dato
-        Attivita shop = this.createShop();
-
         //Quando eseguo
         boolean exists = shopRepo.existsAttivitaByShopDescription_shopPIVA(shop.getShopDescription().getShopPIVA());
 
@@ -74,9 +87,6 @@ public class AttivitaRepositoryIntegrationTest {
 
     @Test
     public void whenFindByShopBusinessNameContaining_thenReturnAttivita() {
-        //Dato
-        Attivita shop = this.createShop();
-
         //Quando eseguo
         List<Attivita> found = shopRepo.findByShopDescription_shopBusinessNameContaining("Sup");
 
@@ -85,28 +95,10 @@ public class AttivitaRepositoryIntegrationTest {
 
     }
 
+    @Test
     public void whenDeleteByShopPIVA_thenDeleteAttivita() {
-        Attivita shop = this.createShop();
-
         shopRepo.deleteByShopDescription_shopPIVA(shop.getShopDescription().getShopPIVA());
 
         assertFalse(shopRepo.exists(Example.of(shop)));
     }
-
-    private Attivita createShop() {
-        CategoriaAttivita cat = shopCatRepo.save(CategoriaAttivita.builder().shopCategoryDescription("supermercato").build());
-
-        AttivitaDescrizione shopDesc = AttivitaDescrizione.builder().shopPIVA("P115424448")
-                                            .shopBusinessName("Superconti")
-                                            .shopAddress("Via stretta, 41")
-                                            .shopHeadquarter("Milano")
-                                            .shopCategory(cat)
-                                            .build();
-
-        Catalogo catalog = Catalogo.builder().build();
-
-        Attivita shop = Attivita.builder().catalog(catalog).shopDescription(shopDesc).build();
-        return entityManager.persist(shop);
-    }
-    
 }

@@ -1,29 +1,59 @@
-package com.emporio.emporio.unit.jwt;
+package com.emporio.emporio.integration.repository;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 
 import java.util.Date;
 
+import com.emporio.emporio.repository.UserRepository;
+import com.emporio.emporio.security.CustomUserDetailsService;
 import com.emporio.emporio.security.JwtTokenProvider;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 
 /**
- * JwtUnitTest
+ * JwtIntegrationTest
  */
 @RunWith(SpringRunner.class)
-@DataJpaTest
-@PropertySource(value = "classpath:application-test.properties")
-public class JwtUnitTest {
+@TestPropertySource(locations = "classpath:application.properties")
+public class JwtIntegrationTest {
     
+    @MockBean
+    private UserRepository userRepository;
+
+    @Before
+    public void configure() {
+        Mockito.when(userRepository.findByUsername(anyString())).thenReturn(null);
+    }
+
+    @TestConfiguration
+    static class JwtTokenProviderTestContextConfiguration {
+        @Autowired
+        private UserRepository userRepository;
+
+        @Bean
+        public CustomUserDetailsService customUserDetailsService() {
+            return new CustomUserDetailsService(userRepository);
+        }
+
+        @Bean
+        public JwtTokenProvider jwtTokenProvider() {
+            return new JwtTokenProvider();
+        }
+    }
+
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 

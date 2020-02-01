@@ -47,7 +47,7 @@ public class ConsegnaServiceIntegrationTest {
     @Before
     public void configure() {
 
-        Long idFatt = new Long(2);
+        Long idFatt = 2L;
         Consegna delivery = Consegna.builder().idConsegna(1).fattorino(Fattorino.builder().id(idFatt).build()).build();
         List<Consegna> list = new ArrayList<Consegna>();
         list.add(delivery);
@@ -59,7 +59,7 @@ public class ConsegnaServiceIntegrationTest {
     @Test
     public void whenGetDeliveryByFattorino_ThenReturnList() {
 
-        Fattorino fattorino = Fattorino.builder().id(new Long(2)).build();
+        Fattorino fattorino = Fattorino.builder().id(2L).build();
 
         List<Consegna> found = consegnaService.getDeliveryByFattorino(fattorino);
 
