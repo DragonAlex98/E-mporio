@@ -75,11 +75,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtTokenAuthenticationFilter(jwtTokenProvider);
     }
 
-    // configurazione Cors per poter consumare le api restful con richieste ajax
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("POST, PUT, GET, OPTIONS, DELETE"));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");

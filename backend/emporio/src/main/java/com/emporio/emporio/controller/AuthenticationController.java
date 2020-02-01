@@ -106,7 +106,7 @@ public class AuthenticationController {
     @PostMapping("/auth/change")
     public ResponseEntity changePassword(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody ChangePasswordDto change) {
         if (!userService.changePassword(userDetails.getUsername(), change.getOldPassword(), change.getNewPassword(), change.getConfirmNewPassword())) {
-            throw new BadCredentialsException("Wrong old password or new password or confirm new password supplied");
+            throw new BadCredentialsException("Wrong credentials supplied");
         }
 
         return ResponseEntity.ok().build();

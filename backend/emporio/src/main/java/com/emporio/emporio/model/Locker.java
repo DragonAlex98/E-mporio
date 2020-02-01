@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,12 +20,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Entity
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "locker")
+@Table(name = "locker", uniqueConstraints = @UniqueConstraint(columnNames = {"address"}))
 public class Locker {
 
     @Id

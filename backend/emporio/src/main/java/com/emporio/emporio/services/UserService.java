@@ -69,6 +69,9 @@ public class UserService {
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             return false;
         }
+        if (passwordEncoder.matches(newPassword, user.getPassword())) {
+            return false;
+        }
         if (!newPassword.equals(confirmNewPassword)) {
             return false;
         }
