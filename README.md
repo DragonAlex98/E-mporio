@@ -1,8 +1,8 @@
 <p>
-    <a href="http://52.156.254.234:8085/viewType.html?buildTypeId=Emporio_Build&guest=1">
-        <img src="http://52.156.254.234:8085/app/rest/builds/buildType:(id:Emporio_Build)/statusIcon"/></a>
-    <a href="https://travis-ci.com/DragonAlex98/E-mporio">
-        <img src="https://travis-ci.com/DragonAlex98/E-mporio.svg?token=83y8gCdpGzTxXEobzLJm&branch=master" /></a>
+    <a href="http://137.116.225.223:8085/viewType.html?buildTypeId=Emporio_Build&guest=1">
+        <img src="http://137.116.225.223:8085/app/rest/builds/buildType:(id:Emporio_Build)/statusIcon"/></a>
+    <a href="https://travis-ci.org/DragonAlex98/E-mporio">
+        <img src="https://travis-ci.org/DragonAlex98/E-mporio.svg?branch=master" /></a>
 </p>
 
 # E-mporio
