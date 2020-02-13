@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DeliveryListComponent } from '@src/app/delivery/delivery-list/delivery-list.component';
 import { DeliveryDetailsComponent } from '@src/app/delivery/delivery-details/delivery-details.component';
 import { AssignDeliveryComponent } from '@src/app/delivery/assign-delivery/assign-delivery.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { AssignDeliveryComponent } from '@src/app/delivery/assign-delivery/assig
     CommonModule,
     HttpClientModule,
     DeliveryRoutingModule,
-    MaterialModule
+    MaterialModule,
+    GoogleMapsModule
   ],
   exports: [
     CreateDeliveryComponent
