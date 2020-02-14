@@ -4,5 +4,5 @@
     <h3 mat-list>Riferimento ordine: {{delivery.ordine.id}} </h3>
     <h3 mat-list *ngIf="locker">Id locker: {{locker.lockerId}} situato in: {{locker.address}}</h3>
     <h3 mat-list *ngIf="delivery.posto !== null">Posto Locker: {{delivery.posto.nomePosto}}</h3>
-    <google-map height="200px" width="40%"></google-map>
+    <div #mapWrapper id="map" style="display: none; height: 300px; width: 50%; margin: 10px auto;"></div>
 </div>

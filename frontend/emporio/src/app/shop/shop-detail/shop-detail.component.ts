@@ -8,6 +8,7 @@ import { AuthenticationService } from '@src/app/authentication/services/authenti
 import { Role } from '@src/app/authentication/models/role';
 import { Product } from '@src/app/product/product/product';
 import { AuthenticationChecks } from '@src/app/AuthenticationChecks';
+import { GoogleMapUtils } from '@src/app/googleMapUtils';
 
 @Component({
   selector: 'app-shop-detail',
@@ -54,32 +55,11 @@ export class ShopDetailComponent implements OnInit {
   updateMap() {
     if (!this.showMapSubject.value) return;
 
-    const lngLat = new google.maps.LatLng(this.shop.shopLatitude, this.shop.shopLongitude);
-    const mapOptions: google.maps.MapOptions = {
-      center: lngLat,
-      zoom: 16,
-      fullscreenControl: false,
-      mapTypeControl: false,
-      streetViewControl: false,
-      clickableIcons: false
-    };
-    var map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-    document.getElementById('map').style.display = "block";
-    var marker = new google.maps.Marker({position: lngLat, map: map, title: this.shop.shopBusinessName});
+    var mapUtils = new GoogleMapUtils(this.mapElement.nativeElement, this.shop.shopAddress, this.shop.shopBusinessName, this.shop.shopLatitude, this.shop.shopLongitude);
 
-    var infowindow = new google.maps.InfoWindow({
-      content: '<div id="content">'+
-      '<div id="siteNotice">'+
-      '</div>'+
-      '<h3 id="thirdHeading" class="thirdHeading">' + this.shop.shopBusinessName + '</h3>'+
-      '<div id="bodyContent">'+
-      '<p>' + this.shop.shopAddress + '</p>'+
-      '</div>'+
-      '</div>'
-    });
-    marker.setMap(map);
-    marker.setClickable(true);
-    marker.addListener('click', function () {infowindow.open(map, marker)});
+    mapUtils.loadGoogleMap();
+
+    document.getElementById('map').style.display = "block";
   }
 
   shouldShowShopSalesButton(): Boolean {
@@ -96,8 +76,9 @@ export class ShopDetailComponent implements OnInit {
 
   deleteShop() {
     this.service.deleteShop().subscribe(
-      (res) => {
-        console.log(res);
+      () => {
+        this.auth.removeShop();
+        this.router.navigate(['/']);
       }
     );
   }

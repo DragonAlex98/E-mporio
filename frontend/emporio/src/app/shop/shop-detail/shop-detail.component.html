@@ -2,7 +2,7 @@
     <span>
         <h3>Dettaglio Attività</h3>
     </span>
-    <div #mapWrapper id="map" height="300px" width="50%" margin="10px auto" style="display: none;"></div>
+    <div #mapWrapper id="map" style="display: none; height: 300px; width: 50%; margin: 10px auto;"></div>
     <mat-card *ngIf="shop != null; else noShopFound">
         <mat-card-header>
             <mat-card-title><span>{{shop.shopBusinessName}}</span></mat-card-title>
@@ -15,8 +15,8 @@
         <mat-card-content>
             <p>Categoria: {{shop.shopCategory.shopCategoryDescription}}</p>
             <button mat-flat-button color="accent" (click)="showCatalog()">Visualizza Catalogo</button>
-            <button *ngIf="shouldShowDeleteShopButton()" mat-flat-button color="accent" (click)="deleteShop()">Elimina
-                Attività
+            <button *ngIf="shouldShowDeleteShopButton()" mat-flat-button color="accent" (click)="deleteShop()">
+                Elimina Attività
             </button>
             <button mat-flat-button color="accent" *ngIf="shouldShowDeleteShopProductButton()" (click)="showAddProd()">
                 Aggiungi Prodotto
