@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Shop } from '../shop/shop';
 import { ShopService } from '../shop.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
@@ -15,6 +15,9 @@ import { AuthenticationChecks } from '@src/app/AuthenticationChecks';
   styleUrls: ['./shop-detail.component.css']
 })
 export class ShopDetailComponent implements OnInit {
+  @ViewChild('mapWrapper', {static: false}) mapElement: ElementRef;
+  showMap: boolean = false;
+  
   piva = '';
   shop: Shop;
   showCatalogo: Boolean;
@@ -38,8 +41,37 @@ export class ShopDetailComponent implements OnInit {
     this.service.getShopFromPIVA(this.piva).subscribe(
       (shop) => {
         this.shop = shop;
+        this.showMap = true;
+        this.updateMap();
       }
     );
+  }
+
+  updateMap() {
+    const lngLat = new google.maps.LatLng(45.4637697, 9.1906177);
+    const mapOptions: google.maps.MapOptions = {
+      center: lngLat,
+      zoom: 16,
+      fullscreenControl: false,
+      mapTypeControl: false,
+      streetViewControl: false
+    };
+    var map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    var marker = new google.maps.Marker({position: lngLat, map: map, title: this.shop.shopBusinessName});
+
+    var infowindow = new google.maps.InfoWindow({
+      content: '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h3 id="thirdHeading" class="thirdHeading">' + this.shop.shopBusinessName + '</h3>'+
+      '<div id="bodyContent">'+
+      '<p>' + this.shop.shopAddress + '</p>'+
+      '</div>'+
+      '</div>'
+    });
+    marker.setMap(map);
+    marker.setClickable(true);
+    marker.addListener('click', function () {infowindow.open(map, marker)});
   }
 
   shouldShowShopSalesButton(): Boolean {

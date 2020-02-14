@@ -15,7 +15,7 @@ import { AddProductComponent } from '@src/app/shop/add-product/add-product.compo
 import { ShopCatalogComponent } from '@src/app/shop/shop-catalog/shop-catalog.component';
 import { AddMarketingManagerComponent } from '@src/app/shop/add-marketing-manager/add-marketing-manager.component';
 import { ShopSalesComponent } from '@src/app/shop/shop-sales/shop-sales.component';
-
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
   declarations: [
@@ -37,6 +37,7 @@ import { ShopSalesComponent } from '@src/app/shop/shop-sales/shop-sales.componen
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
+    GoogleMapsModule,
   ]
 })
 export class ShopModule { }
