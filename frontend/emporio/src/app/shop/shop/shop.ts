@@ -13,12 +13,14 @@ export class Shop {
     shopLongitude: number;
 
     constructor(shopPIVA: string, shopAddress: string, shopBusinessName: string, shopCategory: ShopCategory,
-         shopHeadquarter: string, shopLat: number, shopLng: number) {
+         shopHeadquarter: string, shopLatitude: number, shopLongitude: number) {
         this.shopPIVA = shopPIVA;
         this.shopAddress = shopAddress;
         this.shopBusinessName = shopBusinessName;
         this.shopCategory = shopCategory;
         this.shopHeadquarter = shopHeadquarter;
+        this.shopLatitude = shopLatitude;
+        this.shopLongitude = shopLongitude;
     }
 }
 

@@ -19,17 +19,16 @@ export class SearchShopComponent implements OnInit {
       this.searchTerm = params.text;
       console.log(this.searchTerm);
     });
-    this.service.searchShops(this.searchTerm).subscribe((shopListData) => this.shopList = shopListData.map(
-      item => {
-        return new Shop(
-          item.shopPIVA,
-          item.shopAddress,
-          item.shopBusinessName,
-          item.shopCategory,
-          item.shopHeadquarter
-        );
+    this.service.searchShops(this.searchTerm).subscribe(
+      data => this.shopList = data,
+      error => {
+        if ([404].indexOf(error.status) !== -1) {
+          alert(error.error.message);
+        } else {
+          alert('Errore di connessione!');
+        }
       }
-    ));
+    );
   }
 
 }

@@ -2,11 +2,6 @@
     margin: 0px 5%;
 }
 
-.example-header-image {
-    background-image: url('src/assets/img/ugo2.jpg');
-    background-size: cover;
-}
-
 mat-card {
     background-color: rgba(143, 142, 142, 0.514);
     width: 80%;
