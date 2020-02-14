@@ -55,4 +55,14 @@ public class AttivitaDescrizione {
     @OneToOne(mappedBy = "shop")
     @JsonIgnore
     private ClassificaAttivita classifica;
+
+    @Column(name = "Latitudine")
+    @Builder.Default
+    @NotNull
+    private Float shopLat = 0f;
+
+    @Column(name = "Longitudine")
+    @Builder.Default
+    @NotNull
+    private Float shopLng = 0f;
 }

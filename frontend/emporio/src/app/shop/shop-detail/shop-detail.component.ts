@@ -3,7 +3,7 @@ import { Shop } from '../shop/shop';
 import { ShopService } from '../shop.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, Observable, BehaviorSubject } from 'rxjs';
 import { AuthenticationService } from '@src/app/authentication/services/authentication.service';
 import { Role } from '@src/app/authentication/models/role';
 import { Product } from '@src/app/product/product/product';
@@ -16,7 +16,8 @@ import { AuthenticationChecks } from '@src/app/AuthenticationChecks';
 })
 export class ShopDetailComponent implements OnInit {
   @ViewChild('mapWrapper', {static: false}) mapElement: ElementRef;
-  showMap: boolean = false;
+  private showMapSubject: BehaviorSubject<Boolean>;
+  public showMap: Observable<Boolean>;
   
   piva = '';
   shop: Shop;
@@ -27,7 +28,10 @@ export class ShopDetailComponent implements OnInit {
   showShopTotalSales: Boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private service: ShopService, private auth: AuthenticationService,
-    private authChecks: AuthenticationChecks) { }
+    private authChecks: AuthenticationChecks) {
+      this.showMapSubject = new BehaviorSubject<Boolean>(false);
+      this.showMap = this.showMapSubject.asObservable();
+    }
 
   ngOnInit() {
     this.route.paramMap.pipe(
@@ -41,13 +45,15 @@ export class ShopDetailComponent implements OnInit {
     this.service.getShopFromPIVA(this.piva).subscribe(
       (shop) => {
         this.shop = shop;
-        this.showMap = true;
+        this.showMapSubject.next(true);
         this.updateMap();
       }
     );
   }
 
   updateMap() {
+    if (!this.showMapSubject.value) return;
+
     const lngLat = new google.maps.LatLng(45.4637697, 9.1906177);
     const mapOptions: google.maps.MapOptions = {
       center: lngLat,
@@ -57,6 +63,7 @@ export class ShopDetailComponent implements OnInit {
       streetViewControl: false
     };
     var map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    document.getElementById('map').style.display = "block";
     var marker = new google.maps.Marker({position: lngLat, map: map, title: this.shop.shopBusinessName});
 
     var infowindow = new google.maps.InfoWindow({
