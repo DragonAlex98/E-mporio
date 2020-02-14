@@ -2,6 +2,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ShopService } from '../shop.service';
 import { ShopCategory } from '../shop/shop';
+import { AuthenticationService } from '@src/app/authentication/services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-insert-shop-form',
@@ -21,7 +23,7 @@ export class InsertShopFormComponent implements OnInit, AfterViewInit {
     shopLongitude: new FormControl('', Validators.required)
   });
 
-  constructor(private shopService: ShopService) { }
+  constructor(private shopService: ShopService, private authService: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
     this.shopService.getShopCategories().subscribe(
@@ -46,9 +48,14 @@ export class InsertShopFormComponent implements OnInit, AfterViewInit {
     this.shopForm.get('shopAddress').patchValue(document.getElementById('cityAddr').textContent);
     this.shopForm.get('shopLatitude').patchValue(document.getElementById('cityLat').textContent);
     this.shopForm.get('shopLongitude').patchValue(document.getElementById('cityLng').textContent);
-    console.log(this.shopForm.value);
+
+    if (this.shopForm.invalid) return;
+
     this.shopService.addShop(this.shopForm.value).subscribe(
-      data => alert(data),
+      data => {
+        this.authService.setShop(data);
+        this.router.navigate(['/shops/' + this.authService.currentShopValue.shopPIVA]);
+      },
       error => {
         if ([400].indexOf(error.status) !== -1) {
           alert(error.error.message);

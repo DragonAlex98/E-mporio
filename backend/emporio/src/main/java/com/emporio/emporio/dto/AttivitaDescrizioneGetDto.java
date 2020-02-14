@@ -25,4 +25,8 @@ public class AttivitaDescrizioneGetDto {
     private CategoriaAttivita shopCategory;
     
     private String shopHeadquarter;
+
+	private Float shopLatitude;
+
+	private Float shopLongitude;
 }

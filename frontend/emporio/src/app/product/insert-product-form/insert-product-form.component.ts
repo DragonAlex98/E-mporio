@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../product.service';
 import { ProductCategory } from '../product/product';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-insert-product-form',
   templateUrl: './insert-product-form.component.html',
@@ -13,10 +14,10 @@ export class InsertProductFormComponent implements OnInit {
 
   productForm = new FormGroup({
     productName: new FormControl('', Validators.required),
-    productCategoryName : new FormControl(''),
+    productCategoryName : new FormControl('', Validators.required),
   });
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService, private router: Router) { }
 
   ngOnInit() {
     this.productService.getCategories().subscribe(
@@ -27,7 +28,10 @@ export class InsertProductFormComponent implements OnInit {
 
   onSubmit(productValue) {
     this.productService.addProduct(productValue).subscribe(
-      data => alert(data),
+      data => {
+        alert(data);
+        this.router.navigate(['/']);
+      },
       error => {
         if ([400].indexOf(error.status) !== -1) {
           alert(error.error.message);

@@ -8,6 +8,7 @@ import { Order } from '../Order';
 import { Shop } from '@src/app/shop/shop/shop';
 import { OrderService } from '../order.service';
 import { AuthenticationService } from '@src/app/authentication/services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-form',
@@ -24,7 +25,7 @@ export class OrderFormComponent implements OnInit {
 
   productList: Product[];
 
-  constructor(private service: OrderService, private authService: AuthenticationService) { }
+  constructor(private service: OrderService, private authService: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
     this.dataSource = new OrderProductTableDataSource();
@@ -37,6 +38,7 @@ export class OrderFormComponent implements OnInit {
       this.dataSource.getAsMap()).subscribe(
         data => {
           alert('Aggiunto');
+          this.router.navigate(['/']);
         },
         error => {
           console.log(error);

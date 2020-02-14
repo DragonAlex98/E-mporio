@@ -26,9 +26,9 @@ export class ShopService {
     );
   }
 
-  addShop(form: any): Observable<string>  {
-    return this.httpClient.post<string>(`${environment.apiUrl}/shops`, form, this.httpOptions).pipe(
-      map((item: any) => item.message)
+  addShop(form: any): Observable<Shop>  {
+    return this.httpClient.post<Shop>(`${environment.apiUrl}/shops`, form, this.httpOptions).pipe(
+      map(item => this.adapter.adapt(item))
     );
   }
 
@@ -62,10 +62,8 @@ export class ShopService {
     );
   }
 
-  deleteShop(): Observable<string> {
-    return this.httpClient.delete(`${environment.apiUrl}/shops`).pipe(
-      map((res: string) => res)
-    );
+  deleteShop() {
+    return this.httpClient.delete<string>(`${environment.apiUrl}/shops`).pipe();
   }
 
   deleteShopProduct(piva: string, productName: string): Observable<string> {

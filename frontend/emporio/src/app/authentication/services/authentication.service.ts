@@ -49,9 +49,7 @@ export class AuthenticationService {
                     if (user.role === Role.Dipendente || user.role === Role.Titolare || user.role == Role.GestoreMarketing) {
                         this.getShop(username).subscribe(
                             data => {
-                                console.log(data);
-                                localStorage.setItem('currentUserShop', JSON.stringify(data));
-                                this.currentShopSubject.next(data);
+                                this.setShop(data);
                             }
                         );
                     }
@@ -67,6 +65,17 @@ export class AuthenticationService {
           );
     }
 
+    setShop(shop: Shop) {
+        localStorage.setItem('currentUserShop', JSON.stringify(shop));
+        this.currentShopSubject.next(shop);
+    }
+
+    removeShop() {
+        this.currentShopSubject.next(null);
+        this.currentShop = null;
+        localStorage.removeItem('currentUserShop');
+    }
+
     refresh() {
         const refresh = this.getRefreshToken();
         return this.http.post(`${environment.apiUrl}/auth/refresh`, { refresh }, { responseType: 'text' }).pipe(
@@ -79,6 +88,8 @@ export class AuthenticationService {
         // remove user from local storage to log user out
         this.currentUserSubject.next(null);
         this.currentUser = null;
+        this.currentShopSubject.next(null);
+        this.currentShop = null;
         this.removeToken();
         // ritorno alla home
         this.router.navigate(['/']);

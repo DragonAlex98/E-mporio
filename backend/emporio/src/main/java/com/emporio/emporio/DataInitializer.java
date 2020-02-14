@@ -239,15 +239,15 @@ public class DataInitializer implements CommandLineRunner {
         Attivita s2 = this.shops.save(Attivita.builder().catalog(c2).shopDescription(sd2).build());
 
         Locker locker1 = lockerRepository.save(Locker.builder().address("Via Alfreditica, 15").build());
-        Posto posto1 = postoRepository.save(Posto.builder().nomePosto("A1").locker(locker1).build());
-        Posto posto2 = postoRepository.save(Posto.builder().nomePosto("A2").locker(locker1).build());
-        Posto posto3 = postoRepository.save(Posto.builder().nomePosto("A3").locker(locker1).build());
+        Posto posto1 = postoRepository.save(Posto.builder().nomePosto("1").locker(locker1).build());
+        Posto posto2 = postoRepository.save(Posto.builder().nomePosto("2").locker(locker1).build());
+        Posto posto3 = postoRepository.save(Posto.builder().nomePosto("3").locker(locker1).build());
 
         Locker locker2 = lockerRepository.save(Locker.builder().address("Via Degrado, 15").build());
-        Posto posto4 = postoRepository.save(Posto.builder().nomePosto("B1").locker(locker2).build());
-        Posto posto5 = postoRepository.save(Posto.builder().nomePosto("B2").locker(locker2).build());
-        Posto posto6 = postoRepository.save(Posto.builder().nomePosto("B3").locker(locker2).build());
-        Posto posto7 = postoRepository.save(Posto.builder().nomePosto("B4").locker(locker2).build());
+        Posto posto4 = postoRepository.save(Posto.builder().nomePosto("1").locker(locker2).build());
+        Posto posto5 = postoRepository.save(Posto.builder().nomePosto("2").locker(locker2).build());
+        Posto posto6 = postoRepository.save(Posto.builder().nomePosto("3").locker(locker2).build());
+        Posto posto7 = postoRepository.save(Posto.builder().nomePosto("4").locker(locker2).build());
         Ordine order1 = orderRepository.save(Ordine.builder()
                             .orderCustomer(acquirenteRepository.findByUsername("aldo").get())
                             .orderShop(sd1)

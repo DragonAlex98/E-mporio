@@ -1,7 +1,5 @@
 package com.emporio.emporio.controller;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,8 +95,7 @@ public class AttivitaController {
 
     @PreAuthorize("hasAuthority('CREATE_SHOP')")
     @PostMapping("/shops")
-    public ResponseEntity<ApiPostResponse> insertNewAttivita(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody RegistrazioneAttivitaDto attivita)
-            throws URISyntaxException {
+    public ResponseEntity<AttivitaDescrizione> insertNewAttivita(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody RegistrazioneAttivitaDto attivita) {
         //Controllo se è un titolare
         Titolare owner = titolareService.getTitolare(userDetails.getUsername());
 
@@ -126,7 +123,7 @@ public class AttivitaController {
         newShop = shopService.addShop(newShop);
         owner = titolareService.setShopOwnedBy(owner, newShop);
 
-        return ResponseEntity.created(new URI("/shops/" + newShopDesc.getShopPIVA())).body(ApiPostResponse.builder().message("Attività aggiunta!").build());
+        return ResponseEntity.ok(newShopDesc);
     }
 
     @PostMapping(value="/shops/{piva}/products")
@@ -195,7 +192,7 @@ public class AttivitaController {
         shopDescriptionService.detachAttivitaFrom(shop.getShopDescription());
         shopService.deleteAttivita(shop);
 
-        return ResponseEntity.ok("Attività cancellata");
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/shops/{piva}/products")

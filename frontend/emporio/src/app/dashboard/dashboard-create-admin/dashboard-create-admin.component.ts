@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@src/app/authentication/services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-create-admin',
@@ -14,7 +15,7 @@ export class DashboardCreateAdminComponent implements OnInit {
     password: new FormControl('', [Validators.required, Validators.minLength(1)]),
   });
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -25,6 +26,7 @@ export class DashboardCreateAdminComponent implements OnInit {
     this.userService.createAdmin(this.registerForm.value).subscribe(
       data => {
         alert('Registrazione effettuata');
+        this.router.navigate(['/']);
       },
       error => {
         alert(error.error.message);

@@ -62,6 +62,10 @@ export class AuthenticationChecks {
         return this.isLoggedIn() && this.currentUser.role === Role.GestoreMarketing;
     }
 
+    public hasShopAssociated(): boolean {
+        return this.userShop != null;
+    }
+
     public getPartitaIva(): string {
         if ((this.canOperateOnShop() || this.canOperatoreOnShopAsMarketingManager()) && this.userShop != null) {
             return this.userShop.shopPIVA;

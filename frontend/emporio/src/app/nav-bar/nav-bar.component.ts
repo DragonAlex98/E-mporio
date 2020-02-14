@@ -64,9 +64,11 @@ export class NavBarComponent implements OnInit {
     return this.authChecks.isCustomer();
   }
 
-  public isFattorino() {
+  public isFattorino(): boolean {
     return this.authChecks.isFattorino();
   }
 
-
+  public hasShop(): boolean {
+    return this.authChecks.hasShopAssociated();
+  }
 }

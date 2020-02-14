@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { LockerService } from '../locker.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-insert-locker',
@@ -14,7 +15,7 @@ export class InsertLockerComponent implements OnInit {
     numPosti : new FormControl(''),
   });
 
-  constructor(private lockerService: LockerService) { }
+  constructor(private lockerService: LockerService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -32,6 +33,7 @@ export class InsertLockerComponent implements OnInit {
     this.lockerService.insertNewLocker(formValue.lockerStreet, formValue.numPosti).subscribe(
       () => {
         alert("Locker Inserito!");
+        this.router.navigate(['/']);
       },
       (error) => {
         alert(error.error.message);

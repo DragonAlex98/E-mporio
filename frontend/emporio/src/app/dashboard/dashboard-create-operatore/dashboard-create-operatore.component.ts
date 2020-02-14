@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '@src/app/authentication/services/user.service';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-create-operatore',
@@ -14,7 +15,7 @@ export class DashboardCreateOperatoreComponent implements OnInit {
     password: new FormControl('', [Validators.required, Validators.minLength(1)]),
   });
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -25,6 +26,7 @@ export class DashboardCreateOperatoreComponent implements OnInit {
     this.userService.createOperatore(this.registerForm.value).subscribe(
       data => {
         alert('Registrazione effettuata');
+        this.router.navigate(['/']);
       },
       error => {
         alert(error.error.message);
