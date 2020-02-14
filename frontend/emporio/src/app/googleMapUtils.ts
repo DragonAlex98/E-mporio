@@ -1,9 +1,3 @@
-import { Injectable } from '@angular/core';
-import { Product } from '@src/app/product/product/product';
-
-@Injectable({
-    providedIn: 'root'
-})
 export class GoogleMapUtils {
     mapElement: any;
     shopAddress: string;
