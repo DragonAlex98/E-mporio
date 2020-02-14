@@ -9,8 +9,11 @@ export class Shop {
     shopBusinessName: string;
     shopCategory: ShopCategory;
     shopHeadquarter: string;
+    shopLatitude: number;
+    shopLongitude: number;
 
-    constructor(shopPIVA: string, shopAddress: string, shopBusinessName: string, shopCategory: ShopCategory, shopHeadquarter: string) {
+    constructor(shopPIVA: string, shopAddress: string, shopBusinessName: string, shopCategory: ShopCategory,
+         shopHeadquarter: string, shopLat: number, shopLng: number) {
         this.shopPIVA = shopPIVA;
         this.shopAddress = shopAddress;
         this.shopBusinessName = shopBusinessName;
@@ -56,6 +59,7 @@ export class ShopAdapter implements Adapter<Shop> {
 
     adapt(item: any): Shop {
         return new Shop(item.shopPIVA, item.shopAddress, item.shopBusinessName,
-            this.catAdapter.adapt(item.shopCategory), item.shopHeadquarter);
+            this.catAdapter.adapt(item.shopCategory), item.shopHeadquarter,
+            item.shopLat, item.shopLng);
     }
 }
