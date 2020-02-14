@@ -114,6 +114,8 @@ public class AttivitaController {
                                                              .shopBusinessName(attivita.getShopBusinessName())
                                                              .shopHeadquarter(attivita.getShopHeadquarter())
                                                              .shopCategory(shopCategory)
+                                                             .shopLat(attivita.getShopLatitude())
+                                                             .shopLng(attivita.getShopLongitude())
                                                              .build();
                                                              
         Catalogo catalogo = Catalogo.builder().build();

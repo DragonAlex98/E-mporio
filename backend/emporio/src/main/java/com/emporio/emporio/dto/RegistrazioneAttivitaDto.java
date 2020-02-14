@@ -3,6 +3,7 @@ package com.emporio.emporio.dto;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,4 +32,10 @@ public class RegistrazioneAttivitaDto implements Serializable {
 	
 	@NotBlank
 	private String shopCategoryDescription;
+
+	@NotNull
+	private Float shopLatitude;
+
+	@NotNull
+	private Float shopLongitude;
 }

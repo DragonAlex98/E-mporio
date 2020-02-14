@@ -54,13 +54,14 @@ export class ShopDetailComponent implements OnInit {
   updateMap() {
     if (!this.showMapSubject.value) return;
 
-    const lngLat = new google.maps.LatLng(45.4637697, 9.1906177);
+    const lngLat = new google.maps.LatLng(this.shop.shopLatitude, this.shop.shopLongitude);
     const mapOptions: google.maps.MapOptions = {
       center: lngLat,
       zoom: 16,
       fullscreenControl: false,
       mapTypeControl: false,
-      streetViewControl: false
+      streetViewControl: false,
+      clickableIcons: false
     };
     var map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
     document.getElementById('map').style.display = "block";

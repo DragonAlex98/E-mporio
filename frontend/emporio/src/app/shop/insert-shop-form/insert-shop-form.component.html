@@ -6,7 +6,7 @@
   <mat-grid-tile [rowspan]=1 [colspan]=2>
     <div class="controles-container">
       <mat-card>
-      <form [formGroup]="shopForm" (ngSubmit)="onSubmit(shopForm.value)">
+      <form [formGroup]="shopForm" (ngSubmit)="onSubmit()">
         <div class="insert-product-form-container">
           <mat-form-field>
             <input matInput placeholder="Partita IVA*" formControlName="shopPIVA">
@@ -27,7 +27,11 @@
           </mat-form-field>
 
           <mat-form-field>
-            <input matInput placeholder="Indirizzo" formControlName="shopAddress">
+            <input matInput id="searchTextField" type="text" autocomplete="on" runat="server" placeholder="Indirizzo" formControlName="shopAddress">
+            <input id="cityAddr" type="hidden" name="cityAddr"/>
+            <input id="city2" type="hidden" name="city2"/>
+            <input id="cityLat" type = "hidden" name="cityLat"/>
+            <input id="cityLng" type = "hidden" name="cityLng"/>
           </mat-form-field>
 
           <button mat-raised-button color="accent">Crea Attività</button>
