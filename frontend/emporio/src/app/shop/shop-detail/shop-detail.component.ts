@@ -55,9 +55,13 @@ export class ShopDetailComponent implements OnInit {
   updateMap() {
     if (!this.showMapSubject.value) return;
 
-    var mapUtils = new GoogleMapUtils(this.mapElement.nativeElement, this.shop.shopAddress, this.shop.shopBusinessName, this.shop.shopLatitude, this.shop.shopLongitude);
+    var mapUtils = new GoogleMapUtils(this.mapElement.nativeElement);
 
     mapUtils.loadGoogleMap();
+
+    var marker = mapUtils.addMarker(this.shop.shopLatitude, this.shop.shopLongitude, this.shop);
+
+    mapUtils.center(marker);
 
     document.getElementById('map').style.display = "block";
   }

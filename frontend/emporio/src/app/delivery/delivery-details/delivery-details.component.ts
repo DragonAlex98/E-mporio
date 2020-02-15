@@ -31,11 +31,13 @@ export class DeliveryDetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    var mapUtils = new GoogleMapUtils(this.mapElement.nativeElement, this.delivery.ordine.shop.shopAddress,
-      this.delivery.ordine.shop.shopBusinessName, this.delivery.ordine.shop.shopLatitude,
-      this.delivery.ordine.shop.shopLongitude);
+    var mapUtils = new GoogleMapUtils(this.mapElement.nativeElement);
 
     mapUtils.loadGoogleMap();
+
+    var marker = mapUtils.addMarker(this.delivery.ordine.shop.shopLatitude, this.delivery.ordine.shop.shopLongitude, this.delivery.ordine.shop);
+
+    mapUtils.center(marker);
 
     document.getElementById('map').style.display = "block";
   }
