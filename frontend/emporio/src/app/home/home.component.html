@@ -1,4 +1,6 @@
 <div class="classifica-shop-list-page-container">
+    <span><h3>Le aziende aderenti a te vicine</h3></span>
+    <div #mapElement id="map" style="display: block; height: 300px; width: 99%; margin: 10px auto;"></div>
     <span><h3>Le aziende che hanno venduto più prodotti</h3></span>
     <mat-grid-list cols="3" rowHeight="400px">
         <mat-grid-tile *ngFor="let classificaShop of classificaShopList">

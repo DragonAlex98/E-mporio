@@ -267,6 +267,11 @@ public class AttivitaController {
         return ResponseEntity.ok(shopService.getShop(piva).getShopDescription());
     }
 
+    @GetMapping("/shops")
+    public ResponseEntity<List<AttivitaDescrizioneGetDto>> getAllExistingShops() {
+        return ResponseEntity.ok(shopService.getAllShops().stream().map(element -> this.convertToDto(element.getShopDescription())).collect(Collectors.toList()));
+    }
+
     private AttivitaDescrizioneGetDto convertToDto(AttivitaDescrizione shop) {
         AttivitaDescrizioneGetDto shopDto = this.modelMapper.map(shop, AttivitaDescrizioneGetDto.class);
         return shopDto;

@@ -26,7 +26,7 @@ public class AttivitaDescrizioneGetDto {
     
     private String shopHeadquarter;
 
-	private Float shopLatitude;
+	private Float shopLat;
 
-	private Float shopLongitude;
+	private Float shopLng;
 }

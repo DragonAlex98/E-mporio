@@ -1,4 +1,4 @@
-import { Shop } from "./shop/shop/shop";
+import { Shop } from './shop/shop/shop';
 
 export class GoogleMapUtils {
     map: google.maps.Map;
@@ -31,13 +31,13 @@ export class GoogleMapUtils {
 
     addInfoWindow(marker: google.maps.Marker, shop: Shop) {
         var infowindow = new google.maps.InfoWindow({
-            content: '<div id="content">'+
-            '<div id="siteNotice">'+
-            '</div>'+
-            '<h3 id="thirdHeading" class="thirdHeading">' + shop.shopBusinessName + '</h3>'+
-            '<div id="bodyContent">'+
-            '<p>' + shop.shopAddress + '</p>'+
-            '</div>'+
+            content: '<div id="content">' +
+            '<div id="siteNotice">' +
+            '</div>' +
+            '<h3 id="thirdHeading" class="thirdHeading">' + shop.shopBusinessName + '</h3>' +
+            '<div id="bodyContent">' +
+            '<p>' + shop.shopAddress + '</p>' +
+            '</div>' +
             '</div>'
         });
 

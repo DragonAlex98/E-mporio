@@ -8,6 +8,7 @@ import { AuthenticationService } from '../authentication/services/authentication
 import { User } from '../authentication/models/user';
 import { Product, ProductCategory, ProductAdapter } from '../product/product/product';
 import { ClassificaShop } from './shop/classificaShop';
+import { GoogleMapUtils } from '../googleMapUtils';
 
 @Injectable({
   providedIn: 'root'
@@ -93,6 +94,12 @@ export class ShopService {
   getClassifica(): Observable<ClassificaShop[]> {
     return this.httpClient.get<ClassificaShop[]>(`${environment.apiUrl}/classifica`).pipe(
       map((data: any[]) => data)
+    );
+  }
+
+  getAllExistingShops(): Observable<Shop[]> {
+    return this.httpClient.get(`${environment.apiUrl}/shops`).pipe(
+      map((data: any[]) => data.map(item => this.adapter.adapt(item)))
     );
   }
 }

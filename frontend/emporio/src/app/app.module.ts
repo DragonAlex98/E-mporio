@@ -13,7 +13,7 @@ import { FooterComponent } from '@src/app/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { OrderModule } from '@src/app/order/order.module';
-import { MaterialModule } from '@src/app/material/material.module';
+import { MaterialModule } from './material/material.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';

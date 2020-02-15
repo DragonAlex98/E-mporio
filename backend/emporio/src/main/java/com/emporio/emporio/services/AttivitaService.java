@@ -93,4 +93,13 @@ public class AttivitaService {
 
         return product.get();
     }
+
+    public List<Attivita> getAllShops() {
+        List<Attivita> shopsList = shopRepository.findAll();
+
+        if(shopsList.isEmpty())
+            throw new EntityNotFoundException("Nessuna attività registrata nel sistema!");
+
+        return shopsList;
+    }
 }

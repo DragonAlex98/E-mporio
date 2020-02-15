@@ -203,7 +203,7 @@ public class DataInitializer implements CommandLineRunner {
         c1.setProducts(Arrays.asList(pA, pB, pC).stream().collect(Collectors.toSet()));
 
         //Creo descrizione
-        AttivitaDescrizione sd1 = AttivitaDescrizione.builder().shopPIVA("abc123").shopBusinessName("La Falegnameria").shopAddress("Via questa 1").shopHeadquarter("Milano").shopCategory(catA1).build();
+        AttivitaDescrizione sd1 = AttivitaDescrizione.builder().shopPIVA("abc123").shopBusinessName("La Falegnameria").shopAddress("Piazza di Santa Maria delle Grazie, 20123 Milano MI").shopHeadquarter("Milano").shopCategory(catA1).shopLat(45.4627124f).shopLng(9.1076924f).build();
 
         
         //Creo attività e associo la descrizione e il catalogo vuoto
@@ -231,7 +231,7 @@ public class DataInitializer implements CommandLineRunner {
 
         Prodotto pD = this.productRepo.save(Prodotto.builder().productDescription(pdD).build());
         
-        AttivitaDescrizione sd2 = AttivitaDescrizione.builder().shopPIVA("def456").shopBusinessName("La Macelleria").shopAddress("Via quella 2").shopHeadquarter("Roma").shopCategory(catA2).build();
+        AttivitaDescrizione sd2 = AttivitaDescrizione.builder().shopPIVA("def456").shopBusinessName("Sport Incontro").shopAddress("Via dei Castani, 35/37, 00172 Roma RM").shopHeadquarter("Roma").shopCategory(catA2).shopLat(41.8787673f).shopLng(12.564063f).build();
         
         Catalogo c2 = Catalogo.builder().build();
         c2.setProducts(Arrays.asList(pD).stream().collect(Collectors.toSet()));
@@ -318,7 +318,7 @@ public class DataInitializer implements CommandLineRunner {
         Catalogo c3 = Catalogo.builder().build();
         c3.setProducts(Arrays.asList(pE, pF).stream().collect(Collectors.toSet()));
 
-        AttivitaDescrizione sd3 = AttivitaDescrizione.builder().shopPIVA("ghi789").shopBusinessName("La Latteria").shopAddress("Via codesta 3").shopHeadquarter("Palermo").shopCategory(catA1).build();
+        AttivitaDescrizione sd3 = AttivitaDescrizione.builder().shopPIVA("ghi789").shopBusinessName("Lucy").shopAddress("Via Francesco Crispi, 256, 90139 Palermo PA").shopHeadquarter("Palermo").shopCategory(catA1).shopLat(38.1294743f).shopLng(13.3607172f).build();
 
         Attivita s3 = this.shops.save(Attivita.builder().catalog(c3).shopDescription(sd3).build());
 
