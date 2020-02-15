@@ -37,6 +37,8 @@ export class DeliveryDetailsComponent implements OnInit, AfterViewInit {
 
     var marker = mapUtils.addMarker(this.delivery.ordine.shop.shopLatitude, this.delivery.ordine.shop.shopLongitude, this.delivery.ordine.shop);
 
+    mapUtils.addInfoWindow(marker, this.delivery.ordine.shop);
+
     mapUtils.center(marker);
 
     document.getElementById('map').style.display = "block";

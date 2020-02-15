@@ -61,9 +61,15 @@ export class ShopDetailComponent implements OnInit {
 
     var marker = mapUtils.addMarker(this.shop.shopLatitude, this.shop.shopLongitude, this.shop);
 
+    mapUtils.addInfoWindow(marker, this.shop);
+
     mapUtils.center(marker);
 
     document.getElementById('map').style.display = "block";
+  }
+
+  shouldShowButtons(): Boolean {
+    return this.authChecks.userShop && this.authChecks.userShop.shopPIVA == this.shop.shopPIVA;
   }
 
   shouldShowShopSalesButton(): Boolean {

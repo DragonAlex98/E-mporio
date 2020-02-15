@@ -22,7 +22,14 @@ export class GoogleMapUtils {
     addMarker(lat: number, lng: number, shop: Shop): google.maps.Marker {
         const lngLat = new google.maps.LatLng(lat, lng);
         var marker = new google.maps.Marker({position: lngLat, map: this.map, title: shop.shopBusinessName});
-        
+
+        marker.setMap(this.map);
+        marker.setClickable(false);
+
+        return marker;
+    }
+
+    addInfoWindow(marker: google.maps.Marker, shop: Shop) {
         var infowindow = new google.maps.InfoWindow({
             content: '<div id="content">'+
             '<div id="siteNotice">'+
@@ -35,15 +42,15 @@ export class GoogleMapUtils {
         });
 
         var map = this.map;
-
-        marker.setMap(map);
         marker.setClickable(true);
         marker.addListener('click', function () {infowindow.open(map, marker)});
-
-        return marker;
     }
 
     center(marker: google.maps.Marker) {
         this.map.setCenter(marker.getPosition());
+    }
+
+    setZoom(zoomLevel: number) {
+        this.map.setZoom(zoomLevel);
     }
 }

@@ -15,21 +15,23 @@
         <mat-card-content>
             <p>Categoria: {{shop.shopCategory.shopCategoryDescription}}</p>
             <button mat-flat-button color="accent" (click)="showCatalog()">Visualizza Catalogo</button>
-            <button *ngIf="shouldShowDeleteShopButton()" mat-flat-button color="accent" (click)="deleteShop()">
-                Elimina Attività
-            </button>
-            <button mat-flat-button color="accent" *ngIf="shouldShowDeleteShopProductButton()" (click)="showAddProd()">
-                Aggiungi Prodotto
-            </button>
-            <button mat-flat-button color="accent" *ngIf="shouldShowDeleteShopButton()" (click)="showAddEmpl()">
-                Aggiungi Dipendente
-            </button>
-            <button mat-flat-button color="accent" *ngIf="shouldShowAddManagerButton()" (click)="showAddMarketingManager()">
-                Aggiungi Gestore Marketing
-            </button>
-            <button mat-flat-button color="accent" *ngIf="shouldShowShopSalesButton()" (click)="showShopSales()">
-                Visualizza Vendite
-            </button>
+            <span *ngIf="shouldShowButtons()">
+                <button *ngIf="shouldShowDeleteShopButton()" mat-flat-button color="accent" (click)="deleteShop()">
+                    Elimina Attività
+                </button>
+                <button mat-flat-button color="accent" *ngIf="shouldShowDeleteShopProductButton()" (click)="showAddProd()">
+                    Aggiungi Prodotto
+                </button>
+                <button mat-flat-button color="accent" *ngIf="shouldShowDeleteShopButton()" (click)="showAddEmpl()">
+                    Aggiungi Dipendente
+                </button>
+                <button mat-flat-button color="accent" *ngIf="shouldShowAddManagerButton()" (click)="showAddMarketingManager()">
+                    Aggiungi Gestore Marketing
+                </button>
+                <button mat-flat-button color="accent" *ngIf="shouldShowShopSalesButton()" (click)="showShopSales()">
+                    Visualizza Vendite
+                </button>
+            </span>
         </mat-card-content>
     </mat-card>
 
