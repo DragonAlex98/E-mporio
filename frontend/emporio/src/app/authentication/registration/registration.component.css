@@ -1,33 +1,30 @@
-.registration-form-container{
-    display: flex;
-    flex-direction: column;
+.registration-form-container {
+  display: flex;
+  flex-direction: column;
 }
-  
-  .registration-form-right-align {
-    text-align: right;
-  }
-  
-  input.registration-form-right-align::-webkit-outer-spin-button,
-  input.registration-form-right-align::-webkit-inner-spin-button {
-    display: none;
-  }
-  
-  input.registration-form-right-align {
-    -moz-appearance: textfield;
-  }
 
+.registration-form-right-align {
+  text-align: right;
+}
 
-  #cancel-btn {
-    margin-top: 0.5em;
-  }
+input.registration-form-right-align::-webkit-outer-spin-button,
+input.registration-form-right-align::-webkit-inner-spin-button {
+  display: none;
+}
 
+input.registration-form-right-align {
+  -moz-appearance: textfield;
+}
 
+#cancel-btn {
+  margin-top: 0.5em;
+}
 
 .controles-container{
-  width: 100%;
-  padding: 25%;    
+width: 100%;
+padding: 25%;    
 }
 
 .controles-container > * {
-  width: 100%;
+width: 100%;
 }
