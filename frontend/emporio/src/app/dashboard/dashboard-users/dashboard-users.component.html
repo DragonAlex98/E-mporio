@@ -13,7 +13,7 @@
         <p>Ruolo: {{getRoleName(user.role)}}</p>
         <p>Abilitato: {{user.enabled}}</p>
         <mat-action-row *ngIf="showToggle()">
-            <button mat-button (click)="toggleUser(user.username)">Abilita/Disabilita</button>
+            <button mat-raised-button color="accent" (click)="toggleUser(user.username)">Abilita/Disabilita</button>
         </mat-action-row>
     </mat-expansion-panel>
 </mat-accordion>

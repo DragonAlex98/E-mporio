@@ -20,7 +20,6 @@ export class NavBarComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/']);
   }
 
   ngOnInit() {
@@ -47,7 +46,6 @@ export class NavBarComponent implements OnInit {
     return this.authChecks.canOperateOnShopAsOwner();
   }
 
-
   public canOperateOnShopAsEmployee(): boolean {
     return this.authChecks.canOperateOnShopAsEmployee();
   }
@@ -70,5 +68,17 @@ export class NavBarComponent implements OnInit {
 
   public hasShop(): boolean {
     return this.authChecks.hasShopAssociated();
+  }
+
+  public isAdmin(): boolean {
+    return this.authChecks.isAdmin();
+  }
+
+  public isOperatore(): boolean {
+    return this.authChecks.isOperatore();
+  }
+
+  public canOperateOnDashboard(): boolean {
+    return this.authChecks.canOperateOnDashboard();
   }
 }

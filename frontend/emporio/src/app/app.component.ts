@@ -9,11 +9,7 @@ import { AuthenticationChecks } from './AuthenticationChecks';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private authService: AuthenticationService, private authChecks: AuthenticationChecks) {}
-
-  showDashboard() {
-    return this.authChecks.isAdmin() || this.authChecks.isOperatore();
-  }
+  constructor(private authService: AuthenticationService) {}
 
   private checkExpiredToken() {
     if (!this.authService.currentUserValue) return;
@@ -22,7 +18,6 @@ export class AppComponent implements OnInit {
       token => {
           if(!token || token.length <= 0) {
               this.authService.logout();
-              return false;
           }
         }
     );
