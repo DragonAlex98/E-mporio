@@ -9,6 +9,7 @@ import { Shop } from '@src/app/shop/shop/shop';
 import { OrderService } from '../order.service';
 import { AuthenticationService } from '@src/app/authentication/services/authentication.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-order-form',
@@ -25,7 +26,8 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
 
   productList: Product[];
 
-  constructor(private service: OrderService, private authService: AuthenticationService, private router: Router) { }
+  constructor(private service: OrderService, private authService: AuthenticationService, private router: Router,
+              private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.dataSource = new OrderProductTableDataSource();
@@ -45,14 +47,14 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
   addOrder() {
     this.customerFormGroup.get('customerCarPosition').patchValue(document.getElementById('cityAddr').textContent);
 
-    if (this.customerFormGroup.invalid) return;
+    if (this.customerFormGroup.invalid) { return; }
 
     this.service.addOrder(this.customerFormGroup.value.customerName,
       this.authService.currentUserValue.username,
       this.customerFormGroup.value.customerCarPosition,
       this.dataSource.getAsMap()).subscribe(
         data => {
-          alert('Aggiunto');
+          this.notificationService.success('Ordine Aggiunto');
           this.router.navigate(['/']);
         },
         error => {
