@@ -41,6 +41,15 @@ export class OrderProductTableDataSource extends DataSource<OrderProductTableIte
     this.data = copiedData;
   }
 
+  delete(row: OrderProductTableItem) {
+    const index: number = this.data.indexOf(row);
+    if (index !== -1) {
+      const copiedData = this.data.slice();
+      copiedData.splice(index, 1);
+      this.data = copiedData;
+    }
+  }
+
   getAsMap(): Map<string, number> {
     const m = new Map<string, number>();
     this.data.forEach(item => m.set(item.product.productName, item.quantity));

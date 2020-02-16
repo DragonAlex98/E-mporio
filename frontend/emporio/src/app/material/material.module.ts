@@ -3,7 +3,8 @@ import { MatMenuModule, MatIconModule, MatSelectModule, MatButtonModule,
    MatInputModule, MatDividerModule, MatGridListModule, MatSidenavModule,
    MatListModule, MatToolbarModule, MatStepperModule, MatFormFieldModule,
    MatDialogModule, MatCardModule, MatTableModule, MatChipsModule,
-  MatExpansionModule} from '@angular/material';
+   MatExpansionModule,
+   MatSnackBarModule} from '@angular/material';
 
 
 
@@ -26,7 +27,8 @@ import { MatMenuModule, MatIconModule, MatSelectModule, MatButtonModule,
     MatCardModule,
     MatTableModule,
     MatChipsModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSnackBarModule,
   ],
   exports: [
     MatMenuModule,
@@ -45,7 +47,8 @@ import { MatMenuModule, MatIconModule, MatSelectModule, MatButtonModule,
     MatCardModule,
     MatTableModule,
     MatChipsModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSnackBarModule,
 ]
 })
 export class MaterialModule { }

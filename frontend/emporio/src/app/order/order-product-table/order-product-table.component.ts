@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { OrderProductTableDataSource, OrderProductTableItem } from '../order-product-table-datasource';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-order-product-table',
@@ -18,7 +19,7 @@ export class OrderProductTableComponent implements AfterViewInit, OnInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'name', 'category', 'quantity', 'actions'];
 
-  constructor() { }
+  constructor(private notificationService: NotificationService) { }
 
   ngOnInit() {
   }
@@ -29,8 +30,10 @@ export class OrderProductTableComponent implements AfterViewInit, OnInit {
     this.table.dataSource = this.dataSource;
   }
 
-  onEdit(row) {
+  onDelete(key: OrderProductTableItem) {
+    if (confirm('Procedere all\'eliminazione del prodotto ' + key.product.productName + '?')) {
+      this.dataSource.delete(key);
+      this.notificationService.warn('! Prodotto ' + key.product.productName + ' eliminato correttamente!');
+    }
   }
-
-  onDelete(key) {}
 }
