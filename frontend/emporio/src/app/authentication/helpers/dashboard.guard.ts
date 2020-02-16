@@ -11,7 +11,7 @@ export class DashboardGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const currentUser = this.authenticationService.currentUserValue;
         if (currentUser) {
-            if (currentUser.role === Role.Admin || currentUser.role == Role.OperatoreSistema) {
+            if (currentUser.role === Role.Admin || currentUser.role === Role.OperatoreSistema) {
                 this.router.navigate(['/dashboard']);
                 return false;
             }

@@ -40,9 +40,6 @@ export class DashboardUsersComponent implements OnInit {
     this.userService.getUsers(this.searchText).subscribe(
       (data) => {
         this.users = data;
-      },
-      (error) => {
-        console.log(error.error.message);
       }
     );
   }
@@ -52,9 +49,6 @@ export class DashboardUsersComponent implements OnInit {
       () => {
         const user = this.users.find(u => u.username === username);
         user.enabled = !user.enabled;
-      },
-      (error) => {
-        console.log(error.error.message);
       }
     );
   }

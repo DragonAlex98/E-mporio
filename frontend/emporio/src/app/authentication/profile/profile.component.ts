@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators, FormGroupDirective, NgForm } from '
 import { ErrorStateMatcher } from '@angular/material';
 import { AuthenticationService } from '../services/authentication.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '@src/app/notification.service';
 
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -32,7 +33,7 @@ export class ProfileComponent implements OnInit {
     confirmNewPassword: new FormControl('', [Validators.required, Validators.minLength(1)])
   }, {validators: this.checkPasswords });
 
-  constructor(private authService: AuthenticationService, private router: Router) { }
+  constructor(private authService: AuthenticationService, private router: Router, private notificationService: NotificationService) { }
 
   ngOnInit() {
   }
@@ -45,11 +46,8 @@ export class ProfileComponent implements OnInit {
     this.authService.changePassword(this.changePasswordForm.get('oldPassword').value,
     this.changePasswordForm.get('newPassword').value, this.changePasswordForm.get('confirmNewPassword').value).subscribe(
       data => {
-        alert('Password cambiata con successo');
+        this.notificationService.success('Password cambiata con successo');
         this.router.navigate(['/']);
-      },
-      error => {
-        alert(error.error.message);
       });
   }
 }

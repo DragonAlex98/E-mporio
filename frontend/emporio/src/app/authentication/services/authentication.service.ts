@@ -46,7 +46,7 @@ export class AuthenticationService {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     this.currentUserSubject.next(user);
-                    if (user.role === Role.Dipendente || user.role === Role.Titolare || user.role == Role.GestoreMarketing) {
+                    if (user.role === Role.Dipendente || user.role === Role.Titolare || user.role === Role.GestoreMarketing) {
                         this.getShop(username).subscribe(
                             data => {
                                 this.setShop(data);
