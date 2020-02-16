@@ -3,6 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Product, ProductCategory } from '@src/app/product/product/product';
 import { ProductService } from '@src/app/product/product.service';
 import { ShopService } from '../shop.service';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-add-product',
@@ -19,31 +20,18 @@ export class AddProductComponent implements OnInit {
     productPrice: new FormControl('')
   });
 
-  constructor(private productService: ProductService, private shopService: ShopService) { }
+  constructor(private productService: ProductService, private shopService: ShopService,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.productService.getAllProductsDescriptions().subscribe(
-      data => this.productsDescriptions = data,
-      error => {
-        if ([404].indexOf(error.status) !== -1) {
-          alert(error.error.message);
-        } else {
-          alert('Errore di connessione!');
-        }
-      }
+      data => this.productsDescriptions = data
     );
   }
 
   onSubmit(formValue: any) {
     this.shopService.addProductToShop(this.piva, formValue).subscribe(
-      data => alert(data),
-      error => {
-        if ([400, 404].indexOf(error.status) !== -1) {
-          alert(error.error.message);
-        } else {
-          alert('Errore di connessione!');
-        }
-      }
+      data => this.notificationService.success(data)
     );
   }
 

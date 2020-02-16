@@ -56,14 +56,6 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
         data => {
           this.notificationService.success('Ordine Aggiunto');
           this.router.navigate(['/']);
-        },
-        error => {
-          console.log(error);
-          if ([400, 404].indexOf(error.status) !== -1) {
-            alert(error.error.message);
-          } else {
-            alert('Errore di connessione!');
-          }
         }
       );
   }

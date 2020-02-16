@@ -19,14 +19,7 @@ export class SearchProductPageComponent implements OnInit {
       this.searchTerm = params.text;
     });
     this.service.searchProducts(this.searchTerm).subscribe(
-      data => this.productList = data,
-      error => {
-        if ([404].indexOf(error.status) !== -1) {
-          alert(error.error.message);
-        } else {
-          alert('Errore di connessione!');
-        }
-      }
+      data => this.productList = data
     );
   }
 

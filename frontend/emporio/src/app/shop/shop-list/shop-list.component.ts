@@ -18,17 +18,7 @@ export class ShopListComponent implements OnInit {
   }
 
   loadList(term: string) {
-    this.shopService.searchShops(term).subscribe((shopListData) => this.shopList = shopListData.map(
-      item => {
-        return new Shop(
-          item.shopPIVA,
-          item.shopAddress,
-          item.shopBusinessName,
-          item.shopCategory,
-          item.shopHeadquarter
-        );
-      }
-    ));
+    this.shopService.searchShops(term).subscribe();
   }
 
 }

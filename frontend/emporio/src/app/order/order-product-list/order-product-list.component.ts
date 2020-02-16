@@ -40,7 +40,7 @@ export class OrderProductListComponent implements OnInit {
   }
 
   addProductToList(e, value: any) {
-    if(value.productSelect === '') {
+    if (value.productSelect === '') {
       return null;
     }
     this.dataSource.addData(value.productSelect, value.prodQta);

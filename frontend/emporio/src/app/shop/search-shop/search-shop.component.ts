@@ -20,14 +20,7 @@ export class SearchShopComponent implements OnInit {
       console.log(this.searchTerm);
     });
     this.service.searchShops(this.searchTerm).subscribe(
-      data => this.shopList = data,
-      error => {
-        if ([404].indexOf(error.status) !== -1) {
-          alert(error.error.message);
-        } else {
-          alert('Errore di connessione!');
-        }
-      }
+      data => this.shopList = data
     );
   }
 

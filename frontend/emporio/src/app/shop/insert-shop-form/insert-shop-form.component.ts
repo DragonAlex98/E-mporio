@@ -27,8 +27,7 @@ export class InsertShopFormComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.shopService.getShopCategories().subscribe(
-      data => this.categories = data,
-      error => alert('Errore di connessione!')
+      data => this.categories = data
     );
   }
 
@@ -49,19 +48,12 @@ export class InsertShopFormComponent implements OnInit, AfterViewInit {
     this.shopForm.get('shopLatitude').patchValue(document.getElementById('cityLat').textContent);
     this.shopForm.get('shopLongitude').patchValue(document.getElementById('cityLng').textContent);
 
-    if (this.shopForm.invalid) return;
+    if (this.shopForm.invalid) { return; }
 
     this.shopService.addShop(this.shopForm.value).subscribe(
       data => {
         this.authService.setShop(data);
         this.router.navigate(['/shops/' + this.authService.currentShopValue.shopPIVA]);
-      },
-      error => {
-        if ([400].indexOf(error.status) !== -1) {
-          alert(error.error.message);
-        } else {
-          alert('Errore di connessione!');
-        }
       }
     );
   }

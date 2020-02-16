@@ -18,14 +18,7 @@ export class OrderHistoryDetailsComponent implements OnInit {
 
   ritiraMerce() {
     this.orderHistoryService.pickUpGoods(this.order.id).subscribe(
-      data => this.order = data,
-      error => {
-        if ([404].indexOf(error.status) !== -1) {
-          alert(error.error.message);
-        } else {
-          alert('Errore di connessione!');
-        }
-      }
+      data => this.order = data
     );
   }
 }

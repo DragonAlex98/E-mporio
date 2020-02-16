@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ShopService } from '../shop.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-add-shop-category',
@@ -13,25 +14,19 @@ export class AddShopCategoryComponent implements OnInit {
     shopCategoryDescription: new FormControl('', Validators.required),
   });
 
-  constructor(private shopService: ShopService, private router: Router) { }
+  constructor(private shopService: ShopService, private router: Router,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
   }
 
   onSubmit() {
-    if (this.shopCategoryForm.invalid) return;
+    if (this.shopCategoryForm.invalid) { return; }
 
     this.shopService.addShopCategory(this.shopCategoryForm.value).subscribe(
       data => {
-        alert(data);
+        this.notificationService.success(data);
         this.router.navigate(['/']);
-      },
-      error => {
-        if ([400].indexOf(error.status) !== -1) {
-          alert(error.error.message);
-        } else {
-          alert('Errore di connessione!');
-        }
       }
     );
   }

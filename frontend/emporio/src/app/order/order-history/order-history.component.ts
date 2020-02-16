@@ -6,6 +6,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { OrderHistory } from '../OrderHistory';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-order-history',
@@ -16,7 +17,8 @@ export class OrderHistoryComponent implements OnInit {
   orders: OrderHistory[];
 
   constructor(private route: ActivatedRoute, private router: Router,
-    private orderService: OrderService, private authService: AuthenticationService) { }
+    private orderService: OrderService, private authService: AuthenticationService,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.route.paramMap.pipe(
@@ -25,20 +27,13 @@ export class OrderHistoryComponent implements OnInit {
       )
     ).subscribe(username => {
       if (!(username === this.authService.currentUserValue.username)) {
-        alert('Impossibile accedere alla pagina di un altro utente!');
+        this.notificationService.warn('Impossibile accedere alla pagina di un altro utente!');
         this.router.navigateByUrl('/');
       }
     });
 
     this.orderService.getAllCustomerOrder(this.authService.currentUserValue.username).subscribe(
-      data => this.orders = data,
-      error => {
-        if ([400, 404].indexOf(error.status) !== -1) {
-          alert(error.error.message);
-        } else {
-          alert('Errore di connessione!');
-        }
-      }
+      data => this.orders = data
     );
   }
 

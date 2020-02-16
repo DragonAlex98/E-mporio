@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../order.service';
 import { Order, OrderAdapter } from '../Order';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-order-to-delivery',
@@ -11,7 +12,7 @@ export class OrderToDeliveryComponent implements OnInit {
 
   orders: Order[];
 
-  constructor(private adapter: OrderAdapter, private orderService: OrderService) { }
+  constructor(private adapter: OrderAdapter, private orderService: OrderService, private notificationService: NotificationService) { }
 
   ngOnInit() {
 
@@ -22,7 +23,9 @@ export class OrderToDeliveryComponent implements OnInit {
   getOrders() {
 
     this.orderService.getOrdersToDelivery().subscribe(orders => {this.orders = orders; },
-       (error) => {alert('Non ci sono ordini da visualizzare'); });
+       (error) => {
+          this.notificationService.warn('Non ci sono ordini da visualizzare');
+        });
 
   }
 

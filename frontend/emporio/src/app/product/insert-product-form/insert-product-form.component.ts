@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../product.service';
 import { ProductCategory } from '../product/product';
 import { Router } from '@angular/router';
+import { NotificationService } from '@src/app/notification.service';
 @Component({
   selector: 'app-insert-product-form',
   templateUrl: './insert-product-form.component.html',
@@ -17,27 +18,20 @@ export class InsertProductFormComponent implements OnInit {
     productCategoryName : new FormControl('', Validators.required),
   });
 
-  constructor(private productService: ProductService, private router: Router) { }
+  constructor(private productService: ProductService, private router: Router,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.productService.getCategories().subscribe(
       data => this.categories = data,
-      error => alert('Errore di connessione!')
     );
   }
 
   onSubmit(productValue) {
     this.productService.addProduct(productValue).subscribe(
       data => {
-        alert(data);
+        this.notificationService.success(data);
         this.router.navigate(['/']);
-      },
-      error => {
-        if ([400].indexOf(error.status) !== -1) {
-          alert(error.error.message);
-        } else {
-          alert('Errore di connessione!');
-        }
       }
     );
   }

@@ -4,6 +4,7 @@ import { ShopService } from '../shop.service';
 import { AuthenticationService } from '@src/app/authentication/services/authentication.service';
 import { environment } from '@src/environments/environment';
 import { Router } from '@angular/router';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-add-employee',
@@ -16,7 +17,8 @@ export class AddEmployeeComponent implements OnInit {
     ownerUsername: new FormControl(this.authService.currentUserValue.username)
   });
 
-  constructor(private service: ShopService, private authService: AuthenticationService, private router: Router) { }
+  constructor(private service: ShopService, private authService: AuthenticationService, private router: Router,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
   }
@@ -24,15 +26,8 @@ export class AddEmployeeComponent implements OnInit {
   onSubmit(formValue) {
     this.service.addEmployeeToShop(formValue).subscribe(
       data => {
-        alert(data);
+        this.notificationService.success(data);
         this.router.navigate(['/']);
-      },
-      error => {
-        if ([400, 404].indexOf(error.status) !== -1) {
-          alert(error.error.message);
-        } else {
-          alert('Errore di connessione!');
-        }
       }
     );
   }

@@ -28,14 +28,11 @@ export class ShopSalesComponent implements OnInit {
   }
 
   getShopSalesList() {
-    if (!this.piva || this.piva.length == 0) return;
+    if (!this.piva || this.piva.length == 0) { return; }
 
     this.shopService.getShopSalesList(this.piva).subscribe(
       (data) => {
         this.salesList = data;
-      },
-      (error) => {
-        
       }
     );
   }

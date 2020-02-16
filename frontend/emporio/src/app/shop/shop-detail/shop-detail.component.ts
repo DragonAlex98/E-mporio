@@ -53,7 +53,7 @@ export class ShopDetailComponent implements OnInit {
   }
 
   updateMap() {
-    if (!this.showMapSubject.value) return;
+    if (!this.showMapSubject.value) { return; }
 
     var mapUtils = new GoogleMapUtils(this.mapElement.nativeElement);
 

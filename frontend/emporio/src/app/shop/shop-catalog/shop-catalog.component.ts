@@ -4,6 +4,7 @@ import { Product } from '@src/app/product/product/product';
 import { AuthenticationService } from '@src/app/authentication/services/authentication.service';
 import { Role } from '@src/app/authentication/models/role';
 import { AuthenticationChecks } from '@src/app/AuthenticationChecks';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-shop-catalog',
@@ -15,7 +16,8 @@ export class ShopCatalogComponent implements OnInit {
   shouldShowDeleteProduct: Boolean;
   productList: Product[];
 
-  constructor(private service: ShopService, private auth: AuthenticationService, private authChecks: AuthenticationChecks) { }
+  constructor(private service: ShopService, private auth: AuthenticationService, private authChecks: AuthenticationChecks,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.service.getShopCatalog(this.piva).subscribe(
@@ -31,9 +33,7 @@ export class ShopCatalogComponent implements OnInit {
 
   deleteProduct(product: Product) {
     this.service.deleteShopProduct(this.piva, product.productName).subscribe(
-      (res) => {
-        console.log(res);
-      }
+      res => this.notificationService.success('Prodotto eliminato correttamente!')
     );
   }
 

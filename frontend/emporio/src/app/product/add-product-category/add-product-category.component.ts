@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProductService } from '../product.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-add-product-category',
@@ -13,25 +14,19 @@ export class AddProductCategoryComponent implements OnInit {
     description: new FormControl('', Validators.required),
   });
 
-  constructor(private productService: ProductService, private router: Router) { }
+  constructor(private productService: ProductService, private router: Router,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
   }
 
   onSubmit() {
-    if (this.productCategoryForm.invalid) return;
+    if (this.productCategoryForm.invalid) { return; }
 
     this.productService.addProductCategory(this.productCategoryForm.value).subscribe(
       data => {
-        alert(data);
+        this.notificationService.success(data);
         this.router.navigate(['/']);
-      },
-      error => {
-        if ([400].indexOf(error.status) !== -1) {
-          alert(error.error.message);
-        } else {
-          alert('Errore di connessione!');
-        }
       }
     );
   }
