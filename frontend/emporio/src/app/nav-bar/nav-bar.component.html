@@ -2,7 +2,13 @@
  <mat-sidenav #drawer class="sidenav" mode="over" [(opened)]="opened" (opened)="events.push('open!')" (closed)="events.push('close!')">  
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item *ngIf="isLoggedIn()" [routerLink]="['/profile']"><mat-icon>portrait</mat-icon> Gestione Profilo</a>
+      <a mat-list-item *ngIf="isLoggedIn()" [routerLink]="['/profile']"><mat-icon>portrait</mat-icon>Gestione Profilo</a>
+      
+      <a mat-list-item *ngIf="isAdmin()" [routerLink]="['dashboard/create-admin']"><mat-icon>add</mat-icon>Nuovo Admin</a>
+      <a mat-list-item *ngIf="isAdmin()" [routerLink]="['dashboard/create-operatore']"><mat-icon>add</mat-icon>Nuovo Operatore</a>
+      <a mat-list-item *ngIf="canOperateOnDashboard()" [routerLink]="['dashboard/users']"><mat-icon>people</mat-icon>Gestione Utenti</a>
+      <a mat-list-item *ngIf="canOperateOnDashboard()" [routerLink]="['dashboard/add-locker']"><mat-icon>add</mat-icon>Inserisci Locker</a>
+
       <a mat-list-item *ngIf="canOperateOnShopAsOwner() && !hasShop()" [routerLink]="['/add-shop-category']"><mat-icon>add</mat-icon> Nuova Categoria Attività</a>
       <a mat-list-item *ngIf="canOperateOnShopAsOwner() && !hasShop()" [routerLink]="['/new-shop']"><mat-icon>add</mat-icon> Nuova Attività</a>
       <a mat-list-item *ngIf="canOperateOnShop() && hasShop()" [routerLink]="['/add-product-category']"><mat-icon>add</mat-icon> Nuova Categoria Prodotto</a>
@@ -22,12 +28,13 @@
       <button *ngIf="isLoggedIn()" type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <a mat-button [routerLink]="['/home']"><mat-icon>home</mat-icon> Emporio</a>
-    <span class="login-space"></span>
-    <app-search-bar></app-search-bar>
-    <a *ngIf="!(isLoggedIn())" mat-button [routerLink]="['/login']">Log In</a>
-    <a *ngIf="!(isLoggedIn())" mat-button [routerLink]="['/registration']">Registrati</a>
-    <a *ngIf="isLoggedIn()" mat-button (click)="logout()">Log Out</a>
+      <a mat-button [routerLink]="['/home']" *ngIf="!canOperateOnDashboard()"><mat-icon>home</mat-icon> Emporio</a>
+      <a mat-button [routerLink]="['/dashboard']" *ngIf="canOperateOnDashboard()"><mat-icon>home</mat-icon> Dashboard</a>
+      <span class="login-space"></span>
+      <app-search-bar *ngIf="!canOperateOnDashboard()"></app-search-bar>
+      <a *ngIf="!(isLoggedIn())" mat-button [routerLink]="['/login']">Log In</a>
+      <a *ngIf="!(isLoggedIn())" mat-button [routerLink]="['/registration']">Registrati</a>
+      <a *ngIf="isLoggedIn()" mat-button (click)="logout()">Log Out</a>
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>

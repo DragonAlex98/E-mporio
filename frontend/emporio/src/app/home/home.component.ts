@@ -45,10 +45,14 @@ export class HomeComponent implements OnInit {
       });
 
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
+        navigator.geolocation.getCurrentPosition(position => {
         mapUtils.center(new google.maps.Marker({position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude)}));
         mapUtils.setZoom(6);
-      });
-    }
+      }, (error) => {
+        console.log(error);
+        mapUtils.center(new google.maps.Marker({position: new google.maps.LatLng(43, 13)}))
+        mapUtils.setZoom(4);
+      })
+    };
   }
 }
