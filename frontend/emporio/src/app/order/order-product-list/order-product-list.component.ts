@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OrderProductTableItem, OrderProductTableDataSource } from '../order-product-table-datasource';
 import { OrderProductTableComponent } from '../order-product-table/order-product-table.component';
 import { Product, ProductCategory } from '@src/app/product/product/product';
@@ -19,7 +19,7 @@ export class OrderProductListComponent implements OnInit {
 
   productListForm: FormGroup = new FormGroup({
     productSelect: new FormControl(''),
-    prodQta: new FormControl(0),
+    prodQta: new FormControl(1),
   });
   @Input() dataSource: OrderProductTableDataSource;
   shop: Shop;

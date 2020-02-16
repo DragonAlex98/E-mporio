@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Product } from '@src/app/product/product/product';
 import { OrderProductTableDataSource } from '../order-product-table-datasource';
 import { User } from '@src/app/authentication/models/user';
@@ -15,11 +15,11 @@ import { Router } from '@angular/router';
   templateUrl: './order-form.component.html',
   styleUrls: ['./order-form.component.css']
 })
-export class OrderFormComponent implements OnInit {
+export class OrderFormComponent implements OnInit, AfterViewInit {
   order: Order;
   customerFormGroup = new FormGroup({
-    customerName: new FormControl(''),
-    customerCarPosition: new FormControl('')
+    customerName: new FormControl('', Validators.required),
+    customerCarPosition: new FormControl('', Validators.required)
   });
   dataSource: OrderProductTableDataSource;
 
@@ -31,7 +31,22 @@ export class OrderFormComponent implements OnInit {
     this.dataSource = new OrderProductTableDataSource();
   }
 
+  ngAfterViewInit(): void {
+    var input = document.getElementById('searchTextField') as HTMLInputElement;
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+      var place = autocomplete.getPlace();
+      document.getElementById('cityAddr').textContent = place.formatted_address;
+      document.getElementById('cityLat').textContent = place.geometry.location.lat().toString();
+      document.getElementById('cityLng').textContent = place.geometry.location.lng().toString();
+    });
+  }
+
   addOrder() {
+    this.customerFormGroup.get('customerCarPosition').patchValue(document.getElementById('cityAddr').textContent);
+
+    if (this.customerFormGroup.invalid) return;
+
     this.service.addOrder(this.customerFormGroup.value.customerName,
       this.authService.currentUserValue.username,
       this.customerFormGroup.value.customerCarPosition,

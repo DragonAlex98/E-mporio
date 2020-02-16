@@ -11,7 +11,10 @@
                                     <input matInput placeholder="Username Acquirente" formControlName="customerName" required>
                                 </mat-form-field>
                                 <mat-form-field>
-                                    <input matInput placeholder="Posizione Macchina" formControlName="customerCarPosition" required>
+                                    <input matInput id="searchTextField" type="text" autocomplete="on" runat="server" placeholder="Posizione Macchina" formControlName="customerCarPosition" required>
+                                    <input id="cityAddr" type="hidden" name="cityAddr"/>
+                                    <input id="cityLat" type="hidden" name="cityLat"/>
+                                    <input id="cityLng" type="hidden" name="cityLng"/>
                                 </mat-form-field>
                                 <div>
                                     <button mat-raised-button color="accent" matStepperNext>Avanti<mat-icon>chevron_right</mat-icon></button>

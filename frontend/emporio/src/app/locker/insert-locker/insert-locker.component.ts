@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LockerService } from '../locker.service';
 import { Router } from '@angular/router';
 
@@ -8,11 +8,10 @@ import { Router } from '@angular/router';
   templateUrl: './insert-locker.component.html',
   styleUrls: ['./insert-locker.component.css']
 })
-export class InsertLockerComponent implements OnInit {
-
+export class InsertLockerComponent implements OnInit, AfterViewInit {
   lockerForm = new FormGroup({
-    lockerStreet: new FormControl(''),
-    numPosti : new FormControl(''),
+    lockerStreet: new FormControl('', Validators.required),
+    numPosti: new FormControl(1, {validators: [Validators.required, Validators.min(1)]}),
   });
 
   constructor(private lockerService: LockerService, private router: Router) { }
@@ -20,15 +19,21 @@ export class InsertLockerComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngAfterViewInit(): void {
+    var input = document.getElementById('searchTextField') as HTMLInputElement;
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+      var place = autocomplete.getPlace();
+      document.getElementById('cityAddr').textContent = place.formatted_address;
+      document.getElementById('cityLat').textContent = place.geometry.location.lat().toString();
+      document.getElementById('cityLng').textContent = place.geometry.location.lng().toString();
+    });
+  }
+
   onSubmit(formValue: any) {
-    if (formValue.lockerStreet.length == 0) {
-      alert("Inserire una via!");
-      return;
-    }
-    if (formValue.numPosti <= 0) {
-      alert("Il numero di posti deve essere maggiore o uguale a 1");
-      return;
-    }
+    this.lockerForm.get('lockerStreet').patchValue(document.getElementById('cityAddr').textContent);
+
+    if (this.lockerForm.invalid) return;
 
     this.lockerService.insertNewLocker(formValue.lockerStreet, formValue.numPosti).subscribe(
       () => {

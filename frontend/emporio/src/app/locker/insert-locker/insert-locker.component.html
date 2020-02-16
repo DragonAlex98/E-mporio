@@ -10,13 +10,16 @@
         <div>
           <p>
             <mat-form-field>
-              <input matInput placeholder="Indirizzo Locker" formControlName="lockerStreet" required>
+              <input matInput id="searchTextField" type="text" autocomplete="on" runat="server" placeholder="Indirizzo Locker" formControlName="lockerStreet" required>
+              <input id="cityAddr" type="hidden" name="cityAddr"/>
+              <input id="cityLat" type="hidden" name="cityLat"/>
+              <input id="cityLng" type="hidden" name="cityLng"/>
             </mat-form-field>
           </p>
 
           <p>
             <mat-form-field>
-              <input matInput type="number" placeholder="Numero Posti" formControlName="numPosti" required>
+              <input matInput type="number" min="1" placeholder="Numero Posti" formControlName="numPosti" required>
             </mat-form-field>
           </p>
 
