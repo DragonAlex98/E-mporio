@@ -3,6 +3,7 @@ import { Order } from '@src/app/order/Order';
 import { Posto } from '@src/app/locker/Posto';
 import { DeliveryService } from '../delivery.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-create-delivery',
@@ -15,7 +16,7 @@ export class CreateDeliveryComponent implements OnInit {
   posto: Posto;
   fattorino: string;
 
-  constructor(private deliveryService: DeliveryService, private routerService: Router) {}
+  constructor(private deliveryService: DeliveryService, private routerService: Router, private notificationService: NotificationService) {}
 
   ngOnInit() {}
 
@@ -26,8 +27,7 @@ export class CreateDeliveryComponent implements OnInit {
     if (typeof this.posto === 'undefined') {return; }
 
     this.deliveryService.createDelivery().subscribe(
-      (data) => {alert('Consegna creata con successo'); },
-      (error) => {alert(error.error.message); }
+      (data) => {this.notificationService.success('Consegna creata con successo'); }
       );
 
 

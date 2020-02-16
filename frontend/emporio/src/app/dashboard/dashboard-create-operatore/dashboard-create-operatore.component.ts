@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '@src/app/authentication/services/user.service';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-dashboard-create-operatore',
@@ -15,7 +16,7 @@ export class DashboardCreateOperatoreComponent implements OnInit {
     password: new FormControl('', [Validators.required, Validators.minLength(1)]),
   });
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router, private notificationService: NotificationService) { }
 
   ngOnInit() {
   }
@@ -25,11 +26,8 @@ export class DashboardCreateOperatoreComponent implements OnInit {
 
     this.userService.createOperatore(this.registerForm.value).subscribe(
       data => {
-        alert('Registrazione effettuata');
+        this.notificationService.success('Registrazione effettuata');
         this.router.navigate(['/']);
-      },
-      error => {
-        alert(error.error.message);
       });
   }
 }

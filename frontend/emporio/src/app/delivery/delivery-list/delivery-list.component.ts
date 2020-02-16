@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Delivery } from '../delivery';
 import { DeliveryService } from '../delivery.service';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-delivery-list',
@@ -11,7 +12,7 @@ export class DeliveryListComponent implements OnInit {
 
   deliveryList: Delivery[];
 
-  constructor(private deliveryService: DeliveryService) { }
+  constructor(private deliveryService: DeliveryService, private notificationService: NotificationService) { }
 
   ngOnInit() {
 
@@ -24,9 +25,6 @@ export class DeliveryListComponent implements OnInit {
     this.deliveryService.getDeliveryList().subscribe(
       (data) => {
         this.deliveryList = data;
-      },
-      (error) => {
-        alert(error.error.message);
       }
     );
 

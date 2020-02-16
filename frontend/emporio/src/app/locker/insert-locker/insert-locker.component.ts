@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LockerService } from '../locker.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-insert-locker',
@@ -14,7 +15,7 @@ export class InsertLockerComponent implements OnInit, AfterViewInit {
     numPosti: new FormControl(1, {validators: [Validators.required, Validators.min(1)]}),
   });
 
-  constructor(private lockerService: LockerService, private router: Router) { }
+  constructor(private lockerService: LockerService, private router: Router, private notificationService: NotificationService) { }
 
   ngOnInit() {
   }
@@ -37,11 +38,8 @@ export class InsertLockerComponent implements OnInit, AfterViewInit {
 
     this.lockerService.insertNewLocker(formValue.lockerStreet, formValue.numPosti).subscribe(
       () => {
-        alert("Locker Inserito!");
+        this.notificationService.success("Locker Inserito!");
         this.router.navigate(['/']);
-      },
-      (error) => {
-        alert(error.error.message);
       }
     );
   }

@@ -6,6 +6,7 @@ import { environment } from '@src/environments/environment';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../authentication/services/authentication.service';
 import { Delivery } from './delivery';
+import { NotificationService } from '../notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class DeliveryService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private httpService: HttpClient, private authService: AuthenticationService) { }
+  constructor(private httpService: HttpClient, private authService: AuthenticationService, private notificationService: NotificationService) { }
 
   getSelectedPlace(): Posto {
 
@@ -51,13 +52,13 @@ export class DeliveryService {
 
     if (typeof this.selectedPlace === 'undefined') {
 
-      alert('Posto non valido o non assegnato');
+      this.notificationService.warn('Posto non valido o non assegnato');
       return;
 
     }
 
     if (typeof this.selectedOrder === 'undefined') {
-      alert('Ordine non valido o non assegnato');
+      this.notificationService.warn('Ordine non valido o non assegnato');
       return;
     }
 

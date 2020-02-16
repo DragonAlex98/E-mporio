@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Locker } from '../Locker';
 import { LockerService } from '../locker.service';
 import { Posto } from '../Posto';
+import { NotificationService } from '@src/app/notification.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class LockerSelectorComponent implements OnInit {
   selectedLocker: Locker;
   lockerEmptyPlaces: Posto[];
 
-  constructor(private lockerService: LockerService) { }
+  constructor(private lockerService: LockerService, private notificationService: NotificationService) { }
 
   ngOnInit() {
 
@@ -25,9 +26,9 @@ export class LockerSelectorComponent implements OnInit {
 
   getLockers() {
 
-    this.lockerService.getLockers().subscribe( (lockers) => {this.lockers = lockers; },
-                                               (error) => {alert('Impossibile recuperare i lockers'); });
-
+    this.lockerService.getLockers().subscribe(
+      (lockers) => {this.lockers = lockers; }
+    );
   }
 
   onLockerChange(event) {
@@ -44,8 +45,7 @@ export class LockerSelectorComponent implements OnInit {
           emptyPlaces.map((posto) => {
             return new Posto(posto.postoId, posto.nomePosto);
           });
-        },
-        (error) => {alert('Impossibile recuperare i posti del locker selezionato'); }
+        }
       );
     }
 

@@ -4,21 +4,24 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { AuthenticationService } from '@src/app/authentication/services/authentication.service';
+import { NotificationService } from '@src/app/notification.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private authenticationService: AuthenticationService) { }
+    constructor(private authenticationService: AuthenticationService, private notificationService: NotificationService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
-            if ([401, 403].indexOf(err.status) !== -1) {
-                // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-                this.authenticationService.logout();
-                location.reload(true);
+            if (!err) {
+                this.notificationService.warn("Errore di sistema");
+            } else if (err.error.message) {
+                this.notificationService.warn(err.error.message);
+            } else if (err.error) {
+                this.notificationService.warn(err.error);
+            } else if (err) {
+                this.notificationService.warn(err);
             }
-
-            const error = err.error.message || err.statusText;
-            return throwError(error);
+            return throwError(err);
         }));
     }
 }

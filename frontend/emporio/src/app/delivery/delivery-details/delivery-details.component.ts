@@ -3,6 +3,7 @@ import { Delivery } from '../delivery';
 import { LockerService } from '@src/app/locker/locker.service';
 import { Locker } from '@src/app/locker/Locker';
 import { GoogleMapUtils } from '@src/app/googleMapUtils';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-delivery-details',
@@ -15,7 +16,7 @@ export class DeliveryDetailsComponent implements OnInit, AfterViewInit {
   @Input() delivery: Delivery;
   locker: Locker;
 
-  constructor(private lockerService: LockerService) { }
+  constructor(private lockerService: LockerService, private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.getLocker();
@@ -25,8 +26,7 @@ export class DeliveryDetailsComponent implements OnInit, AfterViewInit {
     if (this.delivery.posto === null) {return; }
 
     this.lockerService.getLockerByPosto(this.delivery.posto.postoId).subscribe(
-      (data) => {this.locker = data; },
-      (error) => {alert(error.error.message); }
+      (data) => {this.locker = data; }
     );
   }
 

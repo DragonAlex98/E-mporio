@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '@src/app/authentication/services/user.service';
 import {AuthenticationService} from '@src/app/authentication/services/authentication.service';
 import { Role } from '../models/role';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({templateUrl: 'registration.component.html'})
 export class RegistrationComponent implements OnInit {
@@ -17,7 +18,8 @@ export class RegistrationComponent implements OnInit {
         private formBuilder: FormBuilder,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private userService: UserService
+        private userService: UserService,
+        private notificationService: NotificationService,
     ) {
         // se e' gia' connesso fa il redirect sulla home
         if (this.authenticationService.currentUserValue) {
@@ -44,13 +46,10 @@ export class RegistrationComponent implements OnInit {
         this.userService.register(this.registerForm.value)
             .subscribe(
                 data => {
-                    alert('Registrazione effettuata');
+                    this.notificationService.success('Registrazione effettuata');
                     console.log(data);
                     this.router.navigate(['/']);
-                },
-                error => {
-                    alert('Registrazione non effettuata');
-                    console.log(error);
-                });
+                }
+            );
     }
 }

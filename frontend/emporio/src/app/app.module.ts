@@ -23,6 +23,7 @@ import { OrderService } from '@src/app/order/order.service';
 import { MatStepperModule } from '@angular/material';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from '@src/app/authentication/helpers/jwt.interceptor';
+import { ErrorInterceptor } from '@src/app/authentication/helpers/error.interceptor';
 import { DashboardModule } from './dashboard/dashboard.module';
 
 
@@ -58,6 +59,11 @@ import { DashboardModule } from './dashboard/dashboard.module';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     },
   ],

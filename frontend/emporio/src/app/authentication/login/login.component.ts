@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AuthenticationService } from '@src/app/authentication/services/authentication.service';
+import { NotificationService } from '@src/app/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
       private formBuilder: FormBuilder,
       private route: ActivatedRoute,
       private router: Router,
-      private authenticationService: AuthenticationService
+      private authenticationService: AuthenticationService,
+      private notificationService: NotificationService,
   ) {
       // se gia' loggato torno alla home
       if (this.authenticationService.currentUserValue) {
@@ -49,12 +51,10 @@ export class LoginComponent implements OnInit {
       this.authenticationService.login(this.loginForm.controls.username.value, this.loginForm.controls.password.value)
           .subscribe(
               data => {
-                  alert('Login effettuato con successo!');
+                  this.notificationService.success('Login effettuato con successo!');
                   this.router.navigate([this.returnUrl]);
-              },
-              error => {
-                alert('Login non effettuato, riprova');
-              });
+              }
+          );
   }
 
 }

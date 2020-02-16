@@ -3,6 +3,7 @@ import { ClassificaShop } from '../shop/shop/classificaShop';
 import { ShopService } from '../shop/shop.service';
 import { Shop } from '../shop/shop/shop';
 import { GoogleMapUtils } from '../googleMapUtils';
+import { NotificationService } from '../notification.service';
 
 @Component({
   selector: 'app-home',
@@ -16,14 +17,11 @@ export class HomeComponent implements OnInit {
   shopList: Shop[];
   classificaShopList: ClassificaShop[];
 
-  constructor(private shopService: ShopService) { }
+  constructor(private shopService: ShopService, private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.shopService.getClassifica().subscribe(
-      data => this.classificaShopList = data,
-      error => {
-          alert('Errore di connessione!');
-      }
+      data => this.classificaShopList = data
     );
 
     this.shopService.getAllExistingShops().subscribe(
@@ -44,15 +42,13 @@ export class HomeComponent implements OnInit {
         mapUtils.addInfoWindow(marker, element);
       });
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-        mapUtils.center(new google.maps.Marker({position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude)}));
-        mapUtils.setZoom(6);
-      }, (error) => {
-        console.log(error);
-        mapUtils.center(new google.maps.Marker({position: new google.maps.LatLng(43, 13)}))
-        mapUtils.setZoom(4);
-      })
-    };
+    navigator.geolocation.getCurrentPosition(position => {
+      mapUtils.center(new google.maps.Marker({position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude)}));
+      mapUtils.setZoom(6);
+    }, (error) => {
+      console.log(error);
+      mapUtils.center(new google.maps.Marker({position: new google.maps.LatLng(43, 13)}))
+      mapUtils.setZoom(4);
+    });
   }
 }
