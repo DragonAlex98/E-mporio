@@ -16,6 +16,7 @@ import { ShopCatalogComponent } from '@src/app/shop/shop-catalog/shop-catalog.co
 import { AddMarketingManagerComponent } from '@src/app/shop/add-marketing-manager/add-marketing-manager.component';
 import { ShopSalesComponent } from '@src/app/shop/shop-sales/shop-sales.component';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { AddShopCategoryComponent } from '@src/app/shop/add-shop-category/add-shop-category.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
     AddEmployeeComponent,
     AddMarketingManagerComponent,
     ShopSalesComponent,
+    AddShopCategoryComponent,
   ],
   imports: [
     CommonModule,

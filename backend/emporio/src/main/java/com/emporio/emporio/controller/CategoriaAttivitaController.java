@@ -1,7 +1,5 @@
 package com.emporio.emporio.controller;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -23,9 +21,9 @@ public class CategoriaAttivitaController {
     private CategoriaAttivitaService categoriaAttivitaService;
 
     @PostMapping("/shops/categories")
-    public ResponseEntity<ApiPostResponse> insertNewCategoryShop(@Valid @RequestBody CategoriaAttivita categoryShop) throws URISyntaxException {
+    public ResponseEntity<ApiPostResponse> insertNewCategoryShop(@Valid @RequestBody CategoriaAttivita categoryShop) {
         CategoriaAttivita shopCategory = categoriaAttivitaService.insertNewCategoryShop(categoryShop.getShopCategoryDescription());
-        return ResponseEntity.created(new URI("/categoryShop/"+ shopCategory.getShopCategoryId())).body(ApiPostResponse.builder().message("Categoria aggiunta!").build());
+        return ResponseEntity.ok(ApiPostResponse.builder().message("Categoria " + shopCategory.getShopCategoryDescription() + " aggiunta!").build());
     }
     
     @GetMapping("/shops/categories")

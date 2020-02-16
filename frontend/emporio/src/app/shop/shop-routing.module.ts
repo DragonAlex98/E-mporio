@@ -7,6 +7,7 @@ import { Role } from '../authentication/models/role';
 import { ShopDetailComponent } from './shop-detail/shop-detail.component';
 import { AddMarketingManagerComponent } from './add-marketing-manager/add-marketing-manager.component';
 import { ShopSalesComponent } from './shop-sales/shop-sales.component';
+import { AddShopCategoryComponent } from './add-shop-category/add-shop-category.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,12 @@ const routes: Routes = [
     component: ShopSalesComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Titolare, Role.GestoreMarketing] }
+  },
+  {
+    path: 'add-shop-category',
+    component: AddShopCategoryComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Titolare] }
   },
 ];
 

@@ -12,10 +12,11 @@ import { ShopDetailComponent } from '@src/app/shop/shop-detail/shop-detail.compo
 import { AddProductComponent } from '@src/app/shop/add-product/add-product.component';
 import { ShopCatalogComponent } from '@src/app/shop/shop-catalog/shop-catalog.component';
 import { ShopSalesComponent } from '@src/app/shop/shop-sales/shop-sales.component';
+import { AddShopCategoryComponent } from '@src/app/shop/add-shop-category/add-shop-category.component';
 
 
 @NgModule({
-  declarations: [ShopComponent, ShopListComponent, SearchShopComponent, InsertShopComponent, InsertShopFormComponent, AddEmployeeComponent, ShopDetailComponent, AddProductComponent, ShopCatalogComponent, ShopSalesComponent],
+  declarations: [ShopComponent, ShopListComponent, SearchShopComponent, InsertShopComponent, InsertShopFormComponent, AddEmployeeComponent, ShopDetailComponent, AddProductComponent, ShopCatalogComponent, ShopSalesComponent, AddShopCategoryComponent],
   imports: [
     ShopRoutingModule,
     NativeScriptCommonModule

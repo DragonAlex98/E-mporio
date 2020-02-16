@@ -102,4 +102,10 @@ export class ShopService {
       map((data: any[]) => data.map(item => this.adapter.adapt(item)))
     );
   }
+
+  addShopCategory(formValue: any): Observable<string> {
+    return this.httpClient.post(`${environment.apiUrl}/shops/categories`, formValue, this.httpOptions).pipe(
+      map((item: any) => item.message)
+    );
+  }
 }
