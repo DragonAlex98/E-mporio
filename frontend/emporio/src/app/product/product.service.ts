@@ -44,4 +44,9 @@ export class ProductService {
     );
   }
 
+  addProductCategory(formValue: any): Observable<string> {
+    return this.httpClient.post(`${environment.apiUrl}/products/categories`, formValue, this.httpOptions).pipe(
+      map((item: any) => item.message)
+    );
+  }
 }

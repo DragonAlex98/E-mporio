@@ -23,10 +23,9 @@ public class CategoriaProdottoController {
     private CategoriaProdottoService categoryProductService;
 
     @PostMapping("/products/categories")
-    public ResponseEntity<ApiPostResponse> insertNewCategoryProduct(@Valid @RequestBody CategoriaProdotto categoryProduct)
-            throws URISyntaxException {
-        categoryProduct = categoryProductService.saveProductCategory(categoryProduct);
-        return ResponseEntity.created(new URI("/categoryProduct/"+ categoryProduct.getCategoryId())).body(ApiPostResponse.builder().message("Categoria aggiunta!").build());
+    public ResponseEntity<ApiPostResponse> insertNewCategoryProduct(@Valid @RequestBody CategoriaProdotto productCategory) {
+        CategoriaProdotto categoryProduct = categoryProductService.insertNewCategoryProduct(productCategory.getDescription());
+        return ResponseEntity.ok(ApiPostResponse.builder().message("Categoria " + categoryProduct.getDescription() + " aggiunta!").build());
     }
 
     @GetMapping("/products/categories")

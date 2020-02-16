@@ -1,0 +1,28 @@
+<span mat-dialog-title>Aggiungi Categoria Prodotto</span>
+<span class="fill-remaining-space"></span>
+<mat-grid-list [cols]=4 rowHeight="400px">
+  <mat-grid-tile [rowspan]=1 [colspan]=1>
+
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]=1 [colspan]=2>
+    <div class="controles-container">
+      <mat-card>
+      <form [formGroup]="productCategoryForm" (ngSubmit)="onSubmit()">
+        <div class="add-product-category-form-container">
+          <mat-form-field>
+            <input matInput placeholder="Nome Categoria Prodotto" formControlName="description" required>
+          </mat-form-field>
+
+          <button mat-raised-button type="submit" color="accent">Aggiungi Categoria</button>
+          <button mat-raised-button type="reset" color="warn" id="cancel-btn">Reimposta</button>
+        </div>
+      </form>
+    </mat-card>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [rowspan]=1 [colspan]=1>
+
+  </mat-grid-tile>
+
+</mat-grid-list>
+<span class="fill-remaining-space"></span>

@@ -33,11 +33,11 @@ public class CategoriaProdottoService {
         return categoryProductRepository.save(cat.get());
     }
 
-    public CategoriaProdotto saveProductCategory(CategoriaProdotto productCategory) {
-        if (categoryProductRepository.existsByDescription(productCategory.getDescription()))
-            throw new EntityExistsException("La categoria " + productCategory.getDescription() + " è già presente!");
+    public CategoriaProdotto insertNewCategoryProduct(String productCategoryDescription) {
+        if (categoryProductRepository.existsByDescription(productCategoryDescription))
+            throw new EntityExistsException("La categoria " + productCategoryDescription + " è già presente!");
 
-        return categoryProductRepository.save(productCategory);
+        return categoryProductRepository.save(CategoriaProdotto.builder().description(productCategoryDescription).build());
     }
     
 }

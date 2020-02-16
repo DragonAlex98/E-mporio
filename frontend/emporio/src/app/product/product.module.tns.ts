@@ -8,10 +8,11 @@ import { ProductComponent } from '@src/app/product/product/product.component';
 import { NativeScriptFormsModule } from 'nativescript-angular/forms';
 import { NativeScriptHttpClientModule } from 'nativescript-angular/http-client';
 import { SearchProductPageComponent } from '@src/app/product/search-product-page/search-product-page.component';
+import { AddProductCategoryComponent } from '@src/app/product/add-product-category/add-product-category.component';
 
 
 @NgModule({
-  declarations: [InsertProductComponent, InsertProductFormComponent, ProductComponent, SearchProductPageComponent],
+  declarations: [InsertProductComponent, InsertProductFormComponent, ProductComponent, SearchProductPageComponent, AddProductCategoryComponent],
   imports: [
     ProductRoutingModule,
     NativeScriptCommonModule,
