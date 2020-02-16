@@ -26,10 +26,9 @@
 
     <!-- Modify&Delete Column-->
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Modifica/Elimina</th>
+      <th mat-header-cell *matHeaderCellDef>Elimina</th>
       <td mat-cell *matCellDef="let row">
-        <button mat-icon-button (click)="onEdit(row)"><mat-icon>launch</mat-icon></button>
-        <button mat-icon-button color="warn" (click)="onDelete(row.$key)"><mat-icon>delete_outline</mat-icon></button>
+        <button mat-icon-button color="warn" (click)="onDelete(row)"><mat-icon>delete_outline</mat-icon></button>
       </td>
     </ng-container>
 

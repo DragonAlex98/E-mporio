@@ -40,7 +40,6 @@ export class OrderProductListComponent implements OnInit {
   }
 
   addProductToList(e, value: any) {
-    console.log(value);
     if(value.productSelect === '') {
       return null;
     }

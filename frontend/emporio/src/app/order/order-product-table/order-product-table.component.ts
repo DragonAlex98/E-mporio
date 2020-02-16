@@ -29,8 +29,9 @@ export class OrderProductTableComponent implements AfterViewInit, OnInit {
     this.table.dataSource = this.dataSource;
   }
 
-  onEdit(row) {
+  onDelete(key: OrderProductTableItem) {
+    if (confirm('Procedere all\'eliminazione del prodotto ' + key.product.productName + '?')) {
+      this.dataSource.delete(key);
+    }
   }
-
-  onDelete(key) {}
 }
