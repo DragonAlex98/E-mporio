@@ -10,9 +10,7 @@ import { NotificationService } from '@src/app/notification.service';
   templateUrl: './delivery-details.component.html',
   styleUrls: ['./delivery-details.component.css']
 })
-export class DeliveryDetailsComponent implements OnInit, AfterViewInit {
-  @ViewChild('mapWrapper', {static: false}) mapElement: ElementRef;
-
+export class DeliveryDetailsComponent implements OnInit {
   @Input() delivery: Delivery;
   locker: Locker;
 
@@ -28,19 +26,5 @@ export class DeliveryDetailsComponent implements OnInit, AfterViewInit {
     this.lockerService.getLockerByPosto(this.delivery.posto.postoId).subscribe(
       (data) => {this.locker = data; }
     );
-  }
-
-  ngAfterViewInit(): void {
-    var mapUtils = new GoogleMapUtils(this.mapElement.nativeElement);
-
-    mapUtils.loadGoogleMap();
-
-    var marker = mapUtils.addMarker(this.delivery.ordine.shop.shopLatitude, this.delivery.ordine.shop.shopLongitude, this.delivery.ordine.shop);
-
-    mapUtils.addInfoWindow(marker, this.delivery.ordine.shop);
-
-    mapUtils.center(marker);
-
-    document.getElementById('map').style.display = "block";
   }
 }
